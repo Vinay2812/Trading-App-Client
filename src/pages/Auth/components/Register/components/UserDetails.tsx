@@ -11,6 +11,8 @@ import { FC, useEffect, useState } from "react";
 import { UserDetailsInterface, dropdownType } from "../../../types/register";
 import { states, getDistrictsOfState, constitutionOfFirm } from "../data";
 import { LockOutlined } from "@mui/icons-material";
+import { boxShadow } from "../../../../../styles/auth";
+import { useColors } from "../../../../../hooks/useColors";
 
 interface UserDetailsProps {
   userDetails: UserDetailsInterface;
@@ -92,21 +94,20 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
       [e.target.name]: e.target.value,
     }));
   }
-
+  const colors = useColors()
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: "100%",
+        pt: 2,
         alignItems: "center",
         position: "relative",
-        mt: 1
+        bgcolor: colors.cardAccent
       }}
     >
-      <CssBaseline />
-      <Avatar sx={{ m: 1, mt: 0, bgcolor: "green.main" }}>
+      <Avatar sx={{ bgcolor: "green.main" }}>
         <LockOutlined />
       </Avatar>
       <Typography component="h1" variant="h5" pb={2}>
@@ -114,10 +115,9 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
       </Typography>
       <Box
         sx={{
-          boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.35)",
-          p: 4,
-          borderRadius: 4,
-          overflowY: "scroll"
+          px: 4,
+          py: 2,
+          bgcolor: colors.cardAccent
         }}
       >
         <Grid container spacing={4}>
@@ -142,7 +142,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               value={userDetails.email}
             />
           </Grid>
-          <Grid item md={0} lg={4}></Grid>
+          {/* <Grid item md={0} lg={0}></Grid> */}
           <Grid item xs={12} md={6} lg={4}>
             <TextField
               onChange={handleInputChange}

@@ -1,31 +1,31 @@
-import { Box, Button, Container, CssBaseline, Typography } from "@mui/material";
-import { FC, useEffect } from "react";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { useColors } from "../../hooks/useColors";
 
 interface authProps {}
 
 const Auth: FC<authProps> = (props) => {
   const navigate = useNavigate();
+  const colors = useColors();
   return (
     <Container
       component="main"
-      maxWidth="xs"
+      maxWidth="sm"
       sx={{
-        // height: `95%`,
+        height: `100%`,
         width: "100%",
-        boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.35)",
-        p: 5,
-        borderRadius: 4,
+        p: 4,
+        bgcolor: `${colors.cardAccent}`,
       }}
     >
-      <CssBaseline />
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           width: "100%",
+          height: "100%",
           position: "relative",
         }}
         gap={8}
@@ -35,11 +35,15 @@ const Auth: FC<authProps> = (props) => {
           variant="h4"
           textAlign="center"
           sx={{
-            width: "100%",
-            fontStyle: "italic"
+            position: "absolute",
+            top: "30%",
+            left: "50%",
+            transform: "translate(-50%, -30%)",
+            width: "70%",
+            fontStyle: "italic",
           }}
         >
-          Welcome to Online Trading App
+          Welcome to Online Commodity Trading App
         </Typography>
         <Box
           gap={3}
@@ -55,6 +59,7 @@ const Auth: FC<authProps> = (props) => {
             variant="contained"
             fullWidth
             color="green"
+            sx={{py: "8px", fontSize: "16px"}}
             onClick={() => navigate("/auth/login")}
           >
             Sign in
@@ -63,6 +68,7 @@ const Auth: FC<authProps> = (props) => {
             variant="contained"
             fullWidth
             color="error"
+            sx={{py: "8px", fontSize: "16px"}}
             onClick={() => navigate("/auth/register")}
           >
             Sign up
@@ -70,7 +76,8 @@ const Auth: FC<authProps> = (props) => {
           <Button
             variant="contained"
             fullWidth
-            color="darkblue"
+            color="indigo"
+            sx={{py: "8px", fontSize: "16px"}}
             onClick={() => navigate("/auth/admin/login")}
           >
             Admin Login

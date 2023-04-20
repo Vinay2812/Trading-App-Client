@@ -11,6 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
+import { boxShadow } from "../../../../../styles/auth";
+import { useColors } from "../../../../../hooks/useColors";
 
 interface UserPasswordProps {
   userPasswordDetails: UserPasswordDetailsInterface;
@@ -18,11 +20,22 @@ interface UserPasswordProps {
 }
 
 const UserPassword: FC<UserPasswordProps> = (props) => {
+  function handlePasswordChange (e: any) {
+    props.setUserPasswordDetails((prev: UserPasswordDetailsInterface) => {
+      return {...prev, [e.target.name]: e.target.value}
+    })
+  }
+  const colors = useColors();
   return (
     <Container
       component="main"
       maxWidth="sm"
-      sx={{ overflow: "hidden", height: "100%", display: "flex", alignItems: "center" }}
+      sx={{
+        overflow: "hidden",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+      }}
     >
       <CssBaseline />
       <Box
@@ -30,12 +43,12 @@ const UserPassword: FC<UserPasswordProps> = (props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.35)",
-          p: 4,
-          borderRadius: 4,
+          px: 4,
+          py: 2,
+          bgcolor: colors.cardAccent
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "green.main" }}>
+        <Avatar sx={{ bgcolor: "green.main" }}>
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -51,6 +64,8 @@ const UserPassword: FC<UserPasswordProps> = (props) => {
                 label="Password"
                 type="password"
                 id="password"
+                onChange={handlePasswordChange}
+                value={props.userPasswordDetails.password}
                 autoFocus
               />
             </Grid>
@@ -59,7 +74,9 @@ const UserPassword: FC<UserPasswordProps> = (props) => {
                 required
                 fullWidth
                 label="Confirm Password"
-                name="confirm_password"
+                name="confirmPassword"
+                value={props.userPasswordDetails.confirmPassword}
+                onChange={handlePasswordChange}
               />
             </Grid>
           </Grid>

@@ -10,8 +10,14 @@ const RedirectProvider: FC<RedirectProviderProps> = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/auth")
-  },[]);
+    navigate("/auth");
+  }, []);
+
+  // useEffect(() => {
+  //   window.onbeforeunload = () => {
+  //     return "Are you sure you want to leave this page?"
+  //   }
+  // },[window.onbeforeunload])
   return children;
 };
 

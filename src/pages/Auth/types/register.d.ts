@@ -12,6 +12,7 @@ export interface UserDetailsInterface {
   fssai: string;
   tan: string;
   constitution_of_firm: string;
+  password: string,
 }
 
 export interface UserBankDetailsInterface {

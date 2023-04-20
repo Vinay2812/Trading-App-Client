@@ -8,18 +8,25 @@ import {
   Grid,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { ArrowBack, LockOutlined } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
-import { GenericAbortSignal } from "axios";
-import { getCompaniesByMobile } from "../../../../api/user.request";
+import { getCompaniesByMobile } from "../../../../api/user/user.request";
 import { useNavigate } from "react-router-dom";
+import { boxShadow } from "../../../../styles/auth";
+import { loginUser } from "../../../../api/auth/auth.request";
+import { handleApiAsync } from "../../../../utils/handleAsync";
+import { LoginUserResponse } from "../../../../api/auth/response";
+import { GetCompaniesBymobileResponse } from "../../../../api/user/response";
+import { tokens } from "../../../../utils/theme";
+import { useColors } from "../../../../hooks/useColors";
 
 interface LoginProps {}
 
 interface LoginForm {
   mobile: string;
-  company: string;
+  company_name: string;
   password: string;
 }
 
@@ -32,55 +39,64 @@ const Login: FC<LoginProps> = (props) => {
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState<LoginForm>({
     mobile: "",
-    company: "",
+    company_name: "",
     password: "",
   });
-
   const [companies, setCompanies] = useState<Companies[]>([]);
-  function handleSubmit() {}
+  // const [companyInpu]
+
+  useEffect(() => {
+    if (loginForm.mobile.length === 10) {
+      fetchCompaniesByMobile(loginForm.mobile);
+    } else {
+      setCompanies([]);
+    }
+  }, [loginForm.mobile]);
+
+  async function handleSubmit() {
+    const { value, error, status, message } =
+      await handleApiAsync<LoginUserResponse>(loginUser(loginForm));
+    if (status === "error") {
+      alert(error);
+    } else {
+      console.log(value.userData);
+    }
+  }
+
+  async function fetchCompaniesByMobile(mobile: string) {
+    const { value, status } =
+      await handleApiAsync<GetCompaniesBymobileResponse>(
+        getCompaniesByMobile(mobile)
+      );
+    if (status === "success") {
+      let idx = 1;
+      setCompanies(
+        value.companies.map((company) => ({ label: company, id: idx++ }))
+      );
+    }
+  }
 
   function handleMobileNumberChange(e: any) {
     if (e.target.value === "" || /\d/.test(e.target.value)) {
       setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     }
   }
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    if (loginForm.mobile.length === 10) {
-      fetchCompanies(loginForm.mobile, signal);
-    } else {
-      setCompanies([]);
-    }
-  }, [loginForm.mobile]);
-
-  async function fetchCompanies(
-    mobile: string,
-    signal: GenericAbortSignal | undefined = undefined
-  ) {
-    const { success, data, error, message } = await getCompaniesByMobile(
-      mobile
-    );
-    if (success) {
-      setCompanies(
-        data.companies.map((comp: string, idx: number) => {
-          return { label: comp, id: idx };
-        })
-      );
-    }
-  }
+  const colors = useColors();
   return (
-    <Container component="main" maxWidth="sm">
-      <CssBaseline />
+    <Container
+      component="main"
+      maxWidth="sm"
+      sx={{
+        bgcolor: `${colors.cardAccent}`,
+        py: 2,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.35)",
-          p: 4,
-          borderRadius: 4,
+          width: "100%"
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -90,13 +106,9 @@ const Login: FC<LoginProps> = (props) => {
           Sign In
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2.5}>
             <Grid item xs={2.2}>
-              <TextField
-                fullWidth
-                value="+91"
-                disabled
-              />
+              <TextField fullWidth value="+91" disabled />
             </Grid>
             <Grid item xs={9.8}>
               <TextField
@@ -113,12 +125,17 @@ const Login: FC<LoginProps> = (props) => {
               <Autocomplete
                 options={companies}
                 disabled={companies.length === 0}
+                value={companies.find(
+                  (company) => company.label === loginForm.company_name
+                )}
+                onChange={(e, value) =>
+                  setLoginForm({
+                    ...loginForm,
+                    company_name: value?.label || "",
+                  })
+                }
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Company"
-                    required
-                  />
+                  <TextField {...params} label="Company" required />
                 )}
               />
             </Grid>
@@ -131,6 +148,12 @@ const Login: FC<LoginProps> = (props) => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                onChange={(e) =>
+                  setLoginForm({
+                    ...loginForm,
+                    [e.target.name]: e.target.value,
+                  })
+                }
               />
             </Grid>
           </Grid>
@@ -138,8 +161,8 @@ const Login: FC<LoginProps> = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            color="green"
-            sx={{ mt: 3, mb: 2 }}
+            color="indigo"
+            sx={{ mt: 3, mb: 2, p: 1 }}
           >
             Sign in
           </Button>
@@ -147,7 +170,7 @@ const Login: FC<LoginProps> = (props) => {
             fullWidth
             variant="outlined"
             color="red"
-            sx={{ mt: 1, mb: 2 }}
+            sx={{ mt: 1, mb: 2, p: 1 }}
             startIcon={<ArrowBack />}
             onClick={() => navigate("/auth")}
           >

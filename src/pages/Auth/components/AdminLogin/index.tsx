@@ -4,32 +4,33 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { useColors } from "../../../../hooks/useColors";
 
 interface AdminLoginProps {}
 
 const AdminLogin: FC<AdminLoginProps> = (props) => {
   const navigate = useNavigate();
+  const colors = useColors()
   return (
     <Container component="main" maxWidth="sm">
-      <CssBaseline />
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.35)",
-          p: 4,
-          borderRadius: 4,
+          py: 4,
+          px: 2,
+          pt: 2,
+          bgcolor: colors.cardAccent
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ bgcolor: "secondary.main" }}>
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -61,8 +62,8 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            color="green"
-            sx={{ mt: 3, mb: 2 }}
+            color="indigo"
+            sx={{ mt: 3, mb: 2, py: 1 }}
           >
             Login
           </Button>
@@ -70,7 +71,7 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
             fullWidth
             variant="outlined"
             color="red"
-            sx={{ mt: 1, mb: 2 }}
+            sx={{ mt: 1, py: 1}}
             startIcon={<ArrowBack />}
             onClick={() => navigate("/auth")}
           >

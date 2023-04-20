@@ -1,4 +1,8 @@
-import { CheckCircleOutlineRounded, LockOutlined } from "@mui/icons-material";
+import {
+  CheckCircleOutlineRounded,
+  LockOutlined,
+  Send,
+} from "@mui/icons-material";
 import {
   Container,
   CssBaseline,
@@ -9,6 +13,8 @@ import {
 } from "@mui/material";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { FC, useEffect, useState } from "react";
+import { boxShadow } from "../../../../../styles/auth";
+import { useColors } from "../../../../../hooks/useColors";
 
 interface UserOtpVerificationProps {
   userOtpVerified: boolean;
@@ -29,6 +35,10 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
     setOtp(newValue);
   };
 
+  const handleOtpVerification = () => {
+    setUserOtpVerified(true);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
@@ -41,6 +51,8 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  const colors = useColors();
   return (
     <Container
       component="main"
@@ -51,15 +63,16 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
         alignItems: "center",
       }}
     >
-      <CssBaseline />
       <Box
         sx={{
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.35)",
-          p: 4,
-          borderRadius: 4,
+          justifyContent: "center",
+          px: 4,
+          py: 2,
+          bgcolor: colors.cardAccent,
         }}
       >
         <Avatar
@@ -71,10 +84,30 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
         >
           <LockOutlined />
         </Avatar>
-        <Typography component="h1" variant="h5" textAlign={"center"}>
-          Please verify your email address vinaysarda***@gmail.com
+        <Typography component="h6" variant="h6" textAlign={"center"}>
+          {!userOtpVerified ? (
+            "Please verify your email address vinaysarda***@gmail.com"
+          ) : (
+            <>
+              <Typography
+                component="h6"
+                variant="h6"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+                gap={1}
+              >
+                Your email address vinaysarda2812@gmail.com has been verified
+                successfully{" "}
+              </Typography>
+              <CheckCircleOutlineRounded color="success" />
+            </>
+          )}
         </Typography>
-        {!userOtpVerified ? (
+        {!userOtpVerified && (
           <Box sx={{ mt: 2 }}>
             <MuiOtpInput
               value={otp}
@@ -91,28 +124,21 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
               fullWidth
               variant="contained"
               color="green"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, py: 1 }}
+              onClick={handleOtpVerification}
             >
               Verify
             </Button>
-            <Typography variant="body2" color="text.secondary" align="center">
+            <Typography variant="body2" color="text.secondary" display="flex" justifyContent="center">
               {timer > 0 ? (
-                `Resend OTP in ${timer} seconds`
+                `Didn't receive otp? Resend otp in ${timer} seconds`
               ) : (
-                <Button sx={{ p: 1 }}>Resend Otp</Button>
+                <Button sx={{ px: 2, py: 1}} endIcon={ <Send />} variant="outlined">
+                  Resend Otp
+                </Button>
               )}
             </Typography>
           </Box>
-        ) : (
-          <Typography
-            component="h6"
-            variant="h6"
-            sx={{ display: "flex", alignItems: "center", mt: 3, width: "100%" }}
-            gap={1}
-          >
-            Your Otp has been verified successfully{" "}
-            {<CheckCircleOutlineRounded color="success" />}
-          </Typography>
         )}
       </Box>
     </Container>

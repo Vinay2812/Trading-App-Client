@@ -10,12 +10,16 @@ import {
   Button,
   CssBaseline,
   Grid,
+  IconButton,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { accountTypes } from "../data";
+import { boxShadow } from "../../../../../styles/auth";
+import { addSingleDetail, deleteSingleDetail } from "../helpers";
+import { useColors } from "../../../../../hooks/useColors";
 
 interface BankDetailsProps {
   userBankDetails: UserBankDetailsInterface[];
@@ -24,9 +28,10 @@ interface BankDetailsProps {
 interface BankDetailsCardProps {
   userBankDetail: UserBankDetailsInterface;
   setUserBankDetails: Function;
+  handleDeleteBankDetail: Function;
 }
 const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
-  const { userBankDetail, setUserBankDetails } = props;
+  const { userBankDetail, setUserBankDetails, handleDeleteBankDetail } = props;
   const [accountTypeValue, setAccountTypeValue] = useState<dropdownType>(
     userBankDetail.account_type.length
       ? (accountTypes.find(
@@ -72,40 +77,45 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
       return newBankDetails;
     });
   };
-
+  const colors = useColors();
   return (
     <Box
       sx={{
         width: "100%",
-        boxShadow: "0px 2px 5px 5px rgba(0,0,0,0.3)",
-        p: 4,
-        borderRadius: 4,
+        height: "100%",
+        px: 4,
+        // py: 2,
+        bgcolor: colors.cardAccent,
       }}
       gap={2}
     >
-      <CssBaseline />
-      <Typography
-        variant="h6"
-        component="h6"
+      <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
+          position: "relative",
+          pb: 2
         }}
       >
-        Bank Detail {userBankDetail.id}
-        {
-          <Button
-            color="peach"
-            sx={{
-              aspectRatio: "1",
-              borderRadius: "50%",
-              p: 0,
-            }}
-          >
-            <DeleteForeverOutlined />
-          </Button>
-        }
-      </Typography>
+        <Typography
+          variant="h6"
+          component="h6"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          Bank Detail {userBankDetail.id}
+          {
+            <IconButton
+              sx={{
+                color: "tomato",
+              }}
+              onClick={() => handleDeleteBankDetail(userBankDetail.id)}
+            >
+              <DeleteForeverOutlined />
+            </IconButton>
+          }
+        </Typography>
+      </Box>
       <Grid container spacing={2} width={"100%"}>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
@@ -177,60 +187,81 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
   );
 };
 const BankDetails: FC<BankDetailsProps> = (props) => {
+  const { userBankDetails, setUserBankDetails } = props;
+  const handleDeleteBankDetail = (bankDetailId: number) => {
+    deleteSingleDetail(
+      bankDetailId,
+      setUserBankDetails,
+      userBankDetails.length
+    );
+  };
+
+  const handleAddBankDetail = () => {
+    const len = userBankDetails.length;
+    const newBankDetail: UserBankDetailsInterface = {
+      id: len + 1,
+      account_name: "",
+      account_number: "",
+      bank_name: "",
+      account_type: "",
+      branch: "",
+      ifsc: "",
+    };
+    addSingleDetail<UserBankDetailsInterface>(
+      len,
+      newBankDetail,
+      setUserBankDetails
+    );
+  };
+  const colors = useColors();
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: "100%",
         alignItems: "center",
         position: "relative",
-        mt: 1
+        py: 2,
+        bgcolor: colors.cardAccent,
       }}
     >
-      <CssBaseline />
-      <Avatar sx={{ m: 1, mt: 0, bgcolor: "green.main" }}>
-        <LockOutlined />
-      </Avatar>
-      <Typography component="h1" variant="h5" pb={2}>
-        Please fill atleast one bank detail
-      </Typography>
       <Box
         sx={{
-          width: "100%",
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Stack sx={{ width: "100%" }}>
-          {props.userBankDetails.map((userBankDetail) => (
-            <BankDetailsCard
-              key={userBankDetail.id}
-              userBankDetail={userBankDetail}
-              setUserBankDetails={props.setUserBankDetails}
-            />
-          ))}
-        </Stack>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            py: 2,
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              position: "absolute",
-              aspectRatio: "1",
-              borderRadius: "50%",
-            }}
-            color="darkblue"
-          >
-            <Add />
-          </Button>
-        </Box>
+        <Avatar sx={{ my: 1, mt: 0, bgcolor: "green.main" }}>
+          <LockOutlined />
+        </Avatar>
+        <Typography component="h1" variant="h5" >
+          Please fill atleast one bank detail
+        </Typography>
+      </Box>
+      <Stack gap={3} width="100%">
+        {userBankDetails.map((userBankDetail) => (
+          <BankDetailsCard
+            key={userBankDetail.id}
+            userBankDetail={userBankDetail}
+            setUserBankDetails={props.setUserBankDetails}
+            handleDeleteBankDetail={handleDeleteBankDetail}
+          />
+        ))}
+      </Stack>
+      <Box
+        width="100%"
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          px: 6,
+          pt: 3
+        }}
+      >
+        <Button variant="contained" color="blue" onClick={handleAddBankDetail}>
+          <Add /> Bank Detail
+        </Button>
       </Box>
     </Box>
   );
