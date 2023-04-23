@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { accountTypes } from "../data";
-import { boxShadow } from "../../../../../styles/auth";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/useColors";
 
@@ -85,14 +84,14 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
         height: "100%",
         px: 4,
         // py: 2,
-        bgcolor: colors.cardAccent,
+        bgcolor: colors.card,
       }}
       gap={2}
     >
       <Box
         sx={{
           position: "relative",
-          pb: 2
+          pb: 2,
         }}
       >
         <Typography
@@ -223,7 +222,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
         alignItems: "center",
         position: "relative",
         py: 2,
-        bgcolor: colors.cardAccent,
+        bgcolor: colors.card,
       }}
     >
       <Box
@@ -236,7 +235,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
         <Avatar sx={{ my: 1, mt: 0, bgcolor: "green.main" }}>
           <LockOutlined />
         </Avatar>
-        <Typography component="h1" variant="h5" >
+        <Typography component="h1" variant="h5">
           Please fill atleast one bank detail
         </Typography>
       </Box>
@@ -256,7 +255,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
           display: "flex",
           justifyContent: "flex-end",
           px: 6,
-          pt: 3
+          pt: 3,
         }}
       >
         <Button variant="contained" color="blue" onClick={handleAddBankDetail}>

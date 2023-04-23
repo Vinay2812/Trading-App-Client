@@ -14,7 +14,6 @@ import { ArrowBack, LockOutlined } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
 import { getCompaniesByMobile } from "../../../../api/user/user.request";
 import { useNavigate } from "react-router-dom";
-import { boxShadow } from "../../../../styles/auth";
 import { loginUser } from "../../../../api/auth/auth.request";
 import { handleApiAsync } from "../../../../utils/handleAsync";
 import { LoginUserResponse } from "../../../../api/auth/response";
@@ -87,8 +86,9 @@ const Login: FC<LoginProps> = (props) => {
       component="main"
       maxWidth="sm"
       sx={{
-        bgcolor: `${colors.cardAccent}`,
+        bgcolor: colors.card,
         py: 2,
+        borderRadius: 4,
       }}
     >
       <Box
@@ -96,7 +96,7 @@ const Login: FC<LoginProps> = (props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "100%"
+          width: "100%",
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>

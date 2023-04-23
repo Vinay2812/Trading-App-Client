@@ -255,7 +255,7 @@ const Register: FC<RegisterProps> = (props) => {
           alignItems: "center",
           justifyContent: "center",
           position: "relative",
-          bgcolor: colors.sidebarAccent,
+          bgcolor: colors.card,
         }}
       >
         <IconButton
@@ -263,8 +263,9 @@ const Register: FC<RegisterProps> = (props) => {
           sx={{ position: "absolute", left: 2, fontSize: 20 }}
           onClick={() => navigate("/auth")}
           content="home"
+          color="red"
         >
-          <Avatar sx={{ bgcolor: colors.red[300] }}>
+          <Avatar sx={{ bgcolor: colors.red[500] }}>
             <Home
               sx={{
                 fontSize: 28,
@@ -312,8 +313,9 @@ const Register: FC<RegisterProps> = (props) => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          p:2,
-          bgcolor: colors.cardAccent
+          mt: 4,
+          p: 2,
+          bgcolor: colors.card,
         }}
         gap={2}
       >

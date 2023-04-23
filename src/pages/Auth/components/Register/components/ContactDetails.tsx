@@ -13,7 +13,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
-import { boxShadow } from "../../../../../styles/auth";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/useColors";
 
@@ -164,7 +163,7 @@ const ContactDetails: FC<ContactDetailsProps> = (props) => {
         alignItems: "center",
         position: "relative",
         py: 2,
-        bgcolor: colors.cardAccent,
+        bgcolor: colors.card,
       }}
     >
       <Box
@@ -197,10 +196,14 @@ const ContactDetails: FC<ContactDetailsProps> = (props) => {
           display: "flex",
           justifyContent: "flex-end",
           px: 6,
-          pt: 2
+          pt: 2,
         }}
       >
-        <Button variant="contained" color="blue" onClick={handleAddContactDetail}>
+        <Button
+          variant="contained"
+          color="blue"
+          onClick={handleAddContactDetail}
+        >
           <Add /> Contact Detail
         </Button>
       </Box>

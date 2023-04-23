@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { FC, useEffect, useState } from "react";
-import { boxShadow } from "../../../../../styles/auth";
 import { useColors } from "../../../../../hooks/useColors";
 
 interface UserOtpVerificationProps {
@@ -72,7 +71,8 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
           justifyContent: "center",
           px: 4,
           py: 2,
-          bgcolor: colors.cardAccent,
+          borderRadius: 4,
+          bgcolor: colors.card,
         }}
       >
         <Avatar
@@ -129,11 +129,20 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
             >
               Verify
             </Button>
-            <Typography variant="body2" color="text.secondary" display="flex" justifyContent="center">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              display="flex"
+              justifyContent="center"
+            >
               {timer > 0 ? (
                 `Didn't receive otp? Resend otp in ${timer} seconds`
               ) : (
-                <Button sx={{ px: 2, py: 1}} endIcon={ <Send />} variant="outlined">
+                <Button
+                  sx={{ px: 2, py: 1 }}
+                  endIcon={<Send />}
+                  variant="text"
+                >
                   Resend Otp
                 </Button>
               )}

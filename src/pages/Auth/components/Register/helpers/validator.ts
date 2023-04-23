@@ -98,7 +98,6 @@ export const validateUserDetails = (data: UserDetailsInterface) => {
     return { error: null, value: yupRes };
   } catch (err: any) {
     if (yup.ValidationError.isError(err)) {
-      console.log(err.errors)
       return { error: err.errors, value: null };
     }
     return { error: err, value: null };

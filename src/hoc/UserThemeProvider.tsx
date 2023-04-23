@@ -17,11 +17,10 @@ declare module "@mui/material/styles" {
     green: Palette["primary"];
     red: Palette["primary"];
     violet: Palette["primary"];
-    backgroundAccent: Palette["primary"];
-    cardAccent: Palette["primary"];
-    sidebarAccent: Palette["primary"];
-    // topbarAccent: Palette["primary"];
-    inputAccent: Palette["primary"];
+    bgColor: Palette["primary"];
+    card: Palette["primary"];
+    sidebar: Palette["primary"];
+    textColor: Palette["primary"];
   }
 
   interface PaletteOptions {
@@ -30,16 +29,24 @@ declare module "@mui/material/styles" {
     green: PaletteOptions["primary"];
     red: PaletteOptions["primary"];
     violet: PaletteOptions["primary"];
-    backgroundAccent: PaletteOptions["primary"];
-    cardAccent: PaletteOptions["primary"];
-    sidebarAccent: PaletteOptions["primary"];
-    // topbarAccent: PaletteOptions["primary"];
-    inputAccent: PaletteOptions["primary"];
+    bgColor: PaletteOptions["primary"];
+    card: PaletteOptions["primary"];
+    sidebar: PaletteOptions["primary"];
+    textColor: PaletteOptions["primary"];
   }
 }
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
+    indigo: true;
+    blue: true;
+    green: true;
+    red: true;
+    violet: true;
+  }
+}
+declare module "@mui/material/IconButton" {
+  interface IconButtonPropsColorOverrides {
     indigo: true;
     blue: true;
     green: true;
@@ -54,7 +61,7 @@ interface ThemeProviderProps {
 const UserThemeContext = createContext({
   toggleTheme: () => {},
 });
-export const useTheme = () => useContext(UserThemeContext);
+export const useToggleTheme = () => useContext(UserThemeContext);
 
 type userThemeType = "dark" | "light";
 
@@ -73,20 +80,18 @@ const UserTheme: FC<ThemeProviderProps> = (props) => {
       createTheme({
         palette: {
           mode: userTheme,
-          // primary: createColor(colors.primary[500]),
           violet: createColor(colors.violet[500]),
           indigo: createColor(colors.indigo[500]),
           blue: createColor(colors.blue[500]),
           green: createColor(colors.green[500]),
           red: createColor(colors.red[500]),
-          backgroundAccent: createColor(colors.backgroundAccent),
-          cardAccent: createColor(colors.cardAccent),
-          sidebarAccent: createColor(colors.sidebarAccent),
-          // topbarAccent: createColor(colors.topbarAccent),
-          inputAccent: createColor(colors.inputAccent),
+          bgColor: createColor(colors.bgColor),
+          card: createColor(colors.card),
+          sidebar: createColor(colors.sidebar),
+          textColor: createColor(colors.textColor[500]),
           background: {
-            default: colors.backgroundAccent,
-          }
+            default: colors.bgColor,
+          },
         },
         typography: {},
       }),
@@ -100,12 +105,14 @@ const UserTheme: FC<ThemeProviderProps> = (props) => {
       );
   }, []);
 
+  const value = useMemo(() => ({ toggleTheme }), [toggleTheme]);
+
   useEffect(() => {
     useLocalStorage().set("theme", userTheme);
   }, [userTheme]);
 
   return (
-    <UserThemeContext.Provider value={{ toggleTheme }}>
+    <UserThemeContext.Provider value={value}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </UserThemeContext.Provider>
   );

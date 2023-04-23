@@ -16,7 +16,7 @@ interface AdminLoginProps {}
 
 const AdminLogin: FC<AdminLoginProps> = (props) => {
   const navigate = useNavigate();
-  const colors = useColors()
+  const colors = useColors();
   return (
     <Container component="main" maxWidth="sm">
       <Box
@@ -27,7 +27,8 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
           py: 4,
           px: 2,
           pt: 2,
-          bgcolor: colors.cardAccent
+          borderRadius: 4,
+          bgcolor: colors.card,
         }}
       >
         <Avatar sx={{ bgcolor: "secondary.main" }}>
@@ -71,7 +72,12 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
             fullWidth
             variant="outlined"
             color="red"
-            sx={{ mt: 1, py: 1}}
+            sx={{
+              mt: 1,
+              py: 1,
+              color: colors.red[500],
+              borderColor: colors.red[500],
+            }}
             startIcon={<ArrowBack />}
             onClick={() => navigate("/auth")}
           >

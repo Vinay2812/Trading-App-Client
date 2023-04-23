@@ -11,7 +11,6 @@ import { FC, useEffect, useState } from "react";
 import { UserDetailsInterface, dropdownType } from "../../../types/register";
 import { states, getDistrictsOfState, constitutionOfFirm } from "../data";
 import { LockOutlined } from "@mui/icons-material";
-import { boxShadow } from "../../../../../styles/auth";
 import { useColors } from "../../../../../hooks/useColors";
 
 interface UserDetailsProps {
@@ -94,7 +93,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
       [e.target.name]: e.target.value,
     }));
   }
-  const colors = useColors()
+  const colors = useColors();
   return (
     <Box
       sx={{
@@ -104,7 +103,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
         pt: 2,
         alignItems: "center",
         position: "relative",
-        bgcolor: colors.cardAccent
+        bgcolor: colors.card,
       }}
     >
       <Avatar sx={{ bgcolor: "green.main" }}>
@@ -117,7 +116,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
         sx={{
           px: 4,
           py: 2,
-          bgcolor: colors.cardAccent
+          bgcolor: colors.card,
         }}
       >
         <Grid container spacing={4}>

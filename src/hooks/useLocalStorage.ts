@@ -11,9 +11,19 @@ export default function useLocalStorage() {
     return JSON.parse(valueFromStore);
   }
 
+  function remove(key: string) {
+    localStorage.removeItem(key);
+  }
+
+  function removeAll() {
+    localStorage.clear();
+  }
+
   const localstorage = {
     set,
     get,
+    remove,
+    removeAll,
   };
   return localstorage;
 }

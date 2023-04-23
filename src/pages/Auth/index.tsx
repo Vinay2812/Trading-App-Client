@@ -13,10 +13,10 @@ const Auth: FC<authProps> = (props) => {
       component="main"
       maxWidth="sm"
       sx={{
-        height: `100%`,
         width: "100%",
         p: 4,
-        bgcolor: `${colors.cardAccent}`,
+        borderRadius: 4,
+        bgcolor: colors.card,
       }}
     >
       <Box
@@ -35,11 +35,7 @@ const Auth: FC<authProps> = (props) => {
           variant="h4"
           textAlign="center"
           sx={{
-            position: "absolute",
-            top: "30%",
-            left: "50%",
-            transform: "translate(-50%, -30%)",
-            width: "70%",
+            width: "100%",
             fontStyle: "italic",
           }}
         >
@@ -59,7 +55,7 @@ const Auth: FC<authProps> = (props) => {
             variant="contained"
             fullWidth
             color="green"
-            sx={{py: "8px", fontSize: "16px"}}
+            sx={{ py: "8px", fontSize: "16px" }}
             onClick={() => navigate("/auth/login")}
           >
             Sign in
@@ -68,7 +64,7 @@ const Auth: FC<authProps> = (props) => {
             variant="contained"
             fullWidth
             color="error"
-            sx={{py: "8px", fontSize: "16px"}}
+            sx={{ py: "8px", fontSize: "16px" }}
             onClick={() => navigate("/auth/register")}
           >
             Sign up
@@ -77,7 +73,7 @@ const Auth: FC<authProps> = (props) => {
             variant="contained"
             fullWidth
             color="indigo"
-            sx={{py: "8px", fontSize: "16px"}}
+            sx={{ py: "8px", fontSize: "16px" }}
             onClick={() => navigate("/auth/admin/login")}
           >
             Admin Login

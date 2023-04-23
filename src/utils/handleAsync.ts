@@ -14,7 +14,6 @@ export const handleApiAsync = async <T>(promise: AxiosPromise) => {
 
   try {
     const resolve: AxiosResponseType<T> = await promise as any;
-    console.log(resolve)
     response.value = resolve.data.data;
     response.status = "success";
     response.message = resolve.data.message;

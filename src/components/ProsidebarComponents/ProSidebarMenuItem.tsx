@@ -1,0 +1,58 @@
+import { FC } from "react";
+import { MenuItem, useProSidebar } from "react-pro-sidebar";
+import { useColors } from "../../hooks/useColors";
+import { Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { Variant } from "@mui/material/styles/createTypography";
+import { AdminSidebarSelectedType } from "../../pages/Admin/components/Sidebar/modules/MenuItems";
+
+interface ProSidebarMenuItemProps {
+  title: AdminSidebarSelectedType;
+  to: string;
+  icon: any;
+  selected: string;
+  setSelected: Function;
+  variant?: Variant;
+}
+
+const ProSidebarMenuItem: FC<ProSidebarMenuItemProps> = ({
+  title,
+  to,
+  icon,
+  selected,
+  setSelected,
+  variant = "subtitle2",
+}) => {
+  const colors = useColors();
+  const { collapsed } = useProSidebar();
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <MenuItem
+        icon={icon}
+        active={selected === title}
+        style={{
+          position: "relative",
+          color: colors.textColor[500],
+          backgroundColor:
+            selected === title
+              ? `${colors.sidebarHover} !important`
+              : undefined,
+        }}
+        onClick={() => {
+          setSelected(title);
+          navigate(to)
+        }}
+      >
+        {!collapsed && (
+          <Typography mt="4px" variant={variant}>
+            {title}
+          </Typography>
+        )}
+      </MenuItem>
+    </>
+  );
+};
+
+export default ProSidebarMenuItem;
