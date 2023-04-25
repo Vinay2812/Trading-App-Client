@@ -10,12 +10,26 @@ import { useColors } from "../../../../hooks/useColors";
 import { AddBoxOutlined, AddTask } from "@mui/icons-material";
 
 interface RegistrationListProps {}
+interface RowsType extends RegistrationListUsersType {
+  sr_no: number;
+}
 
 const RegistrationList: FC<RegistrationListProps> = (props) => {
   const colors = useColors();
-  const [rows, setRows] = useState<RegistrationListUsersType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [rows, setRows] = useState<RowsType[]>([]);
+
   const columns = useMemo(() => {
     return [
+      {
+        field: "sr_no",
+        headerName: "Sr. No.",
+        minWidth: 100,
+        flex: 0.5,
+        disableColumnMenu: true,
+        disableReorder: true,
+        sortable: false,
+      },
       {
         field: "userId",
         headerName: "User Id",
@@ -115,18 +129,20 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
     );
   }
   async function fetchRegistrationListUsers() {
-    const { value, error, status, message } = await handleApiAsync<
+    setLoading(true);
+    const { value, status } = await handleApiAsync<
       RegistrationListUsersType[]
     >(getRegistrationListUsers());
     if (status === "success") {
-      setRows(value);
+      setRows(value.map((item, index) => ({ ...item, sr_no: index + 1 })));
     } else {
       setRows([]);
     }
+    setLoading(false);
   }
   return (
     <AdminSidebar active="Registration List">
-      <Box width="100%" height="100%">
+      <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title="Registration List"
           subtitle="Welcome to registration list"
@@ -135,7 +151,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
           sx={{
             mt: "16px",
             width: "100%",
-            height: "calc(100% - 105px)",
+            height: "calc(100% - 90px)",
             bgcolor: `${colors.card}`,
             "& .MuiDataGrid-columnHeaders": {
               mt: 2,
@@ -151,10 +167,11 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
               border: "none",
             },
             "& .MuiDataGrid-cell": {
-              borderBottom: "none",
+              borderBottom: "none !important",
             },
             "& .MuiDataGrid-cell:focus": {
-              outline: "none",
+              outline: "none !important",
+              border: "none !important"
             },
             "& .MuiDataGrid-footerContainer": {
               bgcolor: colors.tableHeader,
@@ -170,8 +187,18 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
             slots={{
               toolbar: GridToolbar,
             }}
-            pageSizeOptions={[5, 15, 30, 50, 100]}
+            loading={loading}
             disableDensitySelector
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 15, 30, 50, 100]}
+            checkboxSelection
+            onRowSelectionModelChange={(arr)=> console.log(arr)}
           />
         </Card>
       </Box>

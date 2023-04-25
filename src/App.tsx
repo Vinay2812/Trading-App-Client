@@ -10,11 +10,14 @@ import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import Admin from "./pages/Admin";
-import { AdminSidebar, RegistrationList } from "./pages/Admin/components";
+// import { RegistrationList } from "./pages/Admin/components";
 
 const AdminLogin = lazyLoad("/src/pages/Auth/components", "AdminLogin");
 const Login = lazyLoad("/src/pages/Auth/components", "Login");
 const Register = lazyLoad("/src/pages/Auth/components", "Register");
+
+//  Admin
+const RegistrationList = lazyLoad("/src/pages/Admin/components", "RegistrationList")
 
 const queryClient = new QueryClient();
 

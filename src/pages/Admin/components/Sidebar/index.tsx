@@ -59,7 +59,7 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   const { sidebarWidth, contentWidth } = useMemo(() => {
     return {
       sidebarWidth: collapsed ? "75px !important" : "210px !important",
-      contentWidth: collapsed && matches ? `calc(100vw - 75px)` : "calc(100vw)",
+      contentWidth: matches && !collapsed ? "calc(100vw - 210px)" : `calc(100vw - 75px)`,
     };
   }, [collapsed]);
   const theme = useTheme().palette.mode;
@@ -72,7 +72,7 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
           height: "100vh",
           minHeight: "100vh",
           ...(!matches &&
-            collapsed === false && { position: "fixed", top: "0" }),
+            collapsed === false && { position: "sticky", top: "0", zIndex: 1 }),
         }}
       >
         <ProSidebar
@@ -242,7 +242,7 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                   <Typography
                     sx={{ color: colors.blue[200], fontSize: "14px" }}
                   >
-                    vinaysarda2812
+                    Admin
                   </Typography>
                 </>
               )}
@@ -250,7 +250,8 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
           </ProSidebarSimpleMenu>
         </ProSidebar>
       </Box>
-      <Box width={contentWidth} height="100%" p={2}>
+      <Box width={contentWidth} height="100%" p={2} sx={{...(!matches &&
+            collapsed === false && { position: "absolute", left: "75px", zIndex: 0 }),}}>
         {children}
       </Box>
     </Box>
