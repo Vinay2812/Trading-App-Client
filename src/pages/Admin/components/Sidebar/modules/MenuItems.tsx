@@ -7,7 +7,7 @@ export type AdminSidebarSelectedType =
   | "Registration List"
   | "Published List"
   | "Publish List"
-  | "Client Publish List"
+  | "Client List"
   | "Logout"
   | "Dark"
   | "Light";

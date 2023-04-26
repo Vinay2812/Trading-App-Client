@@ -1,145 +1,34 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo} from "react";
 import { AdminSidebar } from "..";
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Card from "../../../../components/Cards/Card";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { handleApiAsync } from "../../../../utils/handleAsync";
-import { getRegistrationListUsers } from "../../../../api/admin/admin.request";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useColors } from "../../../../hooks/useColors";
-import { AddBoxOutlined, AddTask } from "@mui/icons-material";
+import { useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
+import { useRegistrationListColumns } from "./use-registration-list-columns";
 
 interface RegistrationListProps {}
-interface RowsType extends RegistrationListUsersType {
+interface RowsType extends RegistrationListResponseType {
   sr_no: number;
 }
 
 const RegistrationList: FC<RegistrationListProps> = (props) => {
   const colors = useColors();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [rows, setRows] = useState<RowsType[]>([]);
+  const { data, isLoading } = useRegistrationList();
 
-  const columns = useMemo(() => {
-    return [
-      {
-        field: "sr_no",
-        headerName: "Sr. No.",
-        minWidth: 100,
-        flex: 0.5,
-        disableColumnMenu: true,
-        disableReorder: true,
-        sortable: false,
-      },
-      {
-        field: "userId",
-        headerName: "User Id",
-        minWidth: 300,
-        flex: 1,
-      },
-      {
-        field: "company_name",
-        headerName: "Company Name",
-        minWidth: 300,
-        cellClassName: "name-column--cell",
-        flex: 1.75,
-      },
-      {
-        field: "email",
-        headerName: "Email",
-        minWidth: 250,
-        flex: 1.25,
-      },
-      {
-        field: "mobile",
-        headerName: "Mobile Number",
-        minWidth: 150,
-        flex: 1,
-      },
-      {
-        field: "actions",
-        headerName: "Actions",
-        renderCell: renderActions,
-        minWidth: 200,
-        headerAlign: "center",
-        align: "center",
-        disableColumnMenu: true,
-        disableReorder: true,
-        sortable: false,
-        flex: 1,
-      },
-    ] as GridColDef[];
-  }, []);
+  const columns = useRegistrationListColumns();
+  const rows = useMemo<RowsType[] | []>(() => {
+    if (!data?.value) return [];
 
-  useEffect(() => {
-    fetchRegistrationListUsers();
-  }, []);
+    return data.value.map((item, index) => {
+      return {
+        sr_no: index + 1,
+        ...item,
+      };
+    });
+  }, [data]);
 
-  function renderActions() {
-    return (
-      <Box display="flex" gap={5}>
-        <Box
-          sx={{
-            position: "relative",
-            height: "100%",
-            bottom: "5px",
-            color: colors.blue[500],
-            cursor: "pointer",
-            "&:hover": {
-              color: colors.blue[300],
-            },
-          }}
-        >
-          <AddBoxOutlined />
-          <Typography
-            variant="caption"
-            sx={{
-              position: "absolute",
-              top: "90%",
-              left: 0,
-            }}
-          >
-            Add
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            position: "relative",
-            height: "100%",
-            bottom: "5px",
-            color: colors.green[500],
-            cursor: "pointer",
-            "&:hover": {
-              color: colors.green[300],
-            },
-          }}
-        >
-          <AddTask />
-          <Typography
-            variant="caption"
-            sx={{
-              position: "absolute",
-              top: "90%",
-              left: 0,
-            }}
-          >
-            Map
-          </Typography>
-        </Box>
-      </Box>
-    );
-  }
-  async function fetchRegistrationListUsers() {
-    setLoading(true);
-    const { value, status } = await handleApiAsync<
-      RegistrationListUsersType[]
-    >(getRegistrationListUsers());
-    if (status === "success") {
-      setRows(value.map((item, index) => ({ ...item, sr_no: index + 1 })));
-    } else {
-      setRows([]);
-    }
-    setLoading(false);
-  }
   return (
     <AdminSidebar active="Registration List">
       <Box width="100%" height="100%" position="relative">
@@ -171,7 +60,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
             },
             "& .MuiDataGrid-cell:focus": {
               outline: "none !important",
-              border: "none !important"
+              border: "none !important",
             },
             "& .MuiDataGrid-footerContainer": {
               bgcolor: colors.tableHeader,
@@ -187,7 +76,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
             slots={{
               toolbar: GridToolbar,
             }}
-            loading={loading}
+            loading={isLoading}
             disableDensitySelector
             initialState={{
               pagination: {
@@ -198,7 +87,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
             }}
             pageSizeOptions={[5, 15, 30, 50, 100]}
             checkboxSelection
-            onRowSelectionModelChange={(arr)=> console.log(arr)}
+            onRowSelectionModelChange={(arr) => console.log(arr)}
           />
         </Card>
       </Box>

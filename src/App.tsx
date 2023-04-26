@@ -1,25 +1,37 @@
+import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import RedirectProvider from "./hoc/RedirectProvider";
 import UserTheme from "./hoc/UserThemeProvider";
 import LoaderProvider, { Loader } from "./hoc/LoaderProvider";
 import { Container, CssBaseline } from "@mui/material";
-import Auth from "./pages/Auth";
-import { lazyLoad } from "./utils/lazyLoad";
-import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProSidebarProvider } from "react-pro-sidebar";
-import Admin from "./pages/Admin";
-// import { RegistrationList } from "./pages/Admin/components";
 
-const AdminLogin = lazyLoad("/src/pages/Auth/components", "AdminLogin");
-const Login = lazyLoad("/src/pages/Auth/components", "Login");
-const Register = lazyLoad("/src/pages/Auth/components", "Register");
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
+
+// Auth
+const AdminLogin = lazy(() => import("./pages/Auth/components/AdminLogin"));
+const Login = lazy(() => import("./pages/Auth/components/Login"));
+const Register = lazy(() => import("./pages/Auth/components/Register"));
 
 //  Admin
-const RegistrationList = lazyLoad("/src/pages/Admin/components", "RegistrationList")
+const RegistrationList = lazy(
+  () => import("./pages/Admin/components/RegistrationList")
+);
+const PublishList = lazy(() => import("./pages/Admin/components/PublishList"));
+const PublishedList = lazy(() => import("./components/PublishedList"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: 3,
+      suspense: true
+    },
+  },
+});
 
 function App() {
   return (
@@ -53,10 +65,13 @@ function App() {
                     <Route path="/admin">
                       <Route path="" element={<Admin />} />
                       <Route path="users" element={<Admin />} />
-                      <Route path="registration-list" element={<RegistrationList />} />
-                      <Route path="published-list" element={<Admin />} />
-                      <Route path="publish-list" element={<Admin />} />
-                      <Route path="client-publish-list" element={<Admin />} />
+                      <Route
+                        path="registration-list"
+                        element={<RegistrationList />}
+                      />
+                      <Route path="publish-list" element={<PublishList />} />
+                      <Route path="published-list" element={<PublishedList />} />
+                      <Route path="client-list" element={<PublishedList isClientList={true} />} />
                     </Route>
                   </Routes>
                 </Container>

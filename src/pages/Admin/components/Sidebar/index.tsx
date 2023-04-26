@@ -11,6 +11,7 @@ import {
   Button,
   Divider,
   IconButton,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
@@ -20,12 +21,9 @@ import { useColors } from "../../../../hooks/useColors";
 import {
   AccountCircleOutlined,
   AppRegistrationRounded,
-  Brightness1,
   Brightness7,
-  CloseOutlined,
   HomeOutlined,
   Logout,
-  MenuOutlined,
   MenuRounded,
   NightsStaySharp,
   PublishOutlined,
@@ -59,9 +57,10 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   const { sidebarWidth, contentWidth } = useMemo(() => {
     return {
       sidebarWidth: collapsed ? "75px !important" : "210px !important",
-      contentWidth: matches && !collapsed ? "calc(100vw - 210px)" : `calc(100vw - 75px)`,
+      contentWidth:
+        matches && !collapsed ? "calc(100vw - 210px)" : `calc(100vw - 75px)`,
     };
-  }, [collapsed]);
+  }, [collapsed, matches]);
   const theme = useTheme().palette.mode;
   const { toggleTheme } = useToggleTheme();
 
@@ -171,16 +170,16 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                 to="/admin/published-list"
               />
               <ProSidebarMenuItem
-                title="Client Publish List"
+                title="Client List"
                 icon={
                   <ProSidebarMenuIcon
                     icon={<RecentActorsOutlined />}
-                    hoverText="Client Publish List"
+                    hoverText="Client List"
                   />
                 }
                 selected={selected}
                 setSelected={setSelected}
-                to="/admin/client-publish-list"
+                to="/admin/client-list"
               />
             </ProSidebarHoverMenu>
             <Divider />
@@ -194,6 +193,7 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                     icon={
                       theme === "light" ? <NightsStaySharp /> : <Brightness7 />
                     }
+                    hoverText={"Toggle Theme" as any}
                   />
                 }
                 selected={selected}
@@ -202,7 +202,9 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
               />
               <ProSidebarMenuItem
                 title="Logout"
-                icon={<ProSidebarMenuIcon icon={<Logout />} />}
+                icon={
+                  <ProSidebarMenuIcon icon={<Logout />} hoverText="Logout" />
+                }
                 selected={selected}
                 setSelected={() => useLogout()}
                 to="/auth"
@@ -215,17 +217,19 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                 marginTop: "5px",
               }}
               icon={
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    backgroundColor: colors.blue[300],
-                    height: "25px",
-                    width: "25px",
-                    fontSize: "16px",
-                  }}
-                >
-                  A
-                </Avatar>
+                <Tooltip title={collapsed ? "Signed in as Admin" : ""}>
+                  <Avatar
+                    variant="rounded"
+                    sx={{
+                      backgroundColor: colors.blue[300],
+                      height: "25px",
+                      width: "25px",
+                      fontSize: "16px",
+                    }}
+                  >
+                    A
+                  </Avatar>
+                </Tooltip>
               }
             >
               {!collapsed && (
@@ -250,8 +254,19 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
           </ProSidebarSimpleMenu>
         </ProSidebar>
       </Box>
-      <Box width={contentWidth} height="100%" p={2} sx={{...(!matches &&
-            collapsed === false && { position: "absolute", left: "75px", zIndex: 0 }),}}>
+      <Box
+        width={contentWidth}
+        height="100%"
+        p={2}
+        sx={{
+          ...(!matches &&
+            collapsed === false && {
+              position: "absolute",
+              left: "75px",
+              zIndex: 0,
+            }),
+        }}
+      >
         {children}
       </Box>
     </Box>
