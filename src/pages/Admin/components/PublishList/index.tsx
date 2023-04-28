@@ -1,12 +1,11 @@
 import { FC, useMemo } from "react";
 import { AdminSidebar } from "..";
 import { Box } from "@mui/material";
-import Card from "../../../../components/Cards/Card";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useColors } from "../../../../hooks/useColors";
 import { usePublishList } from "../../../../hooks/api-hooks/admin";
 import { usePublishListColumns } from "./use-publish-list-columns";
+import { PublishListResponseType } from "../../../../api/admin/response";
+import Table from "../../../../components/Table/Table";
 
 interface PublishListProps {}
 interface RowsType extends PublishListResponseType {
@@ -14,7 +13,6 @@ interface RowsType extends PublishListResponseType {
 }
 
 const PublishList: FC<PublishListProps> = (props) => {
-  const colors = useColors();
   const { data, isLoading } = usePublishList();
 
   const columns = usePublishListColumns();
@@ -33,60 +31,12 @@ const PublishList: FC<PublishListProps> = (props) => {
     <AdminSidebar active="Publish List">
       <Box width="100%" height="100%" position="relative">
         <HeaderCard title="Publish List" subtitle="Welcome to publish list" />
-        <Card
-          sx={{
-            mt: "16px",
-            width: "100%",
-            height: "calc(100% - 90px)",
-            bgcolor: `${colors.card}`,
-            "& .MuiDataGrid-columnHeaders": {
-              mt: 2,
-              fontWeight: 700,
-              fontSize: "16px",
-              color: colors.textColor[100],
-              bgcolor: colors.tableHeader,
-              border: "none",
-            },
-            "& .MuiDataGrid-root": {
-              fontSize: "14px",
-              color: colors.textColor[400],
-              border: "none",
-            },
-            "& .MuiDataGrid-cell": {
-              borderBottom: "none !important",
-            },
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none !important",
-              border: "none !important",
-            },
-            "& .MuiDataGrid-footerContainer": {
-              bgcolor: colors.tableHeader,
-              border: "none",
-            },
-          }}
-        >
-          <DataGrid
-            getRowId={(rows) => rows.tender_id}
-            columns={columns}
-            rows={rows}
-            density="comfortable"
-            slots={{
-              toolbar: GridToolbar,
-            }}
-            loading={isLoading}
-            disableDensitySelector
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 15, 30, 50, 100]}
-            checkboxSelection
-            onRowSelectionModelChange={(arr) => console.log(arr)}
-          />
-        </Card>
+        <Table
+          rows={rows}
+          columns={columns}
+          isLoading={isLoading}
+          uniqueId="tender_id"
+        />
       </Box>
     </AdminSidebar>
   );

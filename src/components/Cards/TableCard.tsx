@@ -1,6 +1,6 @@
 import { Card, SxProps } from "@mui/material";
 import { FC } from "react";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 import { Theme } from "@mui/joy";
 
 interface TableCardProps {

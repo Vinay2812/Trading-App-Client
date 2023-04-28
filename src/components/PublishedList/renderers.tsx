@@ -4,7 +4,7 @@ import {
   PauseCircleOutline,
   PublishOutlined,
 } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 
 export function renderPublishedListActions({ row, colors }: any) {
   const isPaused = row.status === "N";
@@ -94,20 +94,22 @@ export function renderUnit({ row, colors }: any) {
   };
 
   return (
-    <Box
+    <Chip
       sx={{
-        px: 1,
-        py: 0.25,
-        borderRadius: 4,
         bgcolor: colorMap[row.unit],
         color: colors.textColor[100],
       }}
-    >
-      <Typography
-        sx={{ fontSize: "14px !important", width: "60px", textAlign: "center" }}
-      >
-        {unitMap[row.unit]}
-      </Typography>
-    </Box>
+      label={
+        <Typography
+          sx={{
+            fontSize: "14px !important",
+            width: "60px",
+            textAlign: "center",
+          }}
+        >
+          {unitMap[row.unit]}
+        </Typography>
+      }
+    />
   );
 }

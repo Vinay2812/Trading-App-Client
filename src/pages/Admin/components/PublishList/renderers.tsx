@@ -1,26 +1,32 @@
 import { PublishOutlined } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 
-export function renderActions({colors}: any) {
-    return (
-      <Box
+export function renderActions({ colors }: any) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        color: colors.blue[500],
+        justifyContent: "center",
+        alignItems: "center",
+        cursor: "pointer",
+        "&:hover": {
+          color: colors.blue[300],
+        },
+      }}
+    >
+      <IconButton
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          color: colors.green[500],
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "3px",
-          cursor: "pointer",
+          color: colors.blue[500],
           "&:hover": {
-            color: colors.green[300],
+            color: colors.blue[300],
           },
         }}
       >
-        <PublishOutlined sx={{ fontSize: "28px" }} />
-        <Typography variant="caption">
-          Publish
-        </Typography>
-      </Box>
-    );
-  }
+        <PublishOutlined  />
+      </IconButton>
+      <Typography variant="caption">Publish</Typography>
+    </Box>
+  );
+}

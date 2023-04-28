@@ -1,9 +1,9 @@
-import { useMemo } from "react";
-import { useColors } from "../../../../hooks/use-colors";
-import { renderActions } from "./renderers";
 import { GridColDef } from "@mui/x-data-grid";
+import { useMemo } from "react";
+import { renderMoreDetails, renderStatus } from "./renderers";
+import { useColors } from "../../../../hooks/use-colors";
 
-export const useRegistrationListColumns = () => {
+export const useUserListColumns = () => {
   const colors = useColors();
   return useMemo(() => {
     return [
@@ -38,20 +38,32 @@ export const useRegistrationListColumns = () => {
       {
         field: "mobile",
         headerName: "Mobile Number",
-        minWidth: 150,
-        flex: 1,
+        minWidth: 100,
+        flex: 0.75,
       },
       {
-        field: "actions",
-        headerName: "Actions",
-        renderCell: () => renderActions({ colors }),
-        minWidth: 200,
+        field: "status",
+        headerName: "Status",
+        renderCell: ({ row }) => renderStatus({ row, colors }),
+        minWidth: 100,
         headerAlign: "center",
         align: "center",
         disableColumnMenu: true,
         disableReorder: true,
         sortable: false,
-        flex: 1,
+        flex: 0.5,
+      },
+      {
+        field: "actions",
+        headerName: "More Details",
+        renderCell: ({ row }) => renderMoreDetails({ row }),
+        minWidth: 100,
+        headerAlign: "center",
+        align: "center",
+        disableColumnMenu: true,
+        disableReorder: true,
+        sortable: false,
+        flex: 0.5,
       },
     ] as GridColDef[];
   }, []);

@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPublishList } from "../../../api/admin/admin.request";
+import { getUsersList } from "../../../api/user/user.request";
 import { processReactQueryOutput } from "../../../utils/handle-async";
+import { UsersListResponseType } from "../../../api/user/response";
 import { DEV_ENV } from "../../../utils/constants";
-import { PublishListResponseType } from "../../../api/admin/response";
 
-export const usePublishList = () => {
+export const useUsersList = () => {
   return useQuery({
-    queryKey: ["publish-list"],
+    queryKey: ["users-list"],
     queryFn: async () => {
-      const response = await getPublishList();
-      return processReactQueryOutput<PublishListResponseType[]>(response);
+      const response = await getUsersList();
+      return processReactQueryOutput<UsersListResponseType>(response);
     },
     onSuccess: (response) => {
       DEV_ENV && console.log(response);

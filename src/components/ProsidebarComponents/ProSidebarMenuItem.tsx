@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { MenuItem, useProSidebar } from "react-pro-sidebar";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 import { Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { Variant } from "@mui/material/styles/createTypography";
@@ -42,7 +42,7 @@ const ProSidebarMenuItem: FC<ProSidebarMenuItemProps> = ({
         }}
         onClick={() => {
           setSelected(title);
-          navigate(to)
+          navigate(to);
         }}
       >
         {!collapsed && (

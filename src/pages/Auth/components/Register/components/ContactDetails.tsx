@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
-import { useColors } from "../../../../../hooks/useColors";
+import { useColors } from "../../../../../hooks/use-colors";
 
 interface ContactDetailsProps {
   userContactDetails: UserContactDetailsInterface[];

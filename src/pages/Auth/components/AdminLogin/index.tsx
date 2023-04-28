@@ -1,4 +1,8 @@
-import { ArrowBack, LockOutlined } from "@mui/icons-material";
+import {
+  AdminPanelSettingsOutlined,
+  ArrowBack,
+  LockOutlined,
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -10,7 +14,8 @@ import {
 } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useColors } from "../../../../hooks/useColors";
+import { useColors } from "../../../../hooks/use-colors";
+import Card from "../../../../components/Cards/Card";
 
 interface AdminLoginProps {}
 
@@ -19,16 +24,12 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
   const colors = useColors();
   return (
     <Container component="main" maxWidth="sm">
-      <Box
+      <Card
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           py: 4,
-          px: 2,
-          pt: 2,
-          borderRadius: 4,
-          bgcolor: colors.card,
         }}
       >
         <Avatar sx={{ bgcolor: "secondary.main" }}>
@@ -63,28 +64,27 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            color="indigo"
+            color="green"
             sx={{ mt: 3, mb: 2, py: 1 }}
+            endIcon={<AdminPanelSettingsOutlined />}
           >
             Login
           </Button>
           <Button
             fullWidth
-            variant="outlined"
+            variant="contained"
             color="red"
             sx={{
               mt: 1,
               py: 1,
-              color: colors.red[500],
-              borderColor: colors.red[500],
             }}
             startIcon={<ArrowBack />}
             onClick={() => navigate("/auth")}
           >
-            Back
+            Go to home
           </Button>
         </Box>
-      </Box>
+      </Card>
     </Container>
   );
 };

@@ -18,7 +18,7 @@ import {
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { accountTypes } from "../data";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
-import { useColors } from "../../../../../hooks/useColors";
+import { useColors } from "../../../../../hooks/use-colors";
 
 interface BankDetailsProps {
   userBankDetails: UserBankDetailsInterface[];

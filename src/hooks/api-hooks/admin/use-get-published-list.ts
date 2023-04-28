@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPublishedList } from "../../../api/admin/admin.request";
-import { processReactQueryOutput } from "../../../utils/handleAsync";
+import { processReactQueryOutput } from "../../../utils/handle-async";
 import { DEV_ENV } from "../../../utils/constants";
+import { PublishedListResponseType } from "../../../api/admin/response";
 
 export const usePublishedList = () => {
   return useQuery({

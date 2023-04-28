@@ -17,7 +17,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useColors } from "../../../../hooks/useColors";
+import { useColors } from "../../../../hooks/use-colors";
 import {
   AccountCircleOutlined,
   AppRegistrationRounded,
@@ -39,7 +39,7 @@ import ProSidebarMenuIcon from "../../../../components/ProsidebarComponents/ProS
 import ProSidebarMenuHeader from "../../../../components/ProsidebarComponents/ProSidebarMenuHeader";
 import { AdminSidebarSelectedType } from "./modules/MenuItems";
 import { useToggleTheme } from "../../../../hoc/UserThemeProvider";
-import { useLogout } from "../../../../hooks/useLogout";
+import { useLogout } from "../../../../hooks/use-logout";
 // import { HomeOutlined, PeopleOutlined} from "@mui/icons-material"
 
 interface SidebarProps {
@@ -122,16 +122,16 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                 to="/admin"
               />
               <ProSidebarMenuItem
-                title="Users"
+                title="Users List"
                 icon={
                   <ProSidebarMenuIcon
                     icon={<AccountCircleOutlined />}
-                    hoverText="Users"
+                    hoverText="Users List"
                   />
                 }
                 selected={selected}
                 setSelected={setSelected}
-                to="/admin/users"
+                to="/admin/users-list"
               />
               <ProSidebarMenuItem
                 title="Registration List"

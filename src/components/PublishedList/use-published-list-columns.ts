@@ -1,11 +1,15 @@
 import { GridColDef } from "@mui/x-data-grid";
 import { useMemo } from "react";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 import moment from "moment";
-import { renderClientListActions, renderPublishedListActions, renderUnit } from "./renderers";
+import {
+  renderClientListActions,
+  renderPublishedListActions,
+  renderUnit,
+} from "./renderers";
 
 export const usePublishedListColumns = (isClientList: boolean = false) => {
-    const colors = useColors();
+  const colors = useColors();
   return useMemo(() => {
     return !isClientList
       ? ([
@@ -67,7 +71,7 @@ export const usePublishedListColumns = (isClientList: boolean = false) => {
           {
             field: "unit",
             headerName: "Unit",
-            renderCell: ({row}) => renderUnit({row, colors}),
+            renderCell: ({ row }) => renderUnit({ row, colors }),
             minWidth: 130,
           },
           {
@@ -131,7 +135,7 @@ export const usePublishedListColumns = (isClientList: boolean = false) => {
             field: "sr_no",
             headerName: "Sr. No.",
             minWidth: 100,
-            // flex: 0.5,
+            flex: 0.5,
             disableColumnMenu: true,
             disableReorder: true,
             sortable: false,
@@ -140,28 +144,32 @@ export const usePublishedListColumns = (isClientList: boolean = false) => {
             field: "tender_id",
             headerName: "Tender Id",
             minWidth: 100,
-            // flex: 0.75,
+            flex: 0.75,
           },
           {
             field: "mill_short_name",
             headerName: "Mill Name",
             minWidth: 250,
+            flex: 1,
           },
           {
             field: "item_name",
             headerName: "Item Name",
             minWidth: 150,
+            flex: 1,
           },
           {
             field: "grade",
             headerName: "Grade",
             minWidth: 130,
+            flex: 1,
           },
           {
             field: "unit",
             headerName: "Unit",
             renderCell: ({ row }) => renderUnit({ row, colors }),
             minWidth: 130,
+            flex: 0.75,
           },
           {
             field: "quantity",

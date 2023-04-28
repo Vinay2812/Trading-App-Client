@@ -1,6 +1,6 @@
 import { Box, SxProps, Theme, styled } from "@mui/material";
 import { FC } from "react";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 
 interface CardProps {
   sx?: SxProps<Theme>;

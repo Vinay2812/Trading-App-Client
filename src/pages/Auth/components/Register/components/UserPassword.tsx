@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { useColors } from "../../../../../hooks/useColors";
+import { useColors } from "../../../../../hooks/use-colors";
 
 interface UserPasswordProps {
   userPasswordDetails: UserPasswordDetailsInterface;
@@ -54,7 +54,12 @@ const UserPassword: FC<UserPasswordProps> = (props) => {
         <Typography component="h1" variant="h5">
           Enter your new password
         </Typography>
-        <Box component="form" noValidate onSubmit={() => {}} sx={{ mt: 3, pb: 2 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={() => {}}
+          sx={{ mt: 3, pb: 2 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField

@@ -9,3 +9,6 @@ type getAppUserReq = {
 };
 export const getAppUser = ({ company_name, mobile }: getAppUserReq) =>
   api.get(`/user?company_name=${company_name}&mobile=${mobile}`);
+
+export const getUsersList = async () =>
+  await api.get("/user/registered-users/details");

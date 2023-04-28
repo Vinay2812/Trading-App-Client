@@ -15,11 +15,12 @@ import { FC, useEffect, useState } from "react";
 import { getCompaniesByMobile } from "../../../../api/user/user.request";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../../api/auth/auth.request";
-import { handleApiAsync } from "../../../../utils/handleAsync";
+import { handleApiAsync } from "../../../../utils/handle-async";
 import { LoginUserResponse } from "../../../../api/auth/response";
 import { GetCompaniesBymobileResponse } from "../../../../api/user/response";
 import { tokens } from "../../../../utils/theme";
-import { useColors } from "../../../../hooks/useColors";
+import { useColors } from "../../../../hooks/use-colors";
+import Card from "../../../../components/Cards/Card";
 
 interface LoginProps {}
 
@@ -91,7 +92,7 @@ const Login: FC<LoginProps> = (props) => {
         borderRadius: 4,
       }}
     >
-      <Box
+      <Card
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -161,23 +162,23 @@ const Login: FC<LoginProps> = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            color="indigo"
+            color="green"
             sx={{ mt: 3, mb: 2, p: 1 }}
           >
             Sign in
           </Button>
           <Button
             fullWidth
-            variant="outlined"
+            variant="contained"
             color="red"
             sx={{ mt: 1, mb: 2, p: 1 }}
             startIcon={<ArrowBack />}
             onClick={() => navigate("/auth")}
           >
-            Back
+            Go to Home
           </Button>
         </Box>
-      </Box>
+      </Card>
     </Container>
   );
 };

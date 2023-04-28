@@ -11,7 +11,7 @@ import { FC, useEffect, useState } from "react";
 import { UserDetailsInterface, dropdownType } from "../../../types/register";
 import { states, getDistrictsOfState, constitutionOfFirm } from "../data";
 import { LockOutlined } from "@mui/icons-material";
-import { useColors } from "../../../../../hooks/useColors";
+import { useColors } from "../../../../../hooks/use-colors";
 
 interface UserDetailsProps {
   userDetails: UserDetailsInterface;

@@ -21,6 +21,7 @@ import {
   Step,
   StepLabel,
   Stepper,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import UserDetails from "./components/UserDetails";
@@ -38,7 +39,7 @@ import {
 } from "../../types/register";
 import { useNavigate } from "react-router-dom";
 import { RegisterUserRequest } from "../../../../api/auth/request";
-import { handleApiAsync } from "../../../../utils/handleAsync";
+import { handleApiAsync } from "../../../../utils/handle-async";
 import { registerUser } from "../../../../api/auth/auth.request";
 import {
   validateUserBankDetails,
@@ -46,7 +47,7 @@ import {
   validateUserDetails,
   validateUserPasswordDetails,
 } from "./helpers/validator";
-import { useColors } from "../../../../hooks/useColors";
+import { useColors } from "../../../../hooks/use-colors";
 
 interface RegisterProps {}
 const steps = [
@@ -258,22 +259,24 @@ const Register: FC<RegisterProps> = (props) => {
           bgcolor: colors.card,
         }}
       >
-        <IconButton
-          size="large"
-          sx={{ position: "absolute", left: 2, fontSize: 20 }}
-          onClick={() => navigate("/auth")}
-          content="home"
-          color="red"
-        >
-          <Avatar sx={{ bgcolor: colors.red[500] }}>
-            <Home
-              sx={{
-                fontSize: 28,
-                // p: 2
-              }}
-            />
-          </Avatar>
-        </IconButton>
+        <Tooltip title="Go to home">
+          <IconButton
+            size="large"
+            sx={{ position: "absolute", left: 2, fontSize: 20 }}
+            onClick={() => navigate("/auth")}
+            content="home"
+            color="red"
+          >
+            <Avatar sx={{ bgcolor: colors.red[500] }}>
+              <Home
+                sx={{
+                  fontSize: "28px",
+                }}
+              />
+            </Avatar>
+          </IconButton>
+        </Tooltip>
+
         <Typography
           variant="h4"
           sx={{

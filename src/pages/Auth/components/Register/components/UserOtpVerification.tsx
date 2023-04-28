@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { FC, useEffect, useState } from "react";
-import { useColors } from "../../../../../hooks/useColors";
+import { useColors } from "../../../../../hooks/use-colors";
 
 interface UserOtpVerificationProps {
   userOtpVerified: boolean;
@@ -138,11 +138,7 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
               {timer > 0 ? (
                 `Didn't receive otp? Resend otp in ${timer} seconds`
               ) : (
-                <Button
-                  sx={{ px: 2, py: 1 }}
-                  endIcon={<Send />}
-                  variant="text"
-                >
+                <Button sx={{ px: 2, py: 1 }} endIcon={<Send />} variant="text">
                   Resend Otp
                 </Button>
               )}

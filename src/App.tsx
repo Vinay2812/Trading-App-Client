@@ -22,13 +22,14 @@ const RegistrationList = lazy(
 );
 const PublishList = lazy(() => import("./pages/Admin/components/PublishList"));
 const PublishedList = lazy(() => import("./components/PublishedList"));
+const UsersList = lazy(() => import("./pages/Admin/components/UsersList"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
       retry: 3,
-      suspense: true
+      suspense: true,
     },
   },
 });
@@ -64,14 +65,20 @@ function App() {
                     </Route>
                     <Route path="/admin">
                       <Route path="" element={<Admin />} />
-                      <Route path="users" element={<Admin />} />
+                      <Route path="users-list" element={<UsersList />} />
                       <Route
                         path="registration-list"
                         element={<RegistrationList />}
                       />
                       <Route path="publish-list" element={<PublishList />} />
-                      <Route path="published-list" element={<PublishedList />} />
-                      <Route path="client-list" element={<PublishedList isClientList={true} />} />
+                      <Route
+                        path="published-list"
+                        element={<PublishedList />}
+                      />
+                      <Route
+                        path="client-list"
+                        element={<PublishedList isClientList={true} />}
+                      />
                     </Route>
                   </Routes>
                 </Container>

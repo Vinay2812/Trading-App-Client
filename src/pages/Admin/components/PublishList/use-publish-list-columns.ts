@@ -2,7 +2,7 @@ import moment from "moment";
 import { useMemo } from "react";
 import { renderActions } from "./renderers";
 import { GridColDef } from "@mui/x-data-grid";
-import { useColors } from "../../../../hooks/useColors";
+import { useColors } from "../../../../hooks/use-colors";
 
 export const usePublishListColumns = () => {
   const colors = useColors();

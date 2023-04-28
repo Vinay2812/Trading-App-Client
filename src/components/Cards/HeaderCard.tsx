@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Card from "./Card";
 import { Box, Typography } from "@mui/material";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 
 interface HeaderCardProps {
   title: string;
@@ -20,11 +20,13 @@ const HeaderCard: FC<HeaderCardProps> = (props) => {
         justifyContent: "space-between",
       }}
     >
-      <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "4px",
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "4px",
+        }}
+      >
         <Typography
           variant="h5"
           sx={{ color: colors.blue[400], overflow: "hidden" }}
@@ -38,9 +40,7 @@ const HeaderCard: FC<HeaderCardProps> = (props) => {
           {props.subtitle}
         </Typography>
       </Box>
-      <Box>
-        {props.buttonBox}
-      </Box>
+      <Box>{props.buttonBox}</Box>
     </Card>
   );
 };

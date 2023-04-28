@@ -1,3 +1,9 @@
+import {
+  UserBankDetailsInterface,
+  UserContactDetailsInterface,
+  UserDetailsInterface,
+} from "../../pages/Auth/types/register";
+
 type RegistrationListResponseType = {
   userId: string;
   company_name: string;

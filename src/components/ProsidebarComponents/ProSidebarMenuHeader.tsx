@@ -1,13 +1,13 @@
 import { Typography } from "@mui/material";
 import { FC } from "react";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 
 interface ProSidebarMenuHeaderProps {
   title: string;
 }
 
 const ProSidebarMenuHeader: FC<ProSidebarMenuHeaderProps> = (props) => {
-    const colors = useColors();
+  const colors = useColors();
   return (
     <Typography
       sx={{
@@ -20,7 +20,7 @@ const ProSidebarMenuHeader: FC<ProSidebarMenuHeaderProps> = (props) => {
         fontSize: "15px",
         fontWeight: "500",
         letterSpacing: "1px",
-        color: colors.textColor[600]
+        color: colors.textColor[600],
       }}
     >
       {props.title.toUpperCase()}

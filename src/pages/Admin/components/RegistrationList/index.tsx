@@ -1,12 +1,11 @@
-import { FC, useMemo} from "react";
+import { FC, useMemo } from "react";
 import { AdminSidebar } from "..";
 import { Box } from "@mui/material";
-import Card from "../../../../components/Cards/Card";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useColors } from "../../../../hooks/useColors";
 import { useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
 import { useRegistrationListColumns } from "./use-registration-list-columns";
+import { RegistrationListResponseType } from "../../../../api/admin/response";
+import Table from "../../../../components/Table/Table";
 
 interface RegistrationListProps {}
 interface RowsType extends RegistrationListResponseType {
@@ -14,19 +13,20 @@ interface RowsType extends RegistrationListResponseType {
 }
 
 const RegistrationList: FC<RegistrationListProps> = (props) => {
-  const colors = useColors();
   const { data, isLoading } = useRegistrationList();
 
   const columns = useRegistrationListColumns();
   const rows = useMemo<RowsType[] | []>(() => {
     if (!data?.value) return [];
 
-    return data.value.map((item, index) => {
-      return {
-        sr_no: index + 1,
-        ...item,
-      };
-    });
+    return data.value
+      .filter((item) => item.accoid == null)
+      .map((item, index) => {
+        return {
+          sr_no: index + 1,
+          ...item,
+        };
+      });
   }, [data]);
 
   return (
@@ -36,60 +36,12 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
           title="Registration List"
           subtitle="Welcome to registration list"
         />
-        <Card
-          sx={{
-            mt: "16px",
-            width: "100%",
-            height: "calc(100% - 90px)",
-            bgcolor: `${colors.card}`,
-            "& .MuiDataGrid-columnHeaders": {
-              mt: 2,
-              fontWeight: 700,
-              fontSize: "16px",
-              color: colors.textColor[100],
-              bgcolor: colors.tableHeader,
-              border: "none",
-            },
-            "& .MuiDataGrid-root": {
-              fontSize: "14px",
-              color: colors.textColor[400],
-              border: "none",
-            },
-            "& .MuiDataGrid-cell": {
-              borderBottom: "none !important",
-            },
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none !important",
-              border: "none !important",
-            },
-            "& .MuiDataGrid-footerContainer": {
-              bgcolor: colors.tableHeader,
-              border: "none",
-            },
-          }}
-        >
-          <DataGrid
-            getRowId={(row) => row.userId}
-            columns={columns}
-            rows={rows}
-            density="comfortable"
-            slots={{
-              toolbar: GridToolbar,
-            }}
-            loading={isLoading}
-            disableDensitySelector
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 15, 30, 50, 100]}
-            checkboxSelection
-            onRowSelectionModelChange={(arr) => console.log(arr)}
-          />
-        </Card>
+        <Table
+          rows={rows}
+          columns={columns}
+          isLoading={isLoading}
+          uniqueId={"userId"}
+        />
       </Box>
     </AdminSidebar>
   );

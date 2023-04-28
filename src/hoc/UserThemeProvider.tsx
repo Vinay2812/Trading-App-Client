@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import useLocalStorage from "../hooks/use-local-storage";
 import { tokens } from "../utils/theme";
 
 declare module "@mui/material/styles" {

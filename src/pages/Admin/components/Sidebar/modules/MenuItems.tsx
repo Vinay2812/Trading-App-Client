@@ -3,7 +3,7 @@ import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 export type AdminSidebarSelectedType =
   | "Home"
-  | "Users"
+  | "Users List"
   | "Registration List"
   | "Published List"
   | "Publish List"

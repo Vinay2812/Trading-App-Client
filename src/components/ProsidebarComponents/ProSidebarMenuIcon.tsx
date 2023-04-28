@@ -1,6 +1,6 @@
 import { Avatar, Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
-import { useColors } from "../../hooks/useColors";
+import { useColors } from "../../hooks/use-colors";
 import { AdminSidebarSelectedType } from "../../pages/Admin/components/Sidebar/modules/MenuItems";
 import { useState } from "react";
 
@@ -30,9 +30,7 @@ export default function ProSidebarMenuIcon({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Tooltip title={collapsed ? hoverText : ""}>
-        {icon}
-      </Tooltip>
+      <Tooltip title={collapsed ? hoverText : ""}>{icon}</Tooltip>
       {/* <Typography
         variant="caption"
         sx={{
