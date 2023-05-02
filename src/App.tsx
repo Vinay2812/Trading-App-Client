@@ -7,6 +7,8 @@ import LoaderProvider, { Loader } from "./hoc/LoaderProvider";
 import { Container, CssBaseline } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
@@ -23,6 +25,7 @@ const RegistrationList = lazy(
 const PublishList = lazy(() => import("./pages/Admin/components/PublishList"));
 const PublishedList = lazy(() => import("./components/PublishedList"));
 const UsersList = lazy(() => import("./pages/Admin/components/UsersList"));
+const TodoList = lazy(() => import("./components/TodoList"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,56 +40,61 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <RedirectProvider>
-      <QueryClientProvider client={queryClient}>
-        <ProSidebarProvider>
-          <UserTheme>
-            <LoaderProvider>
-              <Suspense fallback={<Loader />}>
-                <CssBaseline />
-                <Container
-                  disableGutters={true}
-                  sx={{
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "background.default",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    position: "relative",
-                  }}
-                  maxWidth={false}
-                >
-                  <Routes>
-                    <Route path="/auth">
-                      <Route path="" element={<Auth />} />
-                      <Route path="login" element={<Login />} />
-                      <Route path="register" element={<Register />} />
-                      <Route path="admin/login" element={<AdminLogin />} />
-                    </Route>
-                    <Route path="/admin">
-                      <Route path="" element={<Admin />} />
-                      <Route path="users-list" element={<UsersList />} />
-                      <Route
-                        path="registration-list"
-                        element={<RegistrationList />}
-                      />
-                      <Route path="publish-list" element={<PublishList />} />
-                      <Route
-                        path="published-list"
-                        element={<PublishedList />}
-                      />
-                      <Route
-                        path="client-list"
-                        element={<PublishedList isClientList={true} />}
-                      />
-                    </Route>
-                  </Routes>
-                </Container>
-              </Suspense>
-            </LoaderProvider>
-          </UserTheme>
-        </ProSidebarProvider>
-      </QueryClientProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <QueryClientProvider client={queryClient}>
+          <ProSidebarProvider>
+            <UserTheme>
+              <LoaderProvider>
+                <Suspense fallback={<Loader />}>
+                  <CssBaseline />
+                  <Container
+                    disableGutters={true}
+                    sx={{
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "background.default",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "relative",
+                    }}
+                    maxWidth={false}
+                  >
+                    <Routes>
+                      <Route path="/auth">
+                        <Route path="" element={<Auth />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="register" element={<Register />} />
+                        <Route path="admin/login" element={<AdminLogin />} />
+                      </Route>
+                      <Route path="/admin">
+                        <Route path="" element={<Admin />} />
+                        <Route path="users-list" element={<UsersList />} />
+                        <Route
+                          path="registration-list"
+                          element={<RegistrationList />}
+                        />
+                        <Route path="publish-list" element={<PublishList />} />
+                        <Route
+                          path="published-list"
+                          element={<PublishedList />}
+                        />
+                        <Route
+                          path="client-list"
+                          element={<PublishedList isClientList={true} />}
+                        />
+                      </Route>
+                      <Route path="/todos">
+                        <Route path=":userId" element={<TodoList />} />
+                      </Route>
+                    </Routes>
+                  </Container>
+                </Suspense>
+              </LoaderProvider>
+            </UserTheme>
+          </ProSidebarProvider>
+        </QueryClientProvider>
+      </LocalizationProvider>
     </RedirectProvider>
   );
 }

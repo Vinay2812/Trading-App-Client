@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { AdminSidebar } from "..";
+import { Sidebar } from "..";
 import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import { usePublishList } from "../../../../hooks/api-hooks/admin";
@@ -28,7 +28,7 @@ const PublishList: FC<PublishListProps> = (props) => {
   }, [data]);
 
   return (
-    <AdminSidebar active="Publish List">
+    <Sidebar active="Publish List">
       <Box width="100%" height="100%" position="relative">
         <HeaderCard title="Publish List" subtitle="Welcome to publish list" />
         <Table
@@ -38,7 +38,7 @@ const PublishList: FC<PublishListProps> = (props) => {
           uniqueId="tender_id"
         />
       </Box>
-    </AdminSidebar>
+    </Sidebar>
   );
 };
 

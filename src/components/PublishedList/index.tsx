@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { AdminSidebar } from "../../pages/Admin/components";
+import { Sidebar } from "../../pages/Admin/components";
 import { Box } from "@mui/material";
 import HeaderCard from "../Cards/HeaderCard";
 import { usePublishedListColumns } from "./use-published-list-columns";
@@ -25,7 +25,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
   }, [data]);
 
   return (
-    <AdminSidebar active={isClientList ? "Client List" : "Published List"}>
+    <Sidebar active={isClientList ? "Client List" : "Published List"}>
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title={isClientList ? "Client List" : "Published List"}
@@ -40,7 +40,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
           uniqueId="tender_id"
         />
       </Box>
-    </AdminSidebar>
+    </Sidebar>
   );
 };
 

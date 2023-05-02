@@ -4,10 +4,10 @@ import { useColors } from "../../hooks/use-colors";
 import { Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { Variant } from "@mui/material/styles/createTypography";
-import { AdminSidebarSelectedType } from "../../pages/Admin/components/Sidebar/modules/MenuItems";
+import { SidebarSelectedType } from "../../pages/Admin/components/Sidebar/modules/MenuItems";
 
 interface ProSidebarMenuItemProps {
-  title: AdminSidebarSelectedType;
+  title: SidebarSelectedType;
   to: string;
   icon: any;
   selected: string;

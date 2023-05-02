@@ -21,6 +21,7 @@ import { useColors } from "../../../../hooks/use-colors";
 import {
   AccountCircleOutlined,
   AppRegistrationRounded,
+  AssignmentRounded,
   Brightness7,
   HomeOutlined,
   Logout,
@@ -37,19 +38,19 @@ import {
 import ProSidebarMenuItem from "../../../../components/ProsidebarComponents/ProSidebarMenuItem";
 import ProSidebarMenuIcon from "../../../../components/ProsidebarComponents/ProSidebarMenuIcon";
 import ProSidebarMenuHeader from "../../../../components/ProsidebarComponents/ProSidebarMenuHeader";
-import { AdminSidebarSelectedType } from "./modules/MenuItems";
+import { SidebarSelectedType } from "./modules/MenuItems";
 import { useToggleTheme } from "../../../../hoc/UserThemeProvider";
 import { useLogout } from "../../../../hooks/use-logout";
 // import { HomeOutlined, PeopleOutlined} from "@mui/icons-material"
 
 interface SidebarProps {
-  active?: AdminSidebarSelectedType;
+  active?: SidebarSelectedType;
   children: any;
 }
 
 const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   const colors = useColors();
-  const [selected, setSelected] = useState<AdminSidebarSelectedType>(
+  const [selected, setSelected] = useState<SidebarSelectedType>(
     active || "Home"
   );
   const { collapseSidebar, collapsed } = useProSidebar();
@@ -180,6 +181,18 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                 selected={selected}
                 setSelected={setSelected}
                 to="/admin/client-list"
+              />
+              <ProSidebarMenuItem
+                title="Todo List"
+                icon={
+                  <ProSidebarMenuIcon
+                    icon={<AssignmentRounded />}
+                    hoverText="Todo List"
+                  />
+                }
+                selected={selected}
+                setSelected={setSelected}
+                to="/todos/admin"
               />
             </ProSidebarHoverMenu>
             <Divider />

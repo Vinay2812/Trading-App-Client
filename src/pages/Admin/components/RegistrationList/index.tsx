@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { AdminSidebar } from "..";
+import { Sidebar } from "..";
 import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import { useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
@@ -30,7 +30,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
   }, [data]);
 
   return (
-    <AdminSidebar active="Registration List">
+    <Sidebar active="Registration List">
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title="Registration List"
@@ -43,7 +43,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
           uniqueId={"userId"}
         />
       </Box>
-    </AdminSidebar>
+    </Sidebar>
   );
 };
 

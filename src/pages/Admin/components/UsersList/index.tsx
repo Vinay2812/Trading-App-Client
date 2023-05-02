@@ -2,7 +2,7 @@ import { FC, useMemo } from "react";
 import { UserDetailsType } from "../../../../api/user/response";
 import { useUsersList } from "../../../../hooks/api-hooks/user/use-users-list";
 import { useUserListColumns } from "./use-users-list-columns";
-import { AdminSidebar } from "..";
+import { Sidebar } from "..";
 import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import Table from "../../../../components/Table/Table";
@@ -27,7 +27,7 @@ const Users: FC<UsersProps> = (props) => {
     });
   }, [data]);
   return (
-    <AdminSidebar active="Users List">
+    <Sidebar active="Users List">
       <Box width="100%" height="100%" position="relative">
         <HeaderCard title="Users List" subtitle="Welcome to users list" />
         <Table
@@ -37,7 +37,7 @@ const Users: FC<UsersProps> = (props) => {
           uniqueId="userId"
         />
       </Box>
-    </AdminSidebar>
+    </Sidebar>
   );
 };
 
