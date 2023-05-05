@@ -10,7 +10,7 @@ const RedirectProvider: FC<RedirectProviderProps> = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/admin/users-list");
+    navigate("/todos/admin");
   }, []);
 
   // useEffect(() => {

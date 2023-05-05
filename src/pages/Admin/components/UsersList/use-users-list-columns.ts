@@ -38,7 +38,7 @@ export const useUserListColumns = () => {
       {
         field: "mobile",
         headerName: "Mobile Number",
-        minWidth: 100,
+        minWidth: 120,
         flex: 0.75,
       },
       {
@@ -56,7 +56,7 @@ export const useUserListColumns = () => {
       {
         field: "actions",
         headerName: "More Details",
-        renderCell: ({ row }) => renderMoreDetails({ row }),
+        renderCell: ({ row }) => renderMoreDetails({ row, colors }),
         minWidth: 100,
         headerAlign: "center",
         align: "center",

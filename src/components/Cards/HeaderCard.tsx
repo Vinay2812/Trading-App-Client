@@ -29,7 +29,7 @@ const HeaderCard: FC<HeaderCardProps> = (props) => {
       >
         <Typography
           variant="h5"
-          sx={{ color: colors.blue[400], overflow: "hidden" }}
+          sx={{ color: colors.blue[400], overflow: "hidden",  fontWeight: 500 }}
         >
           {props.title.toUpperCase()}
         </Typography>

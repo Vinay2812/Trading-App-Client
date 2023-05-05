@@ -34,13 +34,33 @@ interface CreateOrUpdateModalProps {
   isCreate: boolean;
   userId: string;
   priority?: TodoPriorityType;
+  status?: "incomplete" | "complete";
+  todoId?: string;
+  dueDate?: Date;
+  isSubTodo?: boolean;
+  title?: string;
+  description?: string;
 }
 
 const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
-  const { open, isCreate, handleClose, userId, priority = "high" } = props;
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const {
+    open,
+    isCreate,
+    handleClose,
+    userId,
+    priority = "high",
+    status = "incomplete",
+    title = "",
+    description = "",
+    todoId = "",
+    dueDate = dayjs(Date.now()).add(1, "day").toDate(),
+    isSubTodo = false,
+  } = props;
+  const [todoTitle, setTitle] = useState(title);
+  const [todoDescription, setDescription] = useState(description);
   const [todoPriority, setPriority] = useState<TodoPriorityType>(priority);
+  const [todoStatus, setStatus] = useState<"incomplete" | "complete">(status);
+  const [todoDueDate, setDueDate] = useState(dueDate);
   const colors = useColors();
   const [isTitleError, setIsTitleError] = useState(false);
 
@@ -48,10 +68,10 @@ const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
 
   useEffect(() => {
     setIsTitleError(false);
-  }, [title]);
+  }, [todoTitle]);
 
   const handleCreateTodo = async () => {
-    if (title.length === 0) {
+    if (todoTitle.length === 0) {
       setIsTitleError(true);
       setTimeout(() => {
         setIsTitleError(false);
@@ -59,13 +79,25 @@ const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
       return;
     }
     createTodo.mutate({
-      title,
-      description,
-      priority,
+      title: todoTitle,
+      description: todoDescription,
+      priority: todoPriority,
       userId,
-      status: "incomplete",
+      status: todoStatus,
+      dueDate: todoDueDate,
     });
   };
+
+  useEffect(() => {
+    if (createTodo.isSuccess) {
+      setTitle("");
+      setDescription("");
+      setPriority("high");
+      setStatus("incomplete");
+      setDueDate(new Date());
+      handleClose();
+    }
+  }, [createTodo.isSuccess]);
 
   const handleUpdateTodo = async () => {};
   return (
@@ -94,7 +126,7 @@ const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
             helperText={isTitleError ? "Title is required!!" : null}
             autoFocus
             label="Title"
-            value={title}
+            value={todoTitle}
             onChange={(e) => setTitle(e.target.value)}
             error={isTitleError}
           />
@@ -107,27 +139,31 @@ const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
             minRows={3}
             maxRows={5}
             multiline
-            value={description}
+            value={todoDescription}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <TodoPriority priority={todoPriority} setPriority={setPriority} />
             <MobileDateTimePicker
               label="Due Date"
               disablePast
-              // one day later
-              defaultValue={dayjs(Date.now() + 24 * 60 * 60 * 1000)}
+              value={dayjs(todoDueDate)}
               format="DD/MM/YY hh:mm A"
-              onChange={(value: any) => console.log(new Date(value))}
+              onChange={(value) => value && setDueDate(dayjs(value).toDate())}
             />
             <Button
               variant="contained"
+              disabled={createTodo.isLoading}
               endIcon={<Save />}
               color="green"
               sx={{ height: 40 }}
               onClick={isCreate ? handleCreateTodo : handleUpdateTodo}
             >
-              Save
+              {createTodo.isLoading ? "Saving..." : "Save"}
             </Button>
           </Box>
         </Card>

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTodos } from "../../../api/todos/todos.request";
 import { processReactQueryOutput } from "../../../utils/handle-async";
-import { TodosResponseType } from "../../../api/todos/response";
+import { GetTodosResponseType } from "../../../api/todos/response";
 import { DEV_ENV } from "../../../utils/constants";
 
 export function useTodos(userId: string) {
@@ -10,7 +10,7 @@ export function useTodos(userId: string) {
     queryKey: ["todos", userId],
     queryFn: async () => {
       const response = await getTodos(userId);
-      return processReactQueryOutput<TodosResponseType>(response);
+      return processReactQueryOutput<GetTodosResponseType>(response);
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);

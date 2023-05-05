@@ -1,12 +1,20 @@
-import { ReadMoreRounded } from "@mui/icons-material";
+import { LaunchOutlined } from "@mui/icons-material";
 import { Chip, IconButton, Link, Tooltip } from "@mui/material";
 
-export const renderMoreDetails = ({ row }: any) => {
+export const renderMoreDetails = ({ row, colors }: any) => {
   return (
     <Tooltip title="More details">
       <Link href={`/admin/users/${row.userId}`}>
-        <IconButton size="large">
-          <ReadMoreRounded fontSize="medium" />
+        <IconButton
+          sx={{
+            color: colors.blue[400],
+            "&:hover": {
+              color: "white",
+              backgroundColor: colors.blue[700],
+            },
+          }}
+        >
+          <LaunchOutlined />
         </IconButton>
       </Link>
     </Tooltip>

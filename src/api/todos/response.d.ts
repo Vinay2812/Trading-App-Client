@@ -1,5 +1,5 @@
 type TodoPriorityType = "low" | "medium" | "high";
-type TodoStatusType = "complete" | "incomplete"
+type TodoStatusType = "complete" | "incomplete";
 
 export type SubTodoType = {
   todoId: string;
@@ -8,18 +8,24 @@ export type SubTodoType = {
   description: string;
   status: string;
   priority: TodoPriorityTypeTodoPriorityType;
+  dueDate: Date;
 };
 
-export type TodosType = {
+export type TodoType = {
   userId: string;
   todoId: string;
   title: string;
   description: string;
   status: TodoStatusType;
   priority: TodoPriorityType;
-  subTodos: SubTodoType[];
+  dueDate: Date;
 };
 
 export type TodosResponseType = {
-  todos: TodosType[];
+  todo: TodoType;
+  subTodos: SubTodoType[];
+};
+
+export type GetTodosResponseType = {
+  todos: Array<TodosResponseType>;
 };

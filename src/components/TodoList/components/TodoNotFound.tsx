@@ -11,10 +11,8 @@ interface TodoNotFoundProps {
 
 const TodoNotFound: FC<TodoNotFoundProps> = ({ userId }) => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const colors = useColors();
+  
   return (
     <Sidebar active="Todo List">
       <Stack
@@ -45,13 +43,13 @@ const TodoNotFound: FC<TodoNotFoundProps> = ({ userId }) => {
             fontWeight: 500,
           }}
           endIcon={<PlaylistAdd fontSize="large" />}
-          onClick={handleOpen}
+          onClick={() => setOpen(true)}
         >
           Create Todo
         </Button>
         <CreateOrUpdateModal
           open={open}
-          handleClose={handleClose}
+          handleClose={() => setOpen(false)}
           isCreate={true}
           userId={userId}
         />

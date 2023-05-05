@@ -7,4 +7,5 @@ export type PostTodoRequestType = {
   description: string;
   status: TodoStatusType;
   priority: TodoPriorityType;
+  dueDate: Date;
 };
