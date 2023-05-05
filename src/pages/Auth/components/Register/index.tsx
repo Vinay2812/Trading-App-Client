@@ -2,21 +2,15 @@ import { FC } from "react";
 import * as React from "react";
 import {
   ArrowBack,
-  ArrowCircleLeftOutlined,
-  ArrowCircleRightOutlined,
   ArrowForward,
-  ArrowLeft,
   Done,
   Home,
-  HomeMaxOutlined,
-  HomeOutlined,
   LockOutlined,
 } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
-  CssBaseline,
   IconButton,
   Step,
   StepLabel,
@@ -25,22 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import UserDetails from "./components/UserDetails";
-const BankDetails = React.lazy(() => import("./components/BankDetails"));
-const ContactDetails = React.lazy(() => import("./components/ContactDetails"));
-const UserOtpVerification = React.lazy(
-  () => import("./components/UserOtpVerification")
-);
-const UserPassword = React.lazy(() => import("./components/UserPassword"));
-import {
-  UserBankDetailsInterface,
-  UserContactDetailsInterface,
-  UserDetailsInterface,
-  UserPasswordDetailsInterface,
-} from "../../types/register";
 import { useNavigate } from "react-router-dom";
-import { RegisterUserRequest } from "../../../../api/auth/request";
-import { handleApiAsync } from "../../../../utils/handle-async";
-import { registerUser } from "../../../../api/auth/auth.request";
 import {
   validateUserBankDetails,
   validateUserContactDetails,
@@ -48,6 +27,23 @@ import {
   validateUserPasswordDetails,
 } from "./helpers/validator";
 import { useColors } from "../../../../hooks/use-colors";
+import {
+  RegisterUserRequest,
+  useRegisterUser,
+} from "../../../../hooks/api-hooks/auth/use-register-user";
+import {
+  UserBankDetailsType,
+  UserContactDetailsType,
+  UserDataType,
+  UserPasswordDetailsType,
+} from "../../../../types/user";
+
+const BankDetails = React.lazy(() => import("./components/BankDetails"));
+const ContactDetails = React.lazy(() => import("./components/ContactDetails"));
+const UserOtpVerification = React.lazy(
+  () => import("./components/UserOtpVerification")
+);
+const UserPassword = React.lazy(() => import("./components/UserPassword"));
 
 interface RegisterProps {}
 const steps = [
@@ -60,8 +56,9 @@ const steps = [
 
 const Register: FC<RegisterProps> = (props) => {
   const navigate = useNavigate();
+  const colors = useColors();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [userDetails, setUserDetails] = React.useState<UserDetailsInterface>({
+  const [userDetails, setUserDetails] = React.useState<UserDataType>({
     company_name: "",
     email: "",
     address: "",
@@ -79,7 +76,7 @@ const Register: FC<RegisterProps> = (props) => {
   });
 
   const [userBankDetails, setUserBankDetails] = React.useState<
-    UserBankDetailsInterface[]
+    UserBankDetailsType[]
   >(() => [
     {
       id: 1,
@@ -93,7 +90,7 @@ const Register: FC<RegisterProps> = (props) => {
   ]);
 
   const [userContactDetails, setUserContactDetails] = React.useState<
-    UserContactDetailsInterface[]
+    UserContactDetailsType[]
   >([
     {
       id: 1,
@@ -106,67 +103,14 @@ const Register: FC<RegisterProps> = (props) => {
   ]);
 
   const [userOtpVerified, setUserOtpVerified] = React.useState<boolean>(false);
+  const [otpSent, setOtpSent] = React.useState<boolean | null>(null);
 
   const [userPasswordDetails, setUserPasswordDetails] =
-    React.useState<UserPasswordDetailsInterface>({
+    React.useState<UserPasswordDetailsType>({
       password: "",
       confirmPassword: "",
     });
 
-  React.useEffect(() => {
-    setUserOtpVerified(false);
-  }, [userDetails.email]);
-
-  const handleBack = () => {
-    if (activeStep === 0) {
-      navigate("/auth");
-    }
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const validateForm: any = (currentStep: number) => {
-    switch (currentStep) {
-      case 0:
-        return validateUserDetails(userDetails);
-      case 1:
-        return validateUserBankDetails(userBankDetails);
-      case 2:
-        return validateUserContactDetails(userContactDetails);
-      case 3:
-        return {
-          value: null,
-          error: userOtpVerified ? null : "OTP not verified",
-        };
-      case 4:
-        return validateUserPasswordDetails(userPasswordDetails);
-    }
-  };
-
-  const handleNext = () => {
-    const { value, error } = validateForm(activeStep);
-    if (error) {
-      // return;
-    }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleRegisterUser = async () => {
-    const reqObj: RegisterUserRequest = {
-      userData: { ...userDetails, password: userPasswordDetails.password },
-      bankData: userBankDetails,
-      contactData: userContactDetails,
-    };
-
-    const { value, error, status, message } = await handleApiAsync(
-      registerUser(reqObj)
-    );
-
-    if (status === "error") {
-      alert(error);
-    } else {
-      console.log(value);
-    }
-  };
   const getActiveSliderComponent = () => {
     switch (activeStep) {
       case 0:
@@ -195,6 +139,9 @@ const Register: FC<RegisterProps> = (props) => {
           <UserOtpVerification
             userOtpVerified={userOtpVerified}
             setUserOtpVerified={setUserOtpVerified}
+            otpSent={otpSent}
+            setOtpSent={setOtpSent}
+            email={userDetails.email}
           />
         );
       case 4:
@@ -237,7 +184,58 @@ const Register: FC<RegisterProps> = (props) => {
         );
     }
   };
-  const colors = useColors();
+
+  // ********** API CALLS ********** //
+  const registeUserMutation = useRegisterUser();
+
+  React.useEffect(() => {
+    setUserOtpVerified(false);
+    setOtpSent(false);
+  }, [userDetails.email]);
+
+  const handleBack = () => {
+    if (activeStep === 0) {
+      navigate("/auth");
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const validateForm: any = (currentStep: number) => {
+    switch (currentStep) {
+      case 0:
+        return validateUserDetails(userDetails);
+      case 1:
+        return validateUserBankDetails(userBankDetails);
+      case 2:
+        return validateUserContactDetails(userContactDetails);
+      case 3:
+        return {
+          value: null,
+          error: userOtpVerified ? null : "OTP not verified",
+        };
+      case 4:
+        return validateUserPasswordDetails(userPasswordDetails);
+    }
+  };
+
+  const handleNext = () => {
+    const { value, error } = validateForm(activeStep);
+    if (error) {
+      alert(error);
+      return;
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleRegisterUser = async () => {
+    const reqObj: RegisterUserRequest = {
+      userData: { ...userDetails, password: userPasswordDetails.password },
+      bankData: userBankDetails,
+      contactData: userContactDetails,
+    };
+    registeUserMutation.mutate(reqObj);
+  };
+
   return (
     <Box
       gap={2}
@@ -299,7 +297,12 @@ const Register: FC<RegisterProps> = (props) => {
           } = {};
           return (
             <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+              <StepLabel
+                onClick={() => index <= activeStep && setActiveStep(index)}
+                {...labelProps}
+              >
+                {label}
+              </StepLabel>
             </Step>
           );
         })}

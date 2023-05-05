@@ -6,6 +6,8 @@ import { useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-r
 import { useRegistrationListColumns } from "./use-registration-list-columns";
 import { RegistrationListResponseType } from "../../../../api/admin/response";
 import Table from "../../../../components/Table/Table";
+import { useAddUser } from "../../../../hooks/api-hooks/admin/use-add-user";
+import TextLoader from "../../../../components/TextLoader/TextLoader";
 
 interface RegistrationListProps {}
 interface RowsType extends RegistrationListResponseType {
@@ -13,10 +15,11 @@ interface RowsType extends RegistrationListResponseType {
 }
 
 const RegistrationList: FC<RegistrationListProps> = (props) => {
-  const { data, isLoading } = useRegistrationList();
+  const registrationList = useRegistrationList();
 
-  const columns = useRegistrationListColumns();
+  const columns = useRegistrationListColumns({ onAddClick, onMapClick });
   const rows = useMemo<RowsType[] | []>(() => {
+    const data = registrationList.data;
     if (!data?.value) return [];
 
     return data.value
@@ -27,10 +30,21 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
           ...item,
         };
       });
-  }, [data]);
+  }, [registrationList.data]);
+
+  const addUserMutation = useAddUser();
+
+  function onAddClick(userId: string) {
+    addUserMutation.mutate({
+      userId,
+    });
+  }
+
+  function onMapClick() {}
 
   return (
     <Sidebar active="Registration List">
+      {(registrationList.isLoading || addUserMutation.isLoading) && <TextLoader text={registrationList.isLoading ? "Loading" : "Adding"}/>}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title="Registration List"
@@ -39,7 +53,6 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
         <Table
           rows={rows}
           columns={columns}
-          isLoading={isLoading}
           uniqueId={"userId"}
         />
       </Box>

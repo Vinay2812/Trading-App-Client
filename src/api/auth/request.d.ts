@@ -6,8 +6,3 @@ export type LoginUserRequest = {
     password: string;
 }
 
-export type RegisterUserRequest = {
-    userData: UserDetailsInterface,
-    bankData: Array<UserBankDetailsInterface>
-    contactData: Array<UserContactDetailsInterface>,
-}

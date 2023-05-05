@@ -64,6 +64,7 @@ function Table({ rows, columns, uniqueId, isLoading = false }: TableProps) {
         pageSizeOptions={[10, 25, 50, 100]}
         checkboxSelection
         onRowSelectionModelChange={(arr) => console.log(arr)}
+        disableRowSelectionOnClick
       />
     </Card>
   );

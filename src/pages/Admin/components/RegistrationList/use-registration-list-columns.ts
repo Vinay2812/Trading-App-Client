@@ -3,7 +3,15 @@ import { useColors } from "../../../../hooks/use-colors";
 import { renderActions } from "./renderers";
 import { GridColDef } from "@mui/x-data-grid";
 
-export const useRegistrationListColumns = () => {
+interface props {
+  onAddClick: Function;
+  onMapClick: Function;
+}
+
+export const useRegistrationListColumns = ({
+  onAddClick,
+  onMapClick,
+}: props) => {
   const colors = useColors();
   return useMemo(() => {
     return [
@@ -44,7 +52,7 @@ export const useRegistrationListColumns = () => {
       {
         field: "actions",
         headerName: "Actions",
-        renderCell: () => renderActions({ colors }),
+        renderCell: ({row}) => renderActions({ row, colors, onAddClick, onMapClick }),
         minWidth: 200,
         headerAlign: "center",
         align: "center",

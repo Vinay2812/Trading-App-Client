@@ -4,23 +4,18 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Grid,
   TextField,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { ArrowBack, LockOutlined } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
-import { getCompaniesByMobile } from "../../../../api/user/user.request";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../../api/auth/auth.request";
-import { handleApiAsync } from "../../../../utils/handle-async";
-import { LoginUserResponse } from "../../../../api/auth/response";
-import { GetCompaniesBymobileResponse } from "../../../../api/user/response";
-import { tokens } from "../../../../utils/theme";
 import { useColors } from "../../../../hooks/use-colors";
 import Card from "../../../../components/Cards/Card";
+import { useGetCompaniesByMobile } from "../../../../hooks/api-hooks/user";
+import { useUserLogin } from "../../../../hooks/api-hooks/auth";
+import TextLoader from "../../../../components/TextLoader/TextLoader";
 
 interface LoginProps {}
 
@@ -37,43 +32,32 @@ interface Companies {
 
 const Login: FC<LoginProps> = (props) => {
   const navigate = useNavigate();
+  const colors = useColors();
+
   const [loginForm, setLoginForm] = useState<LoginForm>({
     mobile: "",
     company_name: "",
     password: "",
   });
   const [companies, setCompanies] = useState<Companies[]>([]);
-  // const [companyInpu]
+
+  // React query hooks
+  const getCompaniesByMobileQuery = useGetCompaniesByMobile(loginForm.mobile);
+  const loginUserMutation = useUserLogin();
 
   useEffect(() => {
-    if (loginForm.mobile.length === 10) {
-      fetchCompaniesByMobile(loginForm.mobile);
-    } else {
+    if (!getCompaniesByMobileQuery.data?.value) {
       setCompanies([]);
+      return;
     }
-  }, [loginForm.mobile]);
+    const companies = getCompaniesByMobileQuery.data?.value.companies.map(
+      (company) => ({ label: company, id: 1 })
+    );
+    setCompanies(companies);
+  }, [getCompaniesByMobileQuery.data]);
 
   async function handleSubmit() {
-    const { value, error, status, message } =
-      await handleApiAsync<LoginUserResponse>(loginUser(loginForm));
-    if (status === "error") {
-      alert(error);
-    } else {
-      console.log(value.userData);
-    }
-  }
-
-  async function fetchCompaniesByMobile(mobile: string) {
-    const { value, status } =
-      await handleApiAsync<GetCompaniesBymobileResponse>(
-        getCompaniesByMobile(mobile)
-      );
-    if (status === "success") {
-      let idx = 1;
-      setCompanies(
-        value.companies.map((company) => ({ label: company, id: idx++ }))
-      );
-    }
+    loginUserMutation.mutate(loginForm);
   }
 
   function handleMobileNumberChange(e: any) {
@@ -81,8 +65,9 @@ const Login: FC<LoginProps> = (props) => {
       setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     }
   }
-  const colors = useColors();
   return (
+    <>
+    {loginUserMutation.isLoading && <TextLoader text="Logging in"/>}
     <Container
       component="main"
       maxWidth="sm"
@@ -126,9 +111,11 @@ const Login: FC<LoginProps> = (props) => {
               <Autocomplete
                 options={companies}
                 disabled={companies.length === 0}
-                value={companies.find(
-                  (company) => company.label === loginForm.company_name
-                )}
+                value={
+                  companies.find(
+                    (company) => company.label === loginForm.company_name
+                  ) || null
+                }
                 onChange={(e, value) =>
                   setLoginForm({
                     ...loginForm,
@@ -159,11 +146,12 @@ const Login: FC<LoginProps> = (props) => {
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="green"
             sx={{ mt: 3, mb: 2, p: 1 }}
+            onClick={handleSubmit}
+            disabled={loginUserMutation.isLoading}
           >
             Sign in
           </Button>
@@ -174,12 +162,14 @@ const Login: FC<LoginProps> = (props) => {
             sx={{ mt: 1, mb: 2, p: 1 }}
             startIcon={<ArrowBack />}
             onClick={() => navigate("/auth")}
+            disabled={loginUserMutation.isLoading}
           >
             Go to Home
           </Button>
         </Box>
       </Card>
     </Container>
+    </>
   );
 };
 

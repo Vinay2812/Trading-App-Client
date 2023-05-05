@@ -12,18 +12,30 @@ import {
   Button,
 } from "@mui/material";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useColors } from "../../../../../hooks/use-colors";
+import { useSendOtp } from "../../../../../hooks/api-hooks/auth/use-send-otp";
+import { useValidateOtp } from "../../../../../hooks/api-hooks/auth/use-validate-otp";
+import TextLoader from "../../../../../components/TextLoader/TextLoader";
 
 interface UserOtpVerificationProps {
   userOtpVerified: boolean;
   setUserOtpVerified: Function;
+  otpSent: boolean | null;
+  setOtpSent: Function;
+  email: string;
 }
 
 const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
-  const { userOtpVerified, setUserOtpVerified } = props;
+  const { userOtpVerified, setUserOtpVerified, otpSent, setOtpSent, email } =
+    props;
   const [otp, setOtp] = useState<string>("");
   const [timer, setTimer] = useState<number>(userOtpVerified ? 0 : 29);
+  const colors = useColors();
+
+  // ********** Api Calls **********
+  const sendOtpMutation = useSendOtp();
+  const validateOtpMutation = useValidateOtp();
 
   const validateChar = (value: string, index: number) => {
     if (typeof value !== "string") return true;
@@ -34,9 +46,24 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
     setOtp(newValue);
   };
 
-  const handleOtpVerification = () => {
-    setUserOtpVerified(true);
+  const handleOtpVerification = async () => {
+    validateOtpMutation.mutate({ email, otp });
   };
+
+  const handleSendOtp = async () => {
+    !sendOtpMutation.isLoading &&
+      (await sendOtpMutation.mutateAsync({ email }));
+  };
+
+  useEffect(() => {
+    if (sendOtpMutation.data) {
+      setOtpSent(true);
+    }
+  }, [sendOtpMutation.isSuccess]);
+
+  useEffect(() => {
+    sendOtpMutation.data && setOtpSent(false);
+  }, [sendOtpMutation.isError]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,102 +78,130 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
     return () => clearInterval(interval);
   }, []);
 
-  const colors = useColors();
+  useEffect(() => {
+    validateOtpMutation.data && setUserOtpVerified(true);
+  }, [validateOtpMutation.isSuccess]);
+
+  useEffect(() => {
+    console.log(otpSent)
+    if(otpSent === null || otpSent)return;
+    (async () => {
+      await handleSendOtp();
+      setOtpSent(true)
+    })();
+
+    return () => {
+      validateOtpMutation.reset()
+    }
+  }, [otpSent]);
+
   return (
-    <Container
-      component="main"
-      maxWidth="sm"
-      sx={{
-        display: "flex",
-        height: "100%",
-        alignItems: "center",
-      }}
-    >
-      <Box
+    <>
+      {(sendOtpMutation.isLoading || validateOtpMutation.isLoading) && (
+        <TextLoader
+          text={sendOtpMutation.isLoading ? "sending otp" : "verifying otp"}
+        />
+      )}
+      <Container
+        component="main"
+        maxWidth="sm"
         sx={{
-          width: "100%",
           display: "flex",
-          flexDirection: "column",
+          height: "100%",
           alignItems: "center",
-          justifyContent: "center",
-          px: 4,
-          py: 2,
-          borderRadius: 4,
-          bgcolor: colors.card,
         }}
       >
-        <Avatar
+        <Box
           sx={{
-            m: 1,
-            mt: 0,
-            bgcolor: userOtpVerified ? "green.main" : "red.main",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            px: 4,
+            py: 2,
+            borderRadius: 4,
+            bgcolor: colors.card,
           }}
         >
-          <LockOutlined />
-        </Avatar>
-        <Typography component="h6" variant="h6" textAlign={"center"}>
-          {!userOtpVerified ? (
-            "Please verify your email address vinaysarda***@gmail.com"
-          ) : (
-            <>
-              <Typography
-                component="h6"
-                variant="h6"
+          <Avatar
+            sx={{
+              m: 1,
+              mt: 0,
+              bgcolor: userOtpVerified ? "green.main" : "red.main",
+            }}
+          >
+            <LockOutlined />
+          </Avatar>
+          <Typography component="h6" variant="h6" textAlign={"center"}>
+            {!userOtpVerified ? (
+              `Please verify your email address ${email}`
+            ) : (
+              <>
+                <Typography
+                  component="h6"
+                  variant="h6"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    justifyContent: "center",
+                  }}
+                  gap={1}
+                >
+                  Your email address vinaysarda2812@gmail.com has been verified
+                  successfully{" "}
+                </Typography>
+                <CheckCircleOutlineRounded color="success" />
+              </>
+            )}
+          </Typography>
+          {!userOtpVerified && (
+            <Box sx={{ mt: 2 }}>
+              <MuiOtpInput
+                value={otp}
+                onChange={handleOtpChange}
+                length={6}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  justifyContent: "center",
+                  mt: 2,
                 }}
-                gap={1}
+                validateChar={validateChar}
+                TextFieldsProps={{ placeholder: "-" }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="green"
+                sx={{ mt: 3, mb: 2, py: 1 }}
+                onClick={handleOtpVerification}
               >
-                Your email address vinaysarda2812@gmail.com has been verified
-                successfully{" "}
+                Verify
+              </Button>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                display="flex"
+                justifyContent="center"
+              >
+                {timer > 0 ? (
+                  `Didn't receive otp? Resend otp in ${timer} seconds`
+                ) : (
+                  <Button
+                    sx={{ px: 2, py: 1 }}
+                    endIcon={<Send />}
+                    variant="text"
+                    onClick={handleSendOtp}
+                  >
+                    Resend Otp
+                  </Button>
+                )}
               </Typography>
-              <CheckCircleOutlineRounded color="success" />
-            </>
+            </Box>
           )}
-        </Typography>
-        {!userOtpVerified && (
-          <Box sx={{ mt: 2 }}>
-            <MuiOtpInput
-              value={otp}
-              onChange={handleOtpChange}
-              length={6}
-              sx={{
-                mt: 2,
-              }}
-              validateChar={validateChar}
-              TextFieldsProps={{ placeholder: "-" }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="green"
-              sx={{ mt: 3, mb: 2, py: 1 }}
-              onClick={handleOtpVerification}
-            >
-              Verify
-            </Button>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              display="flex"
-              justifyContent="center"
-            >
-              {timer > 0 ? (
-                `Didn't receive otp? Resend otp in ${timer} seconds`
-              ) : (
-                <Button sx={{ px: 2, py: 1 }} endIcon={<Send />} variant="text">
-                  Resend Otp
-                </Button>
-              )}
-            </Typography>
-          </Box>
-        )}
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </>
   );
 };
 

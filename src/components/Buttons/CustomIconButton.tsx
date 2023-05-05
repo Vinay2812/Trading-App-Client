@@ -14,7 +14,7 @@ const CustomIconButton: FC<CustomIconButtonProps> = ({
   color,
   hoverBackgroundColor,
   description,
-  onClick,
+  onClick = () => {},
 }) => {
   return (
     <Tooltip title={description}>
@@ -22,7 +22,10 @@ const CustomIconButton: FC<CustomIconButtonProps> = ({
         onClick={onClick}
         sx={{
           color: color,
-          "& :hover": { backgroundColor: hoverBackgroundColor, color: "white" },
+          "&:hover": {
+            bgcolor: hoverBackgroundColor,
+            color: "white",
+          },
         }}
       >
         {children}

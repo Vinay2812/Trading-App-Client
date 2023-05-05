@@ -4,10 +4,6 @@ import {
   UserDetailsInterface,
 } from "../../pages/Auth/types/register";
 
-type GetCompaniesBymobileResponse = {
-  companies: Array<string>;
-};
-
 export interface UserDetailsType extends UserDetailsInterface {
   isMapped: boolean;
   isAdded: boolean;

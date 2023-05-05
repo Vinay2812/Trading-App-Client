@@ -19,43 +19,8 @@ const Auth: FC<authProps> = (props) => {
   const navigate = useNavigate();
   const colors = useColors();
   return (
-    // <Container
-    //   component="main"
-    //   maxWidth="sm"
-    //   sx={{
-    //     width: "100%",
-    //     p: 4,
-    //     borderRadius: 4,
-    //     bgcolor: colors.card,
-    //   }}
-    // >
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       flexDirection: "column",
-    //       justifyContent: "flex-end",
-    //       width: "100%",
-    //       height: "100%",
-    //       position: "relative",
-    //     }}
-    //     gap={8}
-    //   >
-    //     <Typography
-    //       component="h4"
-    //       variant="h4"
-    //       textAlign="center"
-    //       sx={{
-    //         width: "100%",
-    //         fontStyle: "italic",
-    //       }}
-    //     >
-    //       Welcome to Online Commodity Trading App
-    //     </Typography>
-    //
-    //   </Box>
-    // </Container>
     <Container
-      maxWidth="lg"
+      maxWidth="md"
       sx={{
         minHeight: "80vh !important",
         backgroundColor: colors.card,
@@ -108,17 +73,6 @@ const Auth: FC<authProps> = (props) => {
             <Button
               variant="contained"
               fullWidth
-              color="green"
-              sx={{ fontSize: "16px", display: "flex", alignItems: "center" }}
-              onClick={() => navigate("/auth/login")}
-              startIcon={<VerifiedUser />}
-              endIcon={<ArrowRightAlt />}
-            >
-              Sign in
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
               color="red"
               sx={{ fontSize: "16px" }}
               startIcon={<AppRegistrationRounded />}
@@ -127,6 +81,18 @@ const Auth: FC<authProps> = (props) => {
             >
               Sign up
             </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              color="green"
+              sx={{ fontSize: "16px", display: "flex", alignItems: "center" }}
+              onClick={() => navigate("/auth/login")}
+              startIcon={<VerifiedUser />}
+              endIcon={<ArrowRightAlt />}
+            >
+              Sign in
+            </Button>
+
             <Button
               variant="contained"
               fullWidth
