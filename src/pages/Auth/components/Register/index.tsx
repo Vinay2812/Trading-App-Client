@@ -37,6 +37,7 @@ import {
   UserDataType,
   UserPasswordDetailsType,
 } from "../../../../types/user";
+import { useSendOtp } from "../../../../hooks/api-hooks/auth/use-send-otp";
 
 const BankDetails = React.lazy(() => import("./components/BankDetails"));
 const ContactDetails = React.lazy(() => import("./components/ContactDetails"));
@@ -103,13 +104,42 @@ const Register: FC<RegisterProps> = (props) => {
   ]);
 
   const [userOtpVerified, setUserOtpVerified] = React.useState<boolean>(false);
-  const [otpSent, setOtpSent] = React.useState<boolean | null>(null);
+  const [otpSent, setOtpSent] = React.useState<boolean>(false);
+  const sendOtpMutation = useSendOtp();
+
+  React.useEffect(() => {
+    if (!userOtpVerified && activeStep === 3 && !otpSent) {
+      userDetails.email.length && sendOtpMutation.mutate({ email: userDetails.email });
+      setOtpSent(true)
+    }
+  }, [activeStep]);
 
   const [userPasswordDetails, setUserPasswordDetails] =
     React.useState<UserPasswordDetailsType>({
       password: "",
       confirmPassword: "",
     });
+
+  // ********** API CALLS ********** //
+  const registeUserMutation = useRegisterUser();
+
+  const validateForm: any = (currentStep: number) => {
+    switch (currentStep) {
+      case 0:
+        return validateUserDetails(userDetails);
+      case 1:
+        return validateUserBankDetails(userBankDetails);
+      case 2:
+        return validateUserContactDetails(userContactDetails);
+      case 3:
+        return {
+          value: null,
+          error: userOtpVerified ? null : ["Please verify the otp"],
+        };
+      case 4:
+        return validateUserPasswordDetails(userPasswordDetails);
+    }
+  };
 
   const getActiveSliderComponent = () => {
     switch (activeStep) {
@@ -139,8 +169,8 @@ const Register: FC<RegisterProps> = (props) => {
           <UserOtpVerification
             userOtpVerified={userOtpVerified}
             setUserOtpVerified={setUserOtpVerified}
-            otpSent={otpSent}
-            setOtpSent={setOtpSent}
+            isSendingOtp={sendOtpMutation.isLoading}
+            userOtpSent={sendOtpMutation.isSuccess}
             email={userDetails.email}
           />
         );
@@ -185,9 +215,6 @@ const Register: FC<RegisterProps> = (props) => {
     }
   };
 
-  // ********** API CALLS ********** //
-  const registeUserMutation = useRegisterUser();
-
   React.useEffect(() => {
     setUserOtpVerified(false);
     setOtpSent(false);
@@ -200,41 +227,23 @@ const Register: FC<RegisterProps> = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const validateForm: any = (currentStep: number) => {
-    switch (currentStep) {
-      case 0:
-        return validateUserDetails(userDetails);
-      case 1:
-        return validateUserBankDetails(userBankDetails);
-      case 2:
-        return validateUserContactDetails(userContactDetails);
-      case 3:
-        return {
-          value: null,
-          error: userOtpVerified ? null : "OTP not verified",
-        };
-      case 4:
-        return validateUserPasswordDetails(userPasswordDetails);
-    }
-  };
-
   const handleNext = () => {
     const { value, error } = validateForm(activeStep);
     if (error) {
-      alert(error);
+      error.length && alert(error[0]);
       return;
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleRegisterUser = async () => {
+  async function handleRegisterUser() {
     const reqObj: RegisterUserRequest = {
       userData: { ...userDetails, password: userPasswordDetails.password },
       bankData: userBankDetails,
       contactData: userContactDetails,
     };
     registeUserMutation.mutate(reqObj);
-  };
+  }
 
   return (
     <Box
@@ -298,7 +307,7 @@ const Register: FC<RegisterProps> = (props) => {
           return (
             <Step key={label} {...stepProps}>
               <StepLabel
-                onClick={() => index <= activeStep && setActiveStep(index)}
+                onClick={() => (index <= activeStep) && setActiveStep(index)}
                 {...labelProps}
               >
                 {label}

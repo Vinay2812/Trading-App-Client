@@ -149,6 +149,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               required
               fullWidth
               name="address"
+              multiline
               value={userDetails.address || ""}
             />
           </Grid>

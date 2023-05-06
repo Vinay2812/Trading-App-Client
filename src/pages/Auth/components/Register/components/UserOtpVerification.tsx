@@ -3,16 +3,9 @@ import {
   LockOutlined,
   Send,
 } from "@mui/icons-material";
-import {
-  Container,
-  CssBaseline,
-  Box,
-  Typography,
-  Avatar,
-  Button,
-} from "@mui/material";
+import { Container, Box, Typography, Avatar, Button } from "@mui/material";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useColors } from "../../../../../hooks/use-colors";
 import { useSendOtp } from "../../../../../hooks/api-hooks/auth/use-send-otp";
 import { useValidateOtp } from "../../../../../hooks/api-hooks/auth/use-validate-otp";
@@ -21,16 +14,22 @@ import TextLoader from "../../../../../components/TextLoader/TextLoader";
 interface UserOtpVerificationProps {
   userOtpVerified: boolean;
   setUserOtpVerified: Function;
-  otpSent: boolean | null;
-  setOtpSent: Function;
+  isSendingOtp: boolean;
+  userOtpSent: boolean;
   email: string;
 }
 
 const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
-  const { userOtpVerified, setUserOtpVerified, otpSent, setOtpSent, email } =
-    props;
+  const {
+    userOtpVerified,
+    setUserOtpVerified,
+    isSendingOtp,
+    email,
+    userOtpSent,
+  } = props;
   const [otp, setOtp] = useState<string>("");
   const [timer, setTimer] = useState<number>(userOtpVerified ? 0 : 29);
+  const [startTimer, setStartTimer] = useState(userOtpSent === true);
   const colors = useColors();
 
   // ********** Api Calls **********
@@ -56,16 +55,10 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
   };
 
   useEffect(() => {
-    if (sendOtpMutation.data) {
-      setOtpSent(true);
+    if(!startTimer){
+      setTimer(29);
+      return;
     }
-  }, [sendOtpMutation.isSuccess]);
-
-  useEffect(() => {
-    sendOtpMutation.data && setOtpSent(false);
-  }, [sendOtpMutation.isError]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
         if (prev > 0) {
@@ -76,30 +69,29 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [startTimer]);
 
   useEffect(() => {
     validateOtpMutation.data && setUserOtpVerified(true);
   }, [validateOtpMutation.isSuccess]);
 
   useEffect(() => {
-    console.log(otpSent)
-    if(otpSent === null || otpSent)return;
-    (async () => {
-      await handleSendOtp();
-      setOtpSent(true)
-    })();
-
-    return () => {
-      validateOtpMutation.reset()
+    if (!isSendingOtp && !sendOtpMutation.isLoading && !validateOtpMutation.isLoading) {
+      setStartTimer(true);
     }
-  }, [otpSent]);
+  }, [sendOtpMutation.isLoading, validateOtpMutation.isLoading]);
 
   return (
     <>
-      {(sendOtpMutation.isLoading || validateOtpMutation.isLoading) && (
+      {(sendOtpMutation.isLoading ||
+        validateOtpMutation.isLoading ||
+        isSendingOtp) && (
         <TextLoader
-          text={sendOtpMutation.isLoading ? "sending otp" : "verifying otp"}
+          text={
+            sendOtpMutation.isLoading || isSendingOtp
+              ? "sending otp"
+              : "verifying otp"
+          }
         />
       )}
       <Container
