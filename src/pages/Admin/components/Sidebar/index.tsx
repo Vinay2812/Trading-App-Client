@@ -41,6 +41,7 @@ import ProSidebarMenuHeader from "../../../../components/ProsidebarComponents/Pr
 import { SidebarSelectedType } from "./modules/MenuItems";
 import { useToggleTheme } from "../../../../hoc/UserThemeProvider";
 import { useLogout } from "../../../../hooks/use-logout";
+import { useAppSelector } from "../../../../hooks/redux";
 // import { HomeOutlined, PeopleOutlined} from "@mui/icons-material"
 
 interface SidebarProps {
@@ -50,6 +51,10 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   const colors = useColors();
+  const adminEmail = useAppSelector((state) => state.admin.email);
+  const profilePicture = useAppSelector((state) => state.admin.picture);
+  const adminName = useAppSelector((state) => state.admin.name);
+
   const [selected, setSelected] = useState<SidebarSelectedType>(
     active || "Home"
   );
@@ -65,6 +70,7 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   const theme = useTheme().palette.mode;
   const { toggleTheme } = useToggleTheme();
 
+  const { logout } = useLogout();
   return (
     <Box width="100vw" display="flex" overflow="hidden" height="100%">
       <Box
@@ -219,7 +225,7 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                   <ProSidebarMenuIcon icon={<Logout />} hoverText="Logout" />
                 }
                 selected={selected}
-                setSelected={() => useLogout()}
+                setSelected={() => logout()}
                 to="/auth"
               />
             </ProSidebarHoverMenu>
@@ -230,38 +236,26 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                 marginTop: "5px",
               }}
               icon={
-                <Tooltip title={collapsed ? "Signed in as Admin" : ""}>
+                <Tooltip title={collapsed ? `Signed in as ${adminEmail}` : ""}>
                   <Avatar
-                    variant="rounded"
-                    sx={{
-                      backgroundColor: colors.blue[300],
-                      height: "25px",
-                      width: "25px",
-                      fontSize: "16px",
-                    }}
-                  >
-                    A
-                  </Avatar>
+                    alt={adminName || "Admin"}
+                    src={profilePicture || ""}
+                    variant="circular"
+                    sx={{ height: "32px", width: "32px" }}
+                  />
                 </Tooltip>
               }
             >
               {!collapsed && (
-                <>
                   <Typography
                     sx={{
                       color: colors.blue[200],
-                      pt: "3px",
-                      fontSize: "14px",
+                      fontSize: "16px",
+                      overflowX: "auto",
                     }}
                   >
-                    Signed in as
+                    {adminName}
                   </Typography>
-                  <Typography
-                    sx={{ color: colors.blue[200], fontSize: "14px" }}
-                  >
-                    Admin
-                  </Typography>
-                </>
               )}
             </MenuItem>
           </ProSidebarSimpleMenu>

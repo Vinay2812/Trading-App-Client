@@ -2,22 +2,57 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useColors } from "../../hooks/use-colors";
-import Card from "../../components/Cards/Card";
 import {
   AdminPanelSettingsOutlined,
   AppRegistrationRounded,
   ArrowRightAlt,
-  Forward,
-  ForwardOutlined,
-  Verified,
   VerifiedUser,
 } from "@mui/icons-material";
+import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { loginAdminAction } from "../../redux/reducers/admin.reducer";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 interface authProps {}
 
 const Auth: FC<authProps> = (props) => {
   const navigate = useNavigate();
   const colors = useColors();
+
+  const dispatch = useAppDispatch();
+
+
+  async function handleGoogleLoginSuccess(
+    response: Omit<TokenResponse, "error" | "error_description" | "error_uri">
+  ) {
+    try {
+      const user = await axios.get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${response.access_token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${response.access_token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      dispatch(
+        loginAdminAction({
+          email: user.data.email,
+          picture: user.data.picture,
+          name: user.data.name,
+          isAdmin: true,
+        })
+      );
+      navigate("/admin")
+    } catch (err) {
+      console.log("Failed to authenticate")
+    }
+  }
+
+  const adminLogin = useGoogleLogin({
+    onSuccess: (codeResponse) => handleGoogleLoginSuccess(codeResponse),
+  });
+
   return (
     <Container
       maxWidth="md"
@@ -98,7 +133,8 @@ const Auth: FC<authProps> = (props) => {
               fullWidth
               color="violet"
               sx={{ fontSize: "16px", bgcolor: colors.violet[600] }}
-              onClick={() => navigate("/auth/admin/login")}
+              // onClick={() => navigate("/auth/admin/login")}
+              onClick={() => adminLogin()}
               startIcon={<AdminPanelSettingsOutlined />}
               endIcon={<ArrowRightAlt />}
             >
