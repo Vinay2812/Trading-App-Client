@@ -45,7 +45,15 @@ const TodoPanelItem: FC<TodoPanelItemProps> = ({ todos, title }) => {
       </Box>
       <Grid container spacing={4}>
         {todos.map((todo) => (
-          <Grid item key={todo.todo.todoId} sm={12} lg={6} xl={4} height="auto">
+          <Grid
+            item
+            key={todo.todo.todoId}
+            sm={12}
+            lg={6}
+            xl={4}
+            height="auto"
+            width="100%"
+          >
             <TodoCard todo={todo.todo} subTodos={todo.subTodos} />
           </Grid>
         ))}

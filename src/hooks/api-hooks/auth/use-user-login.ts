@@ -4,6 +4,8 @@ import { UserDataType } from "../../../types/user";
 import { processReactQueryOutput } from "../../../utils/handle-async";
 import { DEV_ENV } from "../../../utils/constants";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux";
+import { loginUserAction } from "../../../redux/reducers/user.reducer";
 
 export type UserLoginRequest = {
   mobile: string;
@@ -17,6 +19,8 @@ export type UserLoginResponse = {
 
 export const useUserLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   return useMutation({
     mutationFn: async (data: UserLoginRequest) => {
       const response = await loginUser(data);
@@ -24,12 +28,20 @@ export const useUserLogin = () => {
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
-      alert("Login Successful")
-      navigate("/admin")
+      alert("Login Successful");
+      dispatch(
+        loginUserAction({
+          userId: data.value?.userData.userId || null,
+          company_name: data.value?.userData.company_name || null,
+          email: data.value?.userData.email || null,
+          mobile: data.value?.userData.mobile || null,
+        })
+      );
+      navigate("/home");
     },
     onError: (error) => {
       DEV_ENV && console.log(error);
-      alert("Login failed")
+      alert("Login failed");
       return processReactQueryOutput<any>(error as any, true);
     },
   });

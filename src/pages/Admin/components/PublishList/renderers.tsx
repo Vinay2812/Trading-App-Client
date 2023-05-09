@@ -1,32 +1,76 @@
 import { PublishOutlined } from "@mui/icons-material";
-import { Box, IconButton, Typography } from "@mui/material";
+import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
+import { PublishListRowType } from ".";
+import { PostPublishRequest } from "../../../../hooks/api-hooks/admin/use-post-publish-list";
 
-export function renderActions({ colors }: any) {
+type Props = {
+  row: PublishListRowType;
+  colors: any;
+  handlePublishActionClick: (data: PostPublishRequest) => void;
+};
+
+export function renderActions({
+  row,
+  colors,
+  handlePublishActionClick,
+}: Props) {
+  const {
+    tender_no,
+    tender_date,
+    season,
+    grade,
+    quantal,
+    lifting_date,
+    purchase_rate,
+    mill_rate,
+    mc,
+    pt,
+    item_code,
+    ic,
+    tender_id,
+    td,
+    sale_rate,
+    tender_do,
+    mill_code,
+    payment_to,
+    mill_short_name,
+    item_name
+  } = row;
+  const data = {
+    tender_no,
+    tender_date,
+    season,
+    grade,
+    quantal,
+    lifting_date,
+    purchase_rate,
+    mill_rate,
+    mc,
+    pt,
+    item_code,
+    ic,
+    tender_id,
+    td,
+    unit: "Q",
+    sale_rate,
+    publish_quantal: 0,
+    multiple_of: 160,
+    auto_confirm: "Y",
+    tender_do,
+    type: "F",
+    mill_code,
+    payment_to,
+    mill_short_name,
+    item_name
+  } as PostPublishRequest;
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        color: colors.blue[500],
-        justifyContent: "center",
-        alignItems: "center",
-        cursor: "pointer",
-        "&:hover": {
-          color: colors.blue[300],
-        },
-      }}
+    <CustomIconButton
+      description={`Publish Item ${row.tender_id}`}
+      color={colors.blue[500]}
+      hoverBackgroundColor={colors.blue[600]}
+      onClick={() => handlePublishActionClick(data)}
     >
-      <IconButton
-        sx={{
-          color: colors.blue[500],
-          "&:hover": {
-            color: colors.blue[300],
-          },
-        }}
-      >
-        <PublishOutlined  />
-      </IconButton>
-      <Typography variant="caption">Publish</Typography>
-    </Box>
+      <PublishOutlined />
+    </CustomIconButton>
   );
 }

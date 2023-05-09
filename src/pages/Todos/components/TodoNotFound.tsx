@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Sidebar } from "../../../pages/Admin/components";
+import { Sidebar } from "../../Admin/components";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { PlaylistAdd } from "@mui/icons-material";
 import { useColors } from "../../../hooks/use-colors";
@@ -12,7 +12,7 @@ interface TodoNotFoundProps {
 const TodoNotFound: FC<TodoNotFoundProps> = ({ userId }) => {
   const [open, setOpen] = useState(false);
   const colors = useColors();
-  
+
   return (
     <Sidebar active="Todo List">
       <Stack

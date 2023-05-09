@@ -6,6 +6,7 @@ import { usePublishedListColumns } from "./use-published-list-columns";
 import { usePublishedList } from "../../hooks/api-hooks/admin";
 import Table from "../Table/Table";
 import { PublishedListResponseType } from "../../api/admin/response";
+import TextLoader from "../TextLoader/TextLoader";
 
 interface PublishedListProps {
   isClientList?: boolean;
@@ -16,7 +17,7 @@ interface RowsType extends PublishedListResponseType {
 
 const PublishedList: FC<PublishedListProps> = (props) => {
   const { isClientList = false } = props;
-  const { data, isLoading } = usePublishedList();
+  const { data, isLoading: publishedListLoading } = usePublishedList();
 
   const columns = usePublishedListColumns(isClientList);
   const rows = useMemo<RowsType[] | []>(() => {
@@ -24,8 +25,13 @@ const PublishedList: FC<PublishedListProps> = (props) => {
     return data.value.map((item, index) => ({ ...item, sr_no: index + 1 }));
   }, [data]);
 
+  const { loading, loadingText } = useMemo(() => {
+    return { loading: publishedListLoading, loadingText: "loading" };
+  }, [publishedListLoading]);
+
   return (
     <Sidebar active={isClientList ? "Client List" : "Published List"}>
+      {loading && <TextLoader text={loadingText} />}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title={isClientList ? "Client List" : "Published List"}
@@ -36,7 +42,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
         <Table
           rows={rows}
           columns={columns}
-          isLoading={isLoading}
+          isLoading={publishedListLoading}
           uniqueId="tender_id"
         />
       </Box>

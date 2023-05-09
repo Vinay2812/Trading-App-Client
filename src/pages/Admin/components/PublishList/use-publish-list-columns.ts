@@ -3,8 +3,9 @@ import { useMemo } from "react";
 import { renderActions } from "./renderers";
 import { GridColDef } from "@mui/x-data-grid";
 import { useColors } from "../../../../hooks/use-colors";
+import { PostPublishRequest } from "../../../../hooks/api-hooks/admin/use-post-publish-list";
 
-export const usePublishListColumns = () => {
+export const usePublishListColumns = (handlePublishActionClick: (data: PostPublishRequest) => void) => {
   const colors = useColors();
   return useMemo(() => {
     return [
@@ -86,7 +87,8 @@ export const usePublishListColumns = () => {
       {
         field: "actions",
         headerName: "Actions",
-        renderCell: () => renderActions({ colors }),
+        renderCell: ({ row }) =>
+          renderActions({ row, colors, handlePublishActionClick }),
         minWidth: 100,
         headerAlign: "center",
         align: "center",

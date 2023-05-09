@@ -1,32 +1,15 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Menu,
-  MenuItem,
-  MenuProps,
-  Modal,
-  TextField,
-  Typography,
-  alpha,
-} from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { Box, Button, Modal, TextField } from "@mui/material";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useColors } from "../../../hooks/use-colors";
-import Card from "../../Cards/Card";
+import Card from "../../../components/Cards/Card";
 import { Save } from "@mui/icons-material";
 import TodoHeader from "./TodoHeader";
 import { useCreateTodo } from "../../../hooks/api-hooks/todos/use-create-todo";
 import { TodoPriorityType } from "../../../api/todos/response";
-import styled from "@emotion/styled";
 import TodoPriority from "./TodoPriority";
-import {
-  DatePicker,
-  DateTimePicker,
-  MobileDateTimePicker,
-  TimePicker,
-} from "@mui/x-date-pickers";
+import { MobileDateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import TextLoader from "../../../components/TextLoader/TextLoader";
 
 interface CreateOrUpdateModalProps {
   open: boolean;
@@ -99,10 +82,19 @@ const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
     }
   }, [createTodo.isSuccess]);
 
+  const { loading, loadingText } = useMemo(() => {
+    let loadingText = "loading";
+    if (createTodo.isLoading) {
+      loadingText = "creating";
+    }
+    return { loading: createTodo.isLoading, loadingText };
+  }, [createTodo.isLoading]);
+
   const handleUpdateTodo = async () => {};
   return (
     <Modal open={open}>
       <div>
+        {loading && <TextLoader text={loadingText} />}
         <Card
           sx={{
             width: 600,

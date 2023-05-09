@@ -3,8 +3,8 @@ import { FC, ReactNode } from "react";
 
 interface CustomIconButtonProps {
   children?: ReactNode;
-  color: string;
-  hoverBackgroundColor: string;
+  color?: string;
+  hoverBackgroundColor?: string;
   description?: string;
   onClick?: () => void;
 }

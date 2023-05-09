@@ -21,7 +21,6 @@ const Auth: FC<authProps> = (props) => {
 
   const dispatch = useAppDispatch();
 
-
   async function handleGoogleLoginSuccess(
     response: Omit<TokenResponse, "error" | "error_description" | "error_uri">
   ) {
@@ -43,9 +42,9 @@ const Auth: FC<authProps> = (props) => {
           isAdmin: true,
         })
       );
-      navigate("/admin")
+      navigate("/admin");
     } catch (err) {
-      console.log("Failed to authenticate")
+      console.log("Failed to authenticate");
     }
   }
 
@@ -57,7 +56,6 @@ const Auth: FC<authProps> = (props) => {
     <Container
       maxWidth="md"
       sx={{
-        minHeight: "80vh !important",
         backgroundColor: colors.card,
         p: "0 !important",
         borderRadius: 4,
@@ -66,7 +64,6 @@ const Auth: FC<authProps> = (props) => {
       <Grid
         container
         sx={{
-          minHeight: "80vh !important",
           width: "100%",
           display: "flex",
           alignItems: "center",
@@ -75,16 +72,19 @@ const Auth: FC<authProps> = (props) => {
       >
         <Grid
           item
-          sm={12}
-          lg={6}
-          sx={{ height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", p: 4 }}
+          sx={{
+            width: "50%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            p: 4,
+          }}
+          height="500px"
         >
           <Typography
             component="h4"
             variant="h4"
             textAlign="center"
             sx={{
-              minHeight: "80vh !important",
+              height: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -94,7 +94,7 @@ const Auth: FC<authProps> = (props) => {
             Welcome to Online Commodity Trading App
           </Typography>
         </Grid>
-        <Grid item sm={12} lg={6} sx={{ height: "100%", p: 4 }}>
+        <Grid item sx={{ height: "100%", p: 4, width: "50%" }}>
           <Box
             gap={3}
             sx={{

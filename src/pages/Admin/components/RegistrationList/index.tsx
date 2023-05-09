@@ -34,6 +34,17 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
 
   const addUserMutation = useAddUser();
 
+  const { loading, loadingText } = useMemo(() => {
+    let loadingText = "loading";
+    if (addUserMutation.isLoading) {
+      loadingText = "addding";
+    }
+    return {
+      loading: registrationList.isLoading || addUserMutation.isLoading,
+      loadingText,
+    };
+  }, [registrationList.isLoading, addUserMutation.isLoading]);
+
   function onAddClick(userId: string) {
     addUserMutation.mutate({
       userId,
@@ -44,17 +55,13 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
 
   return (
     <Sidebar active="Registration List">
-      {(registrationList.isLoading || addUserMutation.isLoading) && <TextLoader text={registrationList.isLoading ? "Loading" : "Adding"}/>}
+      {loading && <TextLoader text={loadingText} />}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title="Registration List"
           subtitle="Welcome to registration list"
         />
-        <Table
-          rows={rows}
-          columns={columns}
-          uniqueId={"userId"}
-        />
+        <Table rows={rows} columns={columns} uniqueId={"userId"} />
       </Box>
     </Sidebar>
   );

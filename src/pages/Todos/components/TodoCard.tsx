@@ -1,6 +1,6 @@
-import { FC, useState } from "react";
+import { FC, lazy, useState } from "react";
 import { SubTodoType, TodoType } from "../../../api/todos/response";
-import Card from "../../Cards/Card";
+import Card from "../../../components/Cards/Card";
 import {
   Avatar,
   Box,
@@ -19,7 +19,8 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
-import CreateOrUpdateModal from "./CreateOrUpdateModal";
+
+const CreateOrUpdateModal = lazy(() => import("./CreateOrUpdateModal"));
 
 interface TodoCardProps {
   todo: TodoType;
@@ -42,20 +43,14 @@ const TodoCard: FC<TodoCardProps> = ({
       ? colors.blue[500]
       : colors.green[500];
 
-  const buttonColor =
-    todo.priority === "high"
-      ? "red"
-      : todo.priority === "medium"
-      ? "blue"
-      : "green";
-
   return (
     <Card
       sx={{
         border: `1px solid ${borderColor}`,
         color: colors.textColor[200],
         overflowY: "auto",
-        p: 1.5
+        p: 1.5,
+        width: "100%"
       }}
     >
       <Box

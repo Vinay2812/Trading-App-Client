@@ -1,24 +1,16 @@
 import { FC, lazy, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTodos } from "../../hooks/api-hooks/todos/use-get-todos";
-import { Sidebar } from "../../pages/Admin/components";
-import HeaderCard from "../Cards/HeaderCard";
-import Card from "../Cards/Card";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
-import TodoCard from "./components/TodoCard";
+import { Sidebar } from "../Admin/components";
+import HeaderCard from "../../components/Cards/HeaderCard";
+import Card from "../../components/Cards/Card";
+import { Box, Button, Divider, Tab, Tabs } from "@mui/material";
 import { useFilteredTodos } from "./use-filtered-todos";
 import TodoPanelItem from "./components/TodoPanelItem";
 import { useColors } from "../../hooks/use-colors";
 import { Add } from "@mui/icons-material";
 import CreateOrUpdateModal from "./components/CreateOrUpdateModal";
+import TextLoader from "../../components/TextLoader/TextLoader";
 
 const TodoNotFound = lazy(() => import("./components/TodoNotFound"));
 interface TodoListProps {}
@@ -48,7 +40,7 @@ function TabPanel(props: TabPanelProps) {
 
 const TodoList: FC<TodoListProps> = (props) => {
   const { userId = "" } = useParams();
-  const { data } = useTodos(userId);
+  const { data, isLoading: todosLoading } = useTodos(userId);
   const [tabValue, setTabValue] = useState(0);
   const colors = useColors();
   const [modalOpen, setModalOpen] = useState(false);
@@ -95,12 +87,17 @@ const TodoList: FC<TodoListProps> = (props) => {
 
   const completedLowPriorityTodos = useFilteredTodos(todos, "low", "complete");
 
-  if (!todos.length) {
+  const { loading, loadingText } = useMemo(() => {
+    return { loading: todosLoading, loadingText: "loading" };
+  }, [todosLoading]);
+
+  if (!loading && !todos.length) {
     return <TodoNotFound userId={userId} />;
   }
 
   return (
     <Sidebar active="Todo List">
+      {loading && <TextLoader text={loadingText} />}
       <HeaderCard title="Todo List" subtitle="Here are all your tasks" />
       <Card
         sx={{
@@ -157,9 +154,8 @@ const TodoList: FC<TodoListProps> = (props) => {
               title="Low Priority Tasks"
             />
           </TabPanel>
-
         </Box>
-        
+
         <Button
           variant="contained"
           color="indigo"
