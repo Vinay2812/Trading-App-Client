@@ -4,16 +4,6 @@ import {
   UserDetailsInterface,
 } from "../../pages/Auth/types/register";
 
-type RegistrationListResponseType = {
-  userId: string;
-  company_name: string;
-  email: string;
-  mobile: string;
-  authorized: string;
-  accoid: number;
-};
-
-
 
 type PublishedListResponseType = {
   tender_no: number;

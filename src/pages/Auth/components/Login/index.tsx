@@ -67,108 +67,113 @@ const Login: FC<LoginProps> = (props) => {
   }
   return (
     <>
-    {loginUserMutation.isLoading && <TextLoader text="Logging in"/>}
-    <Container
-      component="main"
-      maxWidth="sm"
-      sx={{
-        bgcolor: colors.card,
-        py: 2,
-        borderRadius: 4,
-      }}
-    >
-      <Card
+      {loginUserMutation.isLoading && <TextLoader text="Logging in" />}
+      <Container
+        component="main"
+        maxWidth="sm"
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
+          bgcolor: colors.card,
+          py: 2,
+          borderRadius: 4,
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign In
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2.5}>
-            <Grid item xs={2.2}>
-              <TextField fullWidth value="+91" disabled />
-            </Grid>
-            <Grid item xs={9.8}>
-              <TextField
-                required
-                fullWidth
-                label="Mobile Number"
-                name="mobile"
-                autoFocus
-                onChange={handleMobileNumberChange}
-                value={loginForm.mobile}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Autocomplete
-                options={companies}
-                disabled={companies.length === 0}
-                value={
-                  companies.find(
-                    (company) => company.label === loginForm.company_name
-                  ) || null
-                }
-                onChange={(e, value) =>
-                  setLoginForm({
-                    ...loginForm,
-                    company_name: value?.label || "",
-                  })
-                }
-                renderInput={(params) => (
-                  <TextField {...params} label="Company" required />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                onChange={(e) =>
-                  setLoginForm({
-                    ...loginForm,
-                    [e.target.name]: e.target.value,
-                  })
-                }
-              />
-            </Grid>
-          </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            color="green"
-            sx={{ mt: 3, mb: 2, p: 1 }}
-            onClick={handleSubmit}
-            disabled={loginUserMutation.isLoading}
+        <Card
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlined />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign In
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            Sign in
-          </Button>
-          <Button
-            fullWidth
-            variant="contained"
-            color="red"
-            sx={{ mt: 1, mb: 2, p: 1 }}
-            startIcon={<ArrowBack />}
-            onClick={() => navigate("/auth")}
-            disabled={loginUserMutation.isLoading}
-          >
-            Go to Home
-          </Button>
-        </Box>
-      </Card>
-    </Container>
+            <Grid container spacing={2.5}>
+              <Grid item xs={2.2}>
+                <TextField fullWidth value="+91" disabled />
+              </Grid>
+              <Grid item xs={9.8}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Mobile Number"
+                  name="mobile"
+                  autoFocus
+                  onChange={handleMobileNumberChange}
+                  value={loginForm.mobile}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={companies}
+                  disabled={companies.length === 0}
+                  value={
+                    companies.find(
+                      (company) => company.label === loginForm.company_name
+                    ) || null
+                  }
+                  onChange={(e, value) =>
+                    setLoginForm({
+                      ...loginForm,
+                      company_name: value?.label || "",
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label="Company" required />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  onChange={(e) =>
+                    setLoginForm({
+                      ...loginForm,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                />
+              </Grid>
+            </Grid>
+            <Button
+              fullWidth
+              variant="contained"
+              color="green"
+              sx={{ mt: 3, mb: 2, p: 1 }}
+              onClick={handleSubmit}
+              disabled={loginUserMutation.isLoading}
+            >
+              Sign in
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              color="red"
+              sx={{ mt: 1, mb: 2, p: 1 }}
+              startIcon={<ArrowBack />}
+              onClick={() => navigate("/auth")}
+              disabled={loginUserMutation.isLoading}
+            >
+              Go to Home
+            </Button>
+          </Box>
+        </Card>
+      </Container>
     </>
   );
 };

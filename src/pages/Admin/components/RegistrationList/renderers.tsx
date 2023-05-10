@@ -1,8 +1,16 @@
 import { AddBoxOutlined, AddLinkRounded } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
+import { RegistrationListRowType } from ".";
 
-export function renderActions({ colors, onAddClick, onMapClick, row }: any) {
+type Props = {
+  colors: any,
+  onAddClick: (userId: string) => void,
+  onMapClick: (data: RegistrationListRowType) => void,
+  row: RegistrationListRowType
+}
+
+export function renderActions({ colors, onAddClick, onMapClick, row }: Props) {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center" gap={1}>
       <CustomIconButton
@@ -14,7 +22,7 @@ export function renderActions({ colors, onAddClick, onMapClick, row }: any) {
         <AddBoxOutlined />
       </CustomIconButton>
       <CustomIconButton
-        onClick={onMapClick}
+        onClick={() => onMapClick(row)}
         color={colors.green[500]}
         hoverBackgroundColor={colors.green[600]}
         description="Map user"

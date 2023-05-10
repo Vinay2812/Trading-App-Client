@@ -2,56 +2,40 @@ import {
   AddShoppingCartOutlined,
   EditOutlined,
   PauseCircleOutline,
+  PlayCircleOutline,
   PublishOutlined,
 } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
+import CustomIconButton from "../Buttons/CustomIconButton";
+import { PublishedListRowType } from ".";
 
-export function renderPublishedListActions({ row, colors }: any) {
+type Props = {
+  row: PublishedListRowType;
+  colors: any;
+};
+
+export function renderPublishedListActions({ row, colors }: Props) {
   const isPaused = row.status === "N";
   return (
-    <Box display="flex" gap={4}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          color: colors.blue[500],
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "3px",
-          cursor: "pointer",
-          "&:hover": {
-            color: colors.blue[300],
-          },
-        }}
+    <Box display="flex">
+      <CustomIconButton
+        description={`Modify tender number ${row.tender_no}`}
+        color={colors.blue[500]}
+        hoverBackgroundColor={colors.blue[600]}
       >
-        <EditOutlined sx={{ fontSize: "28px" }} />
-        <Typography variant="caption" sx={{}}>
-          Modify
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          color: isPaused ? colors.green[500] : colors.red[500],
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "3px",
-          cursor: "pointer",
-          "&:hover": {
-            color: isPaused ? colors.green[300] : colors.red[300],
-          },
-        }}
+        <EditOutlined />
+      </CustomIconButton>
+      <CustomIconButton
+        color={isPaused ? colors.green[500] : colors.red[500]}
+        hoverBackgroundColor={isPaused ? colors.green[600] : colors.red[600]}
+        description={
+          isPaused
+            ? `Start tender number ${row.tender_no}`
+            : `Stop tender number ${row.tender_no}`
+        }
       >
-        {isPaused ? (
-          <PublishOutlined sx={{ fontSize: "28px" }} />
-        ) : (
-          <PauseCircleOutline sx={{ fontSize: "28px" }} />
-        )}
-        <Typography variant="caption" sx={{}}>
-          {isPaused ? "Publish" : "Pause"}
-        </Typography>
-      </Box>
+        {isPaused ? <PlayCircleOutline /> : <PauseCircleOutline />}
+      </CustomIconButton>
     </Box>
   );
 }

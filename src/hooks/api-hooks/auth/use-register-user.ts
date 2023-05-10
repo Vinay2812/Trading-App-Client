@@ -35,12 +35,14 @@ export const useRegisterUser = () => {
         "companies",
         data.value?.userData.mobile,
       ]);
+      queryClient.invalidateQueries(["registration-list"]);
+      queryClient.invalidateQueries(["users-list"]);
       alert("Registration Successful");
       navigate("/admin");
     },
     onError: (error) => {
       DEV_ENV && console.log(error);
-      alert("Registration failed")
+      alert("Registration failed");
       return processReactQueryOutput<any>(error as any, true);
     },
   });

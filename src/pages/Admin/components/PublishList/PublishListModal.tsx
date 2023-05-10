@@ -1,11 +1,9 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import TextLoader from "../../../../components/TextLoader/TextLoader";
 import {
-  Box,
   Divider,
   FormControl,
   Grid,
-  InputLabel,
   Modal,
   Select,
   SxProps,
@@ -18,7 +16,10 @@ import {
 } from "@mui/material";
 import Card from "../../../../components/Cards/Card";
 import { Nullable } from "../../../../types/helper";
-import { PostPublishRequest } from "../../../../hooks/api-hooks/admin/use-post-publish-list";
+import {
+  PostPublishRequest,
+  usePostPublishList,
+} from "../../../../hooks/api-hooks/admin/use-post-publish-list";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import { useColors } from "../../../../hooks/use-colors";
 import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
@@ -51,10 +52,13 @@ const PublishListModal: FC<PublishListModalProps> = ({
     publishItemData.multiple_of || 160
   );
 
+  const postPublishListItemMutation = usePostPublishList();
+
   const { loading, loadingText } = useMemo(() => {
     let loadingText = "loading";
-    return { loading: false, loadingText };
-  }, []);
+    if (postPublishListItemMutation.isLoading) loadingText = "Publishing";
+    return { loading: postPublishListItemMutation.isLoading, loadingText };
+  }, [postPublishListItemMutation.isLoading]);
 
   const labelStyle = {
     textTransform: "uppercase",
@@ -106,6 +110,56 @@ const PublishListModal: FC<PublishListModalProps> = ({
     if (text.length && !digitRegex.test(text)) return;
     setMultipleOf(text.length ? parseInt(text) : 0);
   };
+
+  const handlePublishItem = () => {
+    if (!sellingRate) {
+      alert("Please enter selling rate");
+      return;
+    }
+
+    if (!publishQuantity) {
+      alert("Please enter publish quantity");
+      return;
+    }
+    const reqObj: Nullable<PostPublishRequest> = {
+      ...publishItemData,
+      tender_no: publishItemData.tender_no || undefined,
+      unit,
+      type: sellingType,
+      auto_confirm: autoConfirm,
+      sale_rate: sellingRate,
+      publish_quantal: publishQuantity,
+      multiple_of: multipleOf,
+    };
+    confirm("Are you sure you want to publish this item?") &&
+      postPublishListItemMutation.mutate(reqObj as PostPublishRequest);
+  };
+
+  const reset = () => {
+    setUnit(publishItemData.unit || "Q");
+    setSellingType(publishItemData.type || "F");
+    setAutoConfirm(publishItemData.auto_confirm || "Y");
+    setSellingRate(publishItemData.sale_rate);
+    setPublishQuantity(publishItemData.publish_quantal);
+    setMultipleOf(publishItemData.multiple_of || 160);
+  };
+
+  useEffect(() => {
+    if (
+      postPublishListItemMutation.data &&
+      postPublishListItemMutation.isSuccess
+    ) {
+      reset();
+      setOpen(false);
+    }
+  }, [postPublishListItemMutation.isSuccess, postPublishListItemMutation.data]);
+
+  useEffect(() => {
+    if (postPublishListItemMutation.isError) {
+      reset();
+      setOpen(false);
+    }
+  }, [postPublishListItemMutation.isError]);
   return (
     <Modal open={open}>
       <div>
@@ -133,7 +187,10 @@ const PublishListModal: FC<PublishListModalProps> = ({
                 color={colors.red[500]}
                 hoverBackgroundColor={colors.red[400]}
                 description="Close"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  reset();
+                  setOpen(false);
+                }}
               >
                 <CancelOutlined />
               </CustomIconButton>
@@ -250,6 +307,7 @@ const PublishListModal: FC<PublishListModalProps> = ({
               alignItems: "center",
             }}
             endIcon={<PublishOutlined />}
+            onClick={handlePublishItem}
           >
             Publish Item
           </Button>

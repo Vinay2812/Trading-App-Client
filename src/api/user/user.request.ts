@@ -12,3 +12,9 @@ export const getAppUser = ({ company_name, mobile }: getAppUserReq) =>
 
 export const getUsersList = async () =>
   await api.get("/user/registered-users/details");
+
+export const getAccountMasterCompanies = async () =>
+  await api.get("/user/account_master/company-names");
+
+export const getAccountMasterByAccoid = async (accoid: number) =>
+  await api.get(`/user/account_master/${accoid}`);

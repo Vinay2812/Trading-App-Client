@@ -11,7 +11,7 @@ import TextLoader from "../TextLoader/TextLoader";
 interface PublishedListProps {
   isClientList?: boolean;
 }
-interface RowsType extends PublishedListResponseType {
+export interface PublishedListRowType extends PublishedListResponseType {
   sr_no: number;
 }
 
@@ -20,7 +20,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
   const { data, isLoading: publishedListLoading } = usePublishedList();
 
   const columns = usePublishedListColumns(isClientList);
-  const rows = useMemo<RowsType[] | []>(() => {
+  const rows = useMemo<PublishedListRowType[] | []>(() => {
     if (!data?.value) return [];
     return data.value.map((item, index) => ({ ...item, sr_no: index + 1 }));
   }, [data]);

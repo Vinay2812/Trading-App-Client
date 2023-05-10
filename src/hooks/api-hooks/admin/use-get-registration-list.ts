@@ -2,7 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { getRegistrationListUsers } from "../../../api/admin/admin.request";
 import { processReactQueryOutput } from "../../../utils/handle-async";
 import { DEV_ENV } from "../../../utils/constants";
-import { RegistrationListResponseType } from "../../../api/admin/response";
+
+export type RegistrationListResponseType = {
+  userId: string;
+  company_name: string;
+  email: string;
+  mobile: string;
+  authorized: string;
+  accoid: number;
+  gst?: string;
+  state: string;
+  district: string;
+  address: string;
+};
+
 
 export const useRegistrationList = () => {
   return useQuery({
