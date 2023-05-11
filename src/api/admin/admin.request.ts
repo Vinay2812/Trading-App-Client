@@ -2,6 +2,7 @@ import { AddUserRequestType } from "../../hooks/api-hooks/admin/use-add-user";
 import { AdminLoginRequest } from "../../hooks/api-hooks/admin/use-admin-login";
 import { MapClientRequest } from "../../hooks/api-hooks/admin/use-map-client";
 import { PostPublishRequest } from "../../hooks/api-hooks/admin/use-post-publish-list";
+import { UpdatePublishedListItemRequest } from "../../hooks/api-hooks/admin/use-update-published-list-item";
 import api from "../../utils/api-instance";
 
 export const adminLogin = async (data: AdminLoginRequest) =>
@@ -23,3 +24,6 @@ export const mapClient = async (data: MapClientRequest) =>
 
 export const postPublishList = async (data: PostPublishRequest) =>
   await api.post("/admin/publish-list", data);
+
+export const updatePublishedListItem = async (data: UpdatePublishedListItemRequest) =>
+  await api.patch("/admin/published-list/item", data);

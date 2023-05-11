@@ -7,8 +7,13 @@ import {
   renderPublishedListActions,
   renderUnit,
 } from "./renderers";
+import { PublishedListRowType } from ".";
 
-export const usePublishedListColumns = (isClientList: boolean = false) => {
+export const usePublishedListColumns = (
+  isClientList: boolean = false,
+  handleEditPublishedListItem: (data: PublishedListRowType) => void,
+  handlePublishedItemStatus: (data: PublishedListRowType) => void
+) => {
   const colors = useColors();
   return useMemo(() => {
     return !isClientList
@@ -120,7 +125,12 @@ export const usePublishedListColumns = (isClientList: boolean = false) => {
             field: "actions",
             headerName: "Actions",
             renderCell: ({ row }) =>
-              renderPublishedListActions({ row, colors }),
+              renderPublishedListActions({
+                row,
+                colors,
+                handleEditPublishedListItem,
+                handlePublishedItemStatus,
+              }),
             minWidth: 150,
             headerAlign: "center",
             align: "center",
@@ -196,7 +206,7 @@ export const usePublishedListColumns = (isClientList: boolean = false) => {
           {
             field: "actions",
             headerName: "Actions",
-            renderCell: () => renderClientListActions({ colors }),
+            renderCell: ({ row }) => renderClientListActions({ colors, row }),
             minWidth: 100,
             headerAlign: "center",
             align: "center",

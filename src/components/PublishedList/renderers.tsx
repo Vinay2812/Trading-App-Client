@@ -12,9 +12,16 @@ import { PublishedListRowType } from ".";
 type Props = {
   row: PublishedListRowType;
   colors: any;
+  handleEditPublishedListItem: (data: PublishedListRowType) => void;
+  handlePublishedItemStatus: (data: PublishedListRowType) => void;
 };
 
-export function renderPublishedListActions({ row, colors }: Props) {
+export function renderPublishedListActions({
+  row,
+  colors,
+  handleEditPublishedListItem,
+  handlePublishedItemStatus,
+}: Props) {
   const isPaused = row.status === "N";
   return (
     <Box display="flex">
@@ -22,6 +29,7 @@ export function renderPublishedListActions({ row, colors }: Props) {
         description={`Modify tender number ${row.tender_no}`}
         color={colors.blue[500]}
         hoverBackgroundColor={colors.blue[600]}
+        onClick={() => handleEditPublishedListItem(row)}
       >
         <EditOutlined />
       </CustomIconButton>
@@ -33,6 +41,7 @@ export function renderPublishedListActions({ row, colors }: Props) {
             ? `Start tender number ${row.tender_no}`
             : `Stop tender number ${row.tender_no}`
         }
+        onClick={() => handlePublishedItemStatus(row)}
       >
         {isPaused ? <PlayCircleOutline /> : <PauseCircleOutline />}
       </CustomIconButton>
@@ -40,27 +49,15 @@ export function renderPublishedListActions({ row, colors }: Props) {
   );
 }
 
-export function renderClientListActions({ colors }: any) {
+export function renderClientListActions({ row, colors }: any) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        color: colors.green[500],
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "3px",
-        cursor: "pointer",
-        "&:hover": {
-          color: colors.green[300],
-        },
-      }}
+    <CustomIconButton
+      color={colors.blue[500]}
+      hoverBackgroundColor={colors.blue[600]}
+      description={`Buy tender id ${row.tender_id}`}
     >
-      <AddShoppingCartOutlined sx={{ fontSize: "28px" }} />
-      <Typography variant="caption" sx={{}}>
-        Buy
-      </Typography>
-    </Box>
+      <AddShoppingCartOutlined />
+    </CustomIconButton>
   );
 }
 

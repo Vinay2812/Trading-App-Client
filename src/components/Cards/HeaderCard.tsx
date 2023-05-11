@@ -40,7 +40,7 @@ const HeaderCard: FC<HeaderCardProps> = (props) => {
           {props.subtitle}
         </Typography>
       </Box>
-      <Box>{props.buttonBox}</Box>
+      <Box display="flex" alignItems="center">{props.buttonBox}</Box>
     </Card>
   );
 };
