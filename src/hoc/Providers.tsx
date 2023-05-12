@@ -9,6 +9,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GOOGLE_CLIENT_ID } from "../utils/constants";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
+import SocketProvider from "./SocketProvider";
 
 interface ProvidersProps {
   children?: React.ReactNode;
@@ -28,15 +29,17 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Provider store={store}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <QueryClientProvider client={queryClient}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <QueryClientProvider client={queryClient}>
+            <SocketProvider>
               <ProSidebarProvider>
                 <UserTheme>
                   <Suspense fallback={<Loader />}>{children}</Suspense>
                 </UserTheme>
               </ProSidebarProvider>
-            </QueryClientProvider>
-          </LocalizationProvider>
+            </SocketProvider>
+          </QueryClientProvider>
+        </LocalizationProvider>
       </Provider>
     </GoogleOAuthProvider>
   );
