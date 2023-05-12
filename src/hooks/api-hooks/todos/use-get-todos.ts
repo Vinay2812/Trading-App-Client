@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTodos } from "../../../api/todos/todos.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { GetTodosResponseType } from "../../../api/todos/response";
 import { DEV_ENV } from "../../../utils/constants";
 

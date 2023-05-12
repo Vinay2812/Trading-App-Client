@@ -2,9 +2,10 @@ import { AddBoxOutlined, AddLinkRounded } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
 import { RegistrationListRowType } from ".";
+import { ColorsType } from "../../../../hooks/use-colors";
 
 type Props = {
-  colors: any,
+  colors: ColorsType,
   onAddClick: (userId: string) => void,
   onMapClick: (data: RegistrationListRowType) => void,
   row: RegistrationListRowType

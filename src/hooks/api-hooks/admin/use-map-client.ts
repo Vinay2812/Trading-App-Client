@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mapClient } from "../../../api/admin/admin.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 
 export type MapClientRequest = {
@@ -17,7 +17,7 @@ export const useMapClient = () => {
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
-      alert(data.message)
+      alert(data.message);
       queryClient.invalidateQueries(["registration-list"]);
       queryClient.invalidateQueries(["users-list"]);
     },

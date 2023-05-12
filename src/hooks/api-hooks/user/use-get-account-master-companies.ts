@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAccountMasterCompanies } from "../../../api/user/user.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 
 export type AccountMasterCompanies = {

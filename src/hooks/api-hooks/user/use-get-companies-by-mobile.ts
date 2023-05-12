@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompaniesByMobile } from "../../../api/user/user.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 
 export type GetGetCompaniesByMobileRequest = string;
 
@@ -9,14 +9,12 @@ export type GetCompaniesByMobileResponse = {
 };
 
 export const useGetCompaniesByMobile = (mobile: string) => {
-  return useQuery(
-    {
-      queryKey: ["user", "companies", mobile],
-      queryFn: async () => {
-        const response = await getCompaniesByMobile(mobile);
-        return processReactQueryOutput<GetCompaniesByMobileResponse>(response)
-      },
-      enabled: mobile?.length === 10,
-    }
-  );
+  return useQuery({
+    queryKey: ["user", "companies", mobile],
+    queryFn: async () => {
+      const response = await getCompaniesByMobile(mobile);
+      return processReactQueryOutput<GetCompaniesByMobileResponse>(response);
+    },
+    enabled: mobile?.length === 10,
+  });
 };

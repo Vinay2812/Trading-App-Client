@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../../api/auth/auth.request";
 import { UserDataType } from "../../../types/user";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux";

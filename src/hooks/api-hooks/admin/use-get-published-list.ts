@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPublishedList } from "../../../api/admin/admin.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 
 export type PublishedListResponseType = {
@@ -37,7 +37,6 @@ export type PublishedListResponseType = {
   multiple_of?: number;
   auto_confirm?: string;
 };
-
 
 export const usePublishedList = () => {
   return useQuery({

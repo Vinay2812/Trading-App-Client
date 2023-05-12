@@ -55,7 +55,7 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
   };
 
   useEffect(() => {
-    if(!startTimer){
+    if (!startTimer) {
       setTimer(29);
       return;
     }
@@ -76,7 +76,11 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
   }, [validateOtpMutation.isSuccess]);
 
   useEffect(() => {
-    if (!isSendingOtp && !sendOtpMutation.isLoading && !validateOtpMutation.isLoading) {
+    if (
+      !isSendingOtp &&
+      !sendOtpMutation.isLoading &&
+      !validateOtpMutation.isLoading
+    ) {
       setStartTimer(true);
     }
   }, [sendOtpMutation.isLoading, validateOtpMutation.isLoading]);
@@ -141,8 +145,7 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
                   }}
                   gap={1}
                 >
-                  Your email address vinaysarda2812@gmail.com has been verified
-                  successfully{" "}
+                  Your email address {email} has been verified successfully{" "}
                 </Typography>
                 <CheckCircleOutlineRounded color="success" />
               </>

@@ -2,10 +2,11 @@ import { PublishOutlined } from "@mui/icons-material";
 import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
 import { PublishListRowType } from ".";
 import { PostPublishRequest } from "../../../../hooks/api-hooks/admin/use-post-publish-list";
+import { ColorsType } from "../../../../hooks/use-colors";
 
 type Props = {
   row: PublishListRowType;
-  colors: any;
+  colors: ColorsType;
   handlePublishActionClick: (data: PostPublishRequest) => void;
 };
 

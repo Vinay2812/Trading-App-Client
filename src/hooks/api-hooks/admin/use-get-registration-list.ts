@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getRegistrationListUsers } from "../../../api/admin/admin.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 
 export type RegistrationListResponseType = {
@@ -15,7 +15,6 @@ export type RegistrationListResponseType = {
   district: string;
   address: string;
 };
-
 
 export const useRegistrationList = () => {
   return useQuery({

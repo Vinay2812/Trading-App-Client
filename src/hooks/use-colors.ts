@@ -5,3 +5,5 @@ export const useColors = () => {
   const mode = useTheme().palette.mode;
   return tokens(mode);
 };
+
+export type ColorsType = ReturnType<typeof useColors>;

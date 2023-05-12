@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postPublishList } from "../../../api/admin/admin.request";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 
 export type PostPublishRequest = {
@@ -49,7 +49,7 @@ export const usePostPublishList = () => {
     onError: async (error) => {
       DEV_ENV && console.log("error", error);
       const err = await processReactQueryOutput<any>(error as any, true);
-      alert(err.message)
+      alert(err.message);
     },
   });
 };

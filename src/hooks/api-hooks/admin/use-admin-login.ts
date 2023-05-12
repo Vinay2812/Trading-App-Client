@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { adminLogin } from "../../../api/admin/admin.request";
@@ -23,12 +23,12 @@ export const useAdminLogin = () => {
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
-      alert("Login Successful")
-      navigate("/admin")
+      alert("Login Successful");
+      navigate("/admin");
     },
     onError: (error) => {
       DEV_ENV && console.log(error);
-      alert("Login failed")
+      alert("Login failed");
       return processReactQueryOutput<any>(error as any, true);
     },
   });

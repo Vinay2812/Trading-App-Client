@@ -114,7 +114,10 @@ export const userPasswordDetailsSchema = yup
     confirmPassword: yup
       .string()
       .required("Confirm password is required")
-      .oneOf([yup.ref("password"), ""], "Password and Confirm password must match"),
+      .oneOf(
+        [yup.ref("password"), ""],
+        "Password and Confirm password must match"
+      ),
   })
   .required();
 

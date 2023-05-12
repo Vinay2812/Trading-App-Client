@@ -8,10 +8,11 @@ import {
 import { Box, Chip, Typography } from "@mui/material";
 import CustomIconButton from "../Buttons/CustomIconButton";
 import { PublishedListRowType } from ".";
+import { ColorsType } from "../../hooks/use-colors";
 
 type Props = {
   row: PublishedListRowType;
-  colors: any;
+  colors: ColorsType;
   handleEditPublishedListItem: (data: PublishedListRowType) => void;
   handlePublishedItemStatus: (data: PublishedListRowType) => void;
 };

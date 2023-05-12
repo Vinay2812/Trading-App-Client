@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addUser } from "../../../api/admin/admin.request";
 import { DEV_ENV } from "../../../utils/constants";
-import { processReactQueryOutput } from "../../../utils/handle-async";
+import { processReactQueryOutput } from "../../../utils/react-query";
 
 export type AddUserRequestType = {
   userId: string;
