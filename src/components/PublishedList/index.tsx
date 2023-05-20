@@ -11,7 +11,7 @@ import { useColors } from "../../hooks/use-colors";
 import { BorderColorOutlined } from "@mui/icons-material";
 import ModifyItem from "./Modals/ModifyItem";
 import { useUpdatePublishedListItem } from "../../hooks/api-hooks/admin/use-update-published-list-item";
-import { useSocket } from "../../hoc/SocketProvider";
+import { useSocket } from "../../providers/SocketProvider";
 import { UPDATE_PUBLISHED_LIST } from "../../utils/socket-constants";
 
 interface PublishedListProps {
@@ -56,7 +56,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
   const rows = useMemo<PublishedListRowType[] | []>(() => {
     if (!data?.value) return [];
     let rowArr = data.value;
-    if(isClientList) {
+    if (isClientList) {
       rowArr = data.value.filter((item) => item.status === "Y");
     }
     return rowArr.map((item, index) => ({ ...item, sr_no: index + 1 }));

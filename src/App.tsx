@@ -1,6 +1,6 @@
 import "./App.css";
 import { Container, CssBaseline } from "@mui/material";
-import Providers from "./hoc/Providers";
+import Providers from "./providers/Providers";
 import { AdminRoutes, AuthRoutes, TodoRoutes, UserRoutes } from "./routes";
 
 const styleObj = {

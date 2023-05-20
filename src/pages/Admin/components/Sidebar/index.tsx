@@ -39,7 +39,7 @@ import ProSidebarMenuItem from "../../../../components/ProsidebarComponents/ProS
 import ProSidebarMenuIcon from "../../../../components/ProsidebarComponents/ProSidebarMenuIcon";
 import ProSidebarMenuHeader from "../../../../components/ProsidebarComponents/ProSidebarMenuHeader";
 import { SidebarSelectedType } from "./modules/MenuItems";
-import { useToggleTheme } from "../../../../hoc/UserThemeProvider";
+import { useToggleTheme } from "../../../../providers/UserThemeProvider";
 import { useLogout } from "../../../../hooks/use-logout";
 import { useAppSelector } from "../../../../hooks/redux";
 // import { HomeOutlined, PeopleOutlined} from "@mui/icons-material"
@@ -247,15 +247,15 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
               }
             >
               {!collapsed && (
-                  <Typography
-                    sx={{
-                      color: colors.blue[200],
-                      fontSize: "16px",
-                      overflowX: "auto",
-                    }}
-                  >
-                    {adminName}
-                  </Typography>
+                <Typography
+                  sx={{
+                    color: colors.blue[200],
+                    fontSize: "16px",
+                    overflowX: "auto",
+                  }}
+                >
+                  {adminName}
+                </Typography>
               )}
             </MenuItem>
           </ProSidebarSimpleMenu>

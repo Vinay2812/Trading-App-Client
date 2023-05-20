@@ -29,7 +29,7 @@ import dayjs from "dayjs";
 interface PublishListModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  publishItemData: Nullable<PostPublishRequest>;
+  publishItemData: PostPublishRequest;
 }
 
 const PublishListModal: FC<PublishListModalProps> = ({
@@ -121,7 +121,7 @@ const PublishListModal: FC<PublishListModalProps> = ({
       alert("Please enter publish quantity");
       return;
     }
-    const reqObj: Nullable<PostPublishRequest> = {
+    const reqObj: PostPublishRequest = {
       ...publishItemData,
       tender_no: publishItemData.tender_no || undefined,
       unit,
@@ -132,7 +132,7 @@ const PublishListModal: FC<PublishListModalProps> = ({
       multiple_of: multipleOf,
     };
     confirm("Are you sure you want to publish this item?") &&
-      postPublishListItemMutation.mutate(reqObj as PostPublishRequest);
+      postPublishListItemMutation.mutate(reqObj);
   };
 
   const reset = () => {

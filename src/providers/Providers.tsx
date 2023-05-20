@@ -29,17 +29,17 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Provider store={store}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
             <SocketProvider>
-              <ProSidebarProvider>
-                <UserTheme>
-                  <Suspense fallback={<Loader />}>{children}</Suspense>
-                </UserTheme>
-              </ProSidebarProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <ProSidebarProvider>
+                  <UserTheme>
+                    <Suspense fallback={<Loader />}>{children}</Suspense>
+                  </UserTheme>
+                </ProSidebarProvider>
+              </LocalizationProvider>
             </SocketProvider>
-          </QueryClientProvider>
-        </LocalizationProvider>
+        </QueryClientProvider>
       </Provider>
     </GoogleOAuthProvider>
   );
