@@ -5,7 +5,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { Socket, io } from "socket.io-client";
@@ -49,9 +48,9 @@ const SocketProvider: FC<SocketProviderProps> = (props) => {
     });
   }, [socket]);
 
-  // if (!serverActive) {
-  //   return <MaintainencePage />;
-  // }
+  if (!serverActive) {
+    return <MaintainencePage />;
+  }
   return (
     <SocketContext.Provider value={socket}>
       {props.children}

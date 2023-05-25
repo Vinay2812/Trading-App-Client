@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useColors } from "../../hooks/use-colors";
+import { useColors } from "../../../hooks/use-colors";
 import { Menu, useProSidebar } from "react-pro-sidebar";
 
 interface ProSidebarHoverMenuProps {

@@ -34,7 +34,7 @@ const Users: FC<UsersProps> = (props) => {
 
   return (
     <Sidebar active="Users List">
-      {loading && <TextLoader text={loadingText} />}
+      {<TextLoader loading={loading} loadingText={loadingText} />}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard title="Users List" subtitle="Welcome to users list" />
         <Table

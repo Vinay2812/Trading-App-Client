@@ -107,7 +107,7 @@ const ModifyItem: FC<ModifyItemProps> = ({
   return (
     <Modal open={open}>
       <div>
-        {loading && <TextLoader text={loadingText} />}
+        {<TextLoader loading={loading} loadingText={loadingText} />}
         <Card
           sx={{
             width: 800,
@@ -166,7 +166,7 @@ const ModifyItem: FC<ModifyItemProps> = ({
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Quantity </Typography>
               <Typography sx={valueStyle}>
-                {publishedListItem.quantity}
+                {publishedListItem.qty}
               </Typography>
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>

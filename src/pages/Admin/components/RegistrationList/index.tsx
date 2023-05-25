@@ -78,7 +78,7 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
 
   return (
     <Sidebar active="Registration List">
-      {loading && <TextLoader text={loadingText} />}
+      {<TextLoader loading={loading} loadingText={loadingText} />}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title="Registration List"
@@ -86,11 +86,13 @@ const RegistrationList: FC<RegistrationListProps> = (props) => {
         />
         <Table rows={rows} columns={columns} uniqueId={"userId"} />
       </Box>
-      {open && <MapClientModal
-        open={open}
-        setOpen={setModalOpen}
-        mapClientItem={selectedRow}
-      />}
+      {open && (
+        <MapClientModal
+          open={open}
+          setOpen={setModalOpen}
+          mapClientItem={selectedRow}
+        />
+      )}
     </Sidebar>
   );
 };

@@ -87,17 +87,20 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
 
   return (
     <>
-      {(sendOtpMutation.isLoading ||
-        validateOtpMutation.isLoading ||
-        isSendingOtp) && (
+      {
         <TextLoader
-          text={
+          loading={
+            sendOtpMutation.isLoading ||
+            validateOtpMutation.isLoading ||
+            isSendingOtp
+          }
+          loadingText={
             sendOtpMutation.isLoading || isSendingOtp
               ? "sending otp"
               : "verifying otp"
           }
         />
-      )}
+      }
       <Container
         component="main"
         maxWidth="sm"

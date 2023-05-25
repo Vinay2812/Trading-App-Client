@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { MenuItem, useProSidebar } from "react-pro-sidebar";
-import { useColors } from "../../hooks/use-colors";
+import { useColors } from "../../../hooks/use-colors";
 import { Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Variant } from "@mui/material/styles/createTypography";
-import { SidebarSelectedType } from "../../pages/Admin/components/Sidebar/modules/MenuItems";
+import { SidebarSelectedType } from "../../Sidebar/modules/MenuItems";
 
 interface ProSidebarMenuItemProps {
   title: SidebarSelectedType;

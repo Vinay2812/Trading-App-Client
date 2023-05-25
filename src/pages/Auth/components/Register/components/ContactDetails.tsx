@@ -1,28 +1,26 @@
-import { FC, useEffect } from "react";
-import { UserContactDetailsInterface } from "../../../types/register";
+import { FC } from "react";
 import {
   Box,
   Button,
-  CssBaseline,
   Typography,
   Grid,
   TextField,
   Stack,
-  Container,
   Avatar,
   IconButton,
 } from "@mui/material";
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/use-colors";
+import { UserContactDetailsType } from "../../../../../types/user";
 
 interface ContactDetailsProps {
-  userContactDetails: UserContactDetailsInterface[];
+  userContactDetails: UserContactDetailsType[];
   setUserContactDetails: Function;
 }
 
 interface ContactDetailsCardProps {
-  userContactDetail: UserContactDetailsInterface;
+  userContactDetail: UserContactDetailsType;
   setUserContactDetails: Function;
   handleDeleteContactDetail: Function;
 }
@@ -35,7 +33,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
   } = props;
 
   const handleContactDetailChange = (e: any) => {
-    setUserContactDetails((prev: UserContactDetailsInterface[]) => {
+    setUserContactDetails((prev: UserContactDetailsType[]) => {
       const newContactDetails = prev.map((contactDetail) => {
         if (contactDetail.id === userContactDetail.id) {
           return { ...contactDetail, [e.target.name]: e.target.value };
@@ -143,8 +141,8 @@ const ContactDetails: FC<ContactDetailsProps> = (props) => {
 
   const handleAddContactDetail = () => {
     const len = props.userContactDetails.length;
-    const newContactDetails: UserContactDetailsInterface = {
-      id: len + 1,
+    const newContactDetails: UserContactDetailsType = {
+      id: (len + 1).toString(),
       full_name: "",
       mobile: "",
       whatsapp: "",

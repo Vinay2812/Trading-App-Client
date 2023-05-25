@@ -7,7 +7,7 @@ export const useLogout = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   return {
-    logout: (isAdmin = true) => {
+    logout: ({ isAdmin }: { isAdmin: boolean }) => {
       dispatch(isAdmin ? logoutAdminAction() : logoutUserAction());
       navigate("/auth");
     },

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mapClient } from "../../../api/admin/admin.request";
 import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
+import { useCustomToast } from "../../use-custom-toast";
 
 export type MapClientRequest = {
   userId: string;
@@ -10,6 +11,7 @@ export type MapClientRequest = {
 
 export const useMapClient = () => {
   const queryClient = useQueryClient();
+  const { success } = useCustomToast();
   return useMutation({
     mutationFn: async (data: MapClientRequest) => {
       const response = await mapClient(data);
@@ -17,9 +19,13 @@ export const useMapClient = () => {
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
-      alert(data.message);
-      queryClient.invalidateQueries(["registration-list"]);
-      queryClient.invalidateQueries(["users-list"]);
+      success(data.message);
+      queryClient.invalidateQueries(["registration-list"]).catch((err) => {
+        console.log(err);
+      });
+      queryClient.invalidateQueries(["users-list"]).catch((err) => {
+        console.log(err);
+      });
     },
     onError: (error) => {
       DEV_ENV && console.log("error", error);

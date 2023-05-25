@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postPublishList } from "../../../api/admin/admin.request";
 import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
+import { useCustomToast } from "../../use-custom-toast";
 
 export type PostPublishRequest = {
   tender_no?: number;
@@ -34,6 +35,7 @@ export type PostPublishRequest = {
 
 export const usePostPublishList = () => {
   const queryClient = useQueryClient();
+  const { success, fail } = useCustomToast();
   return useMutation({
     mutationFn: async (data: PostPublishRequest) => {
       const response = await postPublishList(data);
@@ -44,12 +46,12 @@ export const usePostPublishList = () => {
       queryClient.invalidateQueries(["published-list"]);
       queryClient.invalidateQueries(["publish-list"]);
 
-      alert(data.message);
+      success(data.message);
     },
     onError: async (error) => {
       DEV_ENV && console.log("error", error);
       const err = await processReactQueryOutput<any>(error as any, true);
-      alert(err.message);
+      fail(err.message);
     },
   });
 };

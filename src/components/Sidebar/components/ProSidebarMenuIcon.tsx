@@ -1,7 +1,7 @@
-import { Avatar, Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Tooltip} from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
-import { useColors } from "../../hooks/use-colors";
-import { SidebarSelectedType } from "../../pages/Admin/components/Sidebar/modules/MenuItems";
+import { useColors } from "../../../hooks/use-colors";
+import { SidebarSelectedType } from "../../Sidebar/modules/MenuItems";
 import { useState } from "react";
 
 type ProSidebarMenuIconProps = {

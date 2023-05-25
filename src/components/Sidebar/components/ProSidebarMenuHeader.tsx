@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { FC } from "react";
-import { useColors } from "../../hooks/use-colors";
+import { useColors } from "../../../hooks/use-colors";
 
 interface ProSidebarMenuHeaderProps {
   title: string;

@@ -36,7 +36,7 @@ const AdminLogin: FC<AdminLoginProps> = (props) => {
   };
   return (
     <>
-      {adminLoginMutation.isLoading && <TextLoader text="Logging in" />}
+      {<TextLoader loading={adminLoginMutation.isLoading} loadingText="Logging in" />}
       <Container component="main" maxWidth="sm">
         <Card
           sx={{

@@ -97,7 +97,7 @@ const TodoList: FC<TodoListProps> = (props) => {
 
   return (
     <Sidebar active="Todo List">
-      {loading && <TextLoader text={loadingText} />}
+      {<TextLoader loading={loading} loadingText={loadingText} />}
       <HeaderCard title="Todo List" subtitle="Here are all your tasks" />
       <Card
         sx={{

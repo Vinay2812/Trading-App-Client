@@ -67,7 +67,7 @@ const Login: FC<LoginProps> = (props) => {
   }
   return (
     <>
-      {loginUserMutation.isLoading && <TextLoader text="Logging in" />}
+      {<TextLoader loading={loginUserMutation.isLoading } loadingText="Logging in" />}
       <Container
         component="main"
         maxWidth="sm"

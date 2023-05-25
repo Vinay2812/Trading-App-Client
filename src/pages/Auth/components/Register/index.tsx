@@ -38,6 +38,7 @@ import {
   UserPasswordDetailsType,
 } from "../../../../types/user";
 import { useSendOtp } from "../../../../hooks/api-hooks/auth/use-send-otp";
+import { useCustomToast } from "../../../../hooks/use-custom-toast";
 
 const BankDetails = React.lazy(() => import("./components/BankDetails"));
 const ContactDetails = React.lazy(() => import("./components/ContactDetails"));
@@ -58,6 +59,7 @@ const steps = [
 const Register: FC<RegisterProps> = (props) => {
   const navigate = useNavigate();
   const colors = useColors();
+  const { success, fail } = useCustomToast();
   const [activeStep, setActiveStep] = React.useState(0);
   const [userDetails, setUserDetails] = React.useState<UserDataType>({
     company_name: "",
@@ -65,24 +67,25 @@ const Register: FC<RegisterProps> = (props) => {
     address: "",
     state: "",
     district: "",
-    pincode: "",
+    pincode: "" as any,
     mobile: "",
-    whatsapp: undefined,
-    gst: undefined,
+    whatsapp: null,
+    gst: null,
     pan: "",
     fssai: "",
     tan: "",
     constitution_of_firm: "",
     password: "",
+    userId: null
   });
 
   const [userBankDetails, setUserBankDetails] = React.useState<
     UserBankDetailsType[]
   >(() => [
     {
-      id: 1,
+      id: "1",
       account_name: "",
-      account_number: "",
+      account_number: "" as any,
       account_type: "",
       bank_name: "",
       branch: "",
@@ -94,7 +97,7 @@ const Register: FC<RegisterProps> = (props) => {
     UserContactDetailsType[]
   >([
     {
-      id: 1,
+      id: "1",
       full_name: "",
       designation: "",
       mobile: "",
@@ -109,8 +112,9 @@ const Register: FC<RegisterProps> = (props) => {
 
   React.useEffect(() => {
     if (!userOtpVerified && activeStep === 3 && !otpSent) {
-      userDetails.email.length && sendOtpMutation.mutate({ email: userDetails.email });
-      setOtpSent(true)
+      userDetails.email.length &&
+        sendOtpMutation.mutate({ email: userDetails.email });
+      setOtpSent(true);
     }
   }, [activeStep]);
 
@@ -126,11 +130,11 @@ const Register: FC<RegisterProps> = (props) => {
   const validateForm: any = (currentStep: number) => {
     switch (currentStep) {
       case 0:
-        return validateUserDetails(userDetails);
+        return validateUserDetails(userDetails as any);
       case 1:
-        return validateUserBankDetails(userBankDetails);
+        return validateUserBankDetails(userBankDetails as any);
       case 2:
-        return validateUserContactDetails(userContactDetails);
+        return validateUserContactDetails(userContactDetails as any);
       case 3:
         return {
           value: null,
@@ -230,7 +234,7 @@ const Register: FC<RegisterProps> = (props) => {
   const handleNext = () => {
     const { value, error } = validateForm(activeStep);
     if (error) {
-      error.length && alert(error[0]);
+      error.length && fail(error[0]);
       return;
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -307,7 +311,7 @@ const Register: FC<RegisterProps> = (props) => {
           return (
             <Step key={label} {...stepProps}>
               <StepLabel
-                onClick={() => (index <= activeStep) && setActiveStep(index)}
+                onClick={() => index <= activeStep && setActiveStep(index)}
                 {...labelProps}
               >
                 {label}

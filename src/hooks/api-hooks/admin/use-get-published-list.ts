@@ -14,7 +14,7 @@ export type PublishedListResponseType = {
   season: string;
   grade: string;
   unit: string;
-  quantity: number;
+  qty: number;
   lifting_date: Date;
   purchase_rate: number;
   mill_rate: number;
@@ -50,7 +50,7 @@ export const usePublishedList = () => {
     },
     onError: (error) => {
       DEV_ENV && console.log("error", error);
-      return processReactQueryOutput<any>(error as any, true);
+      const err = processReactQueryOutput<any>(error as any, true);
     },
   });
 };

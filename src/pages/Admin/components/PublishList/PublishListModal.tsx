@@ -25,6 +25,7 @@ import { useColors } from "../../../../hooks/use-colors";
 import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
 import { CancelOutlined, PublishOutlined } from "@mui/icons-material";
 import dayjs from "dayjs";
+import { useCustomToast } from "../../../../hooks/use-custom-toast";
 
 interface PublishListModalProps {
   open: boolean;
@@ -53,7 +54,7 @@ const PublishListModal: FC<PublishListModalProps> = ({
   );
 
   const postPublishListItemMutation = usePostPublishList();
-
+  const { success, fail } = useCustomToast();
   const { loading, loadingText } = useMemo(() => {
     let loadingText = "loading";
     if (postPublishListItemMutation.isLoading) loadingText = "Publishing";
@@ -113,12 +114,12 @@ const PublishListModal: FC<PublishListModalProps> = ({
 
   const handlePublishItem = () => {
     if (!sellingRate) {
-      alert("Please enter selling rate");
+      fail("Please enter selling rate");
       return;
     }
 
     if (!publishQuantity) {
-      alert("Please enter publish quantity");
+      fail("Please enter publish quantity");
       return;
     }
     const reqObj: PostPublishRequest = {
@@ -163,7 +164,7 @@ const PublishListModal: FC<PublishListModalProps> = ({
   return (
     <Modal open={open}>
       <div>
-        {loading && <TextLoader text={loadingText} />}
+        {<TextLoader loading={loading} loadingText={loadingText} />}
         <Card
           sx={{
             width: 800,

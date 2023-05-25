@@ -11,7 +11,9 @@ export type SidebarSelectedType =
   | "Todo List"
   | "Logout"
   | "Dark"
-  | "Light";
+  | "Light"
+  | "Profile"
+  | "Orders";
 
 type MenuItemType = {
   title: SidebarSelectedType;

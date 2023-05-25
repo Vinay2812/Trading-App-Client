@@ -6,6 +6,7 @@ import { DEV_ENV } from "../../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux";
 import { loginUserAction } from "../../../redux/reducers/user.reducer";
+import { useCustomToast } from "../../use-custom-toast";
 
 export type UserLoginRequest = {
   mobile: string;
@@ -20,6 +21,7 @@ export type UserLoginResponse = {
 export const useUserLogin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { success, fail } = useCustomToast();
 
   return useMutation({
     mutationFn: async (data: UserLoginRequest) => {
@@ -28,20 +30,20 @@ export const useUserLogin = () => {
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
-      alert("Login Successful");
+      success("Login Successful");
       dispatch(
         loginUserAction({
-          userId: data.value?.userData.userId || null,
-          company_name: data.value?.userData.company_name || null,
-          email: data.value?.userData.email || null,
-          mobile: data.value?.userData.mobile || null,
+          userId: data.value?.userData.userId ?? null,
+          company_name: data.value?.userData.company_name ?? null,
+          email: data.value?.userData.email ?? null,
+          mobile: data.value?.userData.mobile ?? null,
         })
       );
       navigate("/home");
     },
     onError: (error) => {
       DEV_ENV && console.log(error);
-      alert("Login failed");
+      fail("Login failed");
       return processReactQueryOutput<any>(error as any, true);
     },
   });

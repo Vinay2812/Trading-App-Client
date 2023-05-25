@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import { AuthenticateUserRoute } from "./AuthenticateRoutes";
+import PublishedList from "../components/PublishedList";
+import UserProfile from "../pages/Home/components/UserProfile";
 
 export const UserRoutes = () => {
   return (
@@ -15,6 +17,22 @@ export const UserRoutes = () => {
           }
         />
       </Route>
+      <Route
+        path="/client-list"
+        element={
+          <AuthenticateUserRoute>
+            <PublishedList isClientList />
+          </AuthenticateUserRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <AuthenticateUserRoute>
+            <UserProfile />
+          </AuthenticateUserRoute>
+        }
+        />
     </Routes>
   );
 };

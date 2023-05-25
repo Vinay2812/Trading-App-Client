@@ -25,6 +25,7 @@ import {
 import { dropdownType } from "../../../Auth/types/register";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import { useMapClient } from "../../../../hooks/api-hooks/admin/use-map-client";
+import { useCustomToast } from "../../../../hooks/use-custom-toast";
 
 interface MapClientModalProps {
   open: boolean;
@@ -38,6 +39,7 @@ const MapClientModal: FC<MapClientModalProps> = ({
   mapClientItem,
 }) => {
   const colors = useColors();
+  const { success, fail } = useCustomToast();
   const [selectedAccoid, setSelectedAccoid] = useState<number | null>(null);
   const [mapWithOptions, setMapWithOptions] = useState<dropdownType[]>([
     { label: "", id: -1 },
@@ -84,7 +86,7 @@ const MapClientModal: FC<MapClientModalProps> = ({
 
   const handleMapClient = () => {
     if (!selectedAccoid) {
-      alert("Please select a user to map with");
+      fail("Please select a user to map with");
       return;
     }
 
@@ -135,7 +137,7 @@ const MapClientModal: FC<MapClientModalProps> = ({
   return (
     <Modal open={open}>
       <div>
-        {loading && <TextLoader text={loadingText} />}
+        {<TextLoader loading={loading} loadingText={loadingText} />}
         <Card
           sx={{
             width: 800,

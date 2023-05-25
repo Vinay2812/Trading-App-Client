@@ -14,7 +14,7 @@ function Table({ rows, columns, uniqueId, isLoading = false }: TableProps) {
   return (
     <Card
       sx={{
-        mt: "16px",
+        mt: 2,
         width: "100%",
         height: "calc(100% - 90px)",
         bgcolor: `${colors.card}`,

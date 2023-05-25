@@ -10,9 +10,9 @@ import {
 import { PublishedListRowType } from ".";
 
 export const usePublishedListColumns = (
-  isClientList: boolean = false,
   handleEditPublishedListItem: (data: PublishedListRowType) => void,
-  handlePublishedItemStatus: (data: PublishedListRowType) => void
+  handlePublishedItemStatus: (data: PublishedListRowType) => void,
+  isClientList: boolean = false,
 ) => {
   const colors = useColors();
   return useMemo(() => {
@@ -80,7 +80,7 @@ export const usePublishedListColumns = (
             minWidth: 130,
           },
           {
-            field: "quantity",
+            field: "qty",
             headerName: "Quantity",
             minWidth: 100,
           },
@@ -92,7 +92,7 @@ export const usePublishedListColumns = (
             minWidth: 130,
           },
           {
-            field: "purchase_rate",
+            field: "purc_rate",
             headerName: "Purchase Rate",
             minWidth: 130,
           },
@@ -152,7 +152,7 @@ export const usePublishedListColumns = (
           },
           {
             field: "tender_id",
-            headerName: "Tender Id",
+            headerName: "Tender No",
             minWidth: 100,
             flex: 0.75,
           },
@@ -182,7 +182,7 @@ export const usePublishedListColumns = (
             flex: 0.75,
           },
           {
-            field: "quantity",
+            field: "qty",
             headerName: "Quantity",
             minWidth: 100,
           },

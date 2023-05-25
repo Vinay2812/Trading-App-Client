@@ -18,3 +18,6 @@ export const getAccountMasterCompanies = async () =>
 
 export const getAccountMasterByAccoid = async (accoid: number) =>
   await api.get(`/user/account_master/${accoid}`);
+
+export const getUserProfile = async (userId: string) =>
+  api.get(`/user/profile/${userId}`);

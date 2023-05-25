@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePublishedListItem } from "../../../api/admin/admin.request";
 import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
+import { useCustomToast } from "../../use-custom-toast";
 
 export type UpdatePublishedListItemRequest = {
   tender_id: number;
@@ -12,6 +13,7 @@ export type UpdatePublishedListItemRequest = {
 
 export const useUpdatePublishedListItem = () => {
   const queryClient = useQueryClient();
+  const { success, fail } = useCustomToast();
   return useMutation({
     mutationFn: async (reqBody: UpdatePublishedListItemRequest) => {
       const response = await updatePublishedListItem(reqBody);
@@ -20,12 +22,12 @@ export const useUpdatePublishedListItem = () => {
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
       queryClient.invalidateQueries(["published-list"]);
-      alert(data.message);
+      success(data.message);
     },
     onError: async (error) => {
       DEV_ENV && console.log(error);
       const err = await processReactQueryOutput<any>(error as any, true);
-      alert(err.message);
+      fail(err.message);
     },
   });
 };

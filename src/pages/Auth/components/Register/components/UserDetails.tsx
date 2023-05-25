@@ -12,9 +12,10 @@ import { UserDetailsInterface, dropdownType } from "../../../types/register";
 import { states, getDistrictsOfState, constitutionOfFirm } from "../data";
 import { LockOutlined } from "@mui/icons-material";
 import { useColors } from "../../../../../hooks/use-colors";
+import { UserDataType } from "../../../../../types/user";
 
 interface UserDetailsProps {
-  userDetails: UserDetailsInterface;
+  userDetails: UserDataType;
   setUserDetails: Function;
 }
 

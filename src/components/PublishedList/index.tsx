@@ -49,9 +49,9 @@ const PublishedList: FC<PublishedListProps> = (props) => {
   };
 
   const columns = usePublishedListColumns(
-    isClientList,
     handleEditPublishedListItem,
-    handlePublishedItemStatus
+    handlePublishedItemStatus,
+    isClientList,
   );
   const rows = useMemo<PublishedListRowType[] | []>(() => {
     if (!data?.value) return [];
@@ -80,7 +80,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
 
   return (
     <Sidebar active={isClientList ? "Client List" : "Published List"}>
-      {loading && <TextLoader text={loadingText} />}
+      <TextLoader loading={loading} loadingText={loadingText} />
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
           title={isClientList ? "Client List" : "Published List"}
@@ -88,13 +88,13 @@ const PublishedList: FC<PublishedListProps> = (props) => {
             isClientList ? "client list" : "published list"
           }`}
           buttonBox={
-            <Button
+            !isClientList ? <Button
               variant="contained"
               color="red"
               endIcon={<BorderColorOutlined />}
             >
               Update List
-            </Button>
+            </Button> : <></>
           }
         />
         <Table

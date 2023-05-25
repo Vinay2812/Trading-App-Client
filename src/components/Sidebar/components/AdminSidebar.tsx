@@ -1,14 +1,12 @@
 import { FC, useMemo, useState } from "react";
 import {
   Sidebar as ProSidebar,
-  Menu,
   MenuItem,
   useProSidebar,
 } from "react-pro-sidebar";
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   IconButton,
   Tooltip,
@@ -16,8 +14,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useColors } from "../../../../hooks/use-colors";
+import { useColors } from "../../../hooks/use-colors";
 import {
   AccountCircleOutlined,
   AppRegistrationRounded,
@@ -34,14 +31,14 @@ import {
 import {
   ProSidebarHoverMenu,
   ProSidebarSimpleMenu,
-} from "../../../../components/ProsidebarComponents/ProSidebarMenu";
-import ProSidebarMenuItem from "../../../../components/ProsidebarComponents/ProSidebarMenuItem";
-import ProSidebarMenuIcon from "../../../../components/ProsidebarComponents/ProSidebarMenuIcon";
-import ProSidebarMenuHeader from "../../../../components/ProsidebarComponents/ProSidebarMenuHeader";
-import { SidebarSelectedType } from "./modules/MenuItems";
-import { useToggleTheme } from "../../../../providers/UserThemeProvider";
-import { useLogout } from "../../../../hooks/use-logout";
-import { useAppSelector } from "../../../../hooks/redux";
+} from "./ProSidebarMenu";
+import ProSidebarMenuItem from "./ProSidebarMenuItem";
+import ProSidebarMenuIcon from "./ProSidebarMenuIcon";
+import ProSidebarMenuHeader from "./ProSidebarMenuHeader";
+import { SidebarSelectedType } from "../modules/MenuItems";
+import { useToggleTheme } from "../../../providers/UserThemeProvider";
+import { useLogout } from "../../../hooks/use-logout";
+import { useAppSelector } from "../../../hooks/redux";
 // import { HomeOutlined, PeopleOutlined} from "@mui/icons-material"
 
 interface SidebarProps {
@@ -49,7 +46,7 @@ interface SidebarProps {
   children: any;
 }
 
-const Sidebar: FC<SidebarProps> = ({ active, children }) => {
+const AdminSidebar: FC<SidebarProps> = ({ active, children }) => {
   const colors = useColors();
   const adminEmail = useAppSelector((state) => state.admin.email);
   const profilePicture = useAppSelector((state) => state.admin.picture);
@@ -225,7 +222,9 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
                   <ProSidebarMenuIcon icon={<Logout />} hoverText="Logout" />
                 }
                 selected={selected}
-                setSelected={() => logout()}
+                setSelected={() => logout({
+                  isAdmin: true
+                })}
                 to="/auth"
               />
             </ProSidebarHoverMenu>
@@ -280,4 +279,4 @@ const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

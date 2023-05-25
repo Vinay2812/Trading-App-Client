@@ -8,6 +8,7 @@ import {
   UserDataType,
 } from "../../../types/user";
 import { registerUser } from "../../../api/auth/auth.request";
+import { useCustomToast } from "../../use-custom-toast";
 
 export type RegisterUserRequest = {
   userData: UserDataType;
@@ -22,6 +23,7 @@ export type RegisterUserResponse = {
 export const useRegisterUser = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { success, fail } = useCustomToast();
 
   return useMutation({
     mutationFn: async (data: RegisterUserRequest) => {
@@ -37,12 +39,12 @@ export const useRegisterUser = () => {
       ]);
       queryClient.invalidateQueries(["registration-list"]);
       queryClient.invalidateQueries(["users-list"]);
-      alert("Registration Successful");
+      success("Registration Successful");
       navigate("/admin");
     },
     onError: (error) => {
       DEV_ENV && console.log(error);
-      alert("Registration failed");
+      fail("Registration failed");
       return processReactQueryOutput<any>(error as any, true);
     },
   });

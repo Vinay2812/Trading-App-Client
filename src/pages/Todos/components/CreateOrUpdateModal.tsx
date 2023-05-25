@@ -94,7 +94,7 @@ const CreateOrUpdateModal: FC<CreateOrUpdateModalProps> = (props) => {
   return (
     <Modal open={open}>
       <div>
-        {loading && <TextLoader text={loadingText} />}
+        {<TextLoader loading={loading} loadingText={loadingText} />}
         <Card
           sx={{
             width: 600,

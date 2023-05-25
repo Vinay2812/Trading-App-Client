@@ -5,7 +5,7 @@ import Auth from "../../pages/Auth";
 export const AuthenticateUserRoute = ({
   children,
 }: {
-  children: JSX.Element;
+  children: React.JSX.Element;
 }) => {
   const isAdmin = useAppSelector((state) => state.admin.isAdmin);
   const isUser = useAppSelector((state) => state.user.email);

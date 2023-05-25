@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import {
-  UserBankDetailsInterface,
+import type {
   dropdownType,
 } from "../../../types/register";
 import {
@@ -8,7 +7,6 @@ import {
   Avatar,
   Box,
   Button,
-  CssBaseline,
   Grid,
   IconButton,
   Stack,
@@ -19,13 +17,14 @@ import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { accountTypes } from "../data";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/use-colors";
+import { UserBankDetailsType } from "../../../../../types/user";
 
 interface BankDetailsProps {
-  userBankDetails: UserBankDetailsInterface[];
+  userBankDetails: UserBankDetailsType[];
   setUserBankDetails: Function;
 }
 interface BankDetailsCardProps {
-  userBankDetail: UserBankDetailsInterface;
+  userBankDetail: UserBankDetailsType;
   setUserBankDetails: Function;
   handleDeleteBankDetail: Function;
 }
@@ -47,7 +46,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
 
   useEffect(() => {
     if (accountTypeValue.id !== -1) {
-      setUserBankDetails((prev: UserBankDetailsInterface[]) => {
+      setUserBankDetails((prev: UserBankDetailsType[]) => {
         const newBankDetails = prev.map((bankDetail) => {
           if (bankDetail.id === userBankDetail.id) {
             return {
@@ -63,7 +62,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
   }, [accountTypeValue]);
 
   const handleBankCardDetailChange = (e: any) => {
-    setUserBankDetails((prev: UserBankDetailsInterface[]) => {
+    setUserBankDetails((prev: UserBankDetailsType[]) => {
       const newBankDetails = prev.map((bankDetail) => {
         if (bankDetail.id === userBankDetail.id) {
           return {
@@ -197,16 +196,16 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
 
   const handleAddBankDetail = () => {
     const len = userBankDetails.length;
-    const newBankDetail: UserBankDetailsInterface = {
-      id: len + 1,
+    const newBankDetail: UserBankDetailsType = {
+      id: (len + 1).toString(),
       account_name: "",
-      account_number: "",
+      account_number: "" as any,
       bank_name: "",
       account_type: "",
       branch: "",
       ifsc: "",
     };
-    addSingleDetail<UserBankDetailsInterface>(
+    addSingleDetail<UserBankDetailsType>(
       len,
       newBankDetail,
       setUserBankDetails

@@ -23,36 +23,36 @@ const PublishList: FC<PublishListProps> = (props) => {
   const [publishItemData, setPublishItemData] = useState<
     Nullable<PostPublishRequest>
   >({
-    tender_no: null,
-    tender_date: null,
-    season: null,
-    grade: null,
-    quantal: null,
-    lifting_date: null,
-    purchase_rate: null,
-    mill_rate: null,
-    mc: null,
-    pt: null,
-    item_code: null,
-    ic: null,
-    tender_id: null,
-    td: null,
+    tender_no: undefined,
+    tender_date: undefined,
+    season: undefined,
+    grade: undefined,
+    quantal: undefined,
+    lifting_date: undefined,
+    purchase_rate: undefined,
+    mill_rate: undefined,
+    mc: undefined,
+    pt: undefined,
+    item_code: undefined,
+    ic: undefined,
+    tender_id: undefined,
+    td: undefined,
     unit: "Q",
-    sale_rate: null,
-    publish_quantal: null,
-    multiple_of: null,
+    sale_rate: undefined,
+    publish_quantal: undefined,
+    multiple_of: undefined,
     auto_confirm: "Y",
-    tender_do: null,
+    tender_do: undefined,
     type: "F",
-    mill_code: null,
-    payment_to: null,
-    mill_short_name: null,
-    item_name: null
+    mill_code: undefined,
+    payment_to: undefined,
+    mill_short_name: undefined,
+    item_name: undefined,
   });
 
-  function handlePublishActionClick (data: PostPublishRequest) {
-    setModalOpen(true)
-    setPublishItemData(data)
+  function handlePublishActionClick(data: PostPublishRequest) {
+    setModalOpen(true);
+    setPublishItemData(data);
   }
 
   const columns = usePublishListColumns(handlePublishActionClick);
@@ -73,7 +73,7 @@ const PublishList: FC<PublishListProps> = (props) => {
 
   return (
     <Sidebar active="Publish List">
-      {loading && <TextLoader text={loadingText} />}
+      { <TextLoader loading={loading} loadingText={loadingText} />}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard title="Publish List" subtitle="Welcome to publish list" />
         <Table
@@ -86,7 +86,7 @@ const PublishList: FC<PublishListProps> = (props) => {
       <PublishListModal
         open={modalOpen}
         setOpen={setModalOpen}
-        publishItemData={publishItemData}
+        publishItemData={publishItemData as PostPublishRequest}
       />
     </Sidebar>
   );

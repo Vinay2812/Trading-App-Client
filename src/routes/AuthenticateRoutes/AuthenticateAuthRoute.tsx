@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../hooks/redux";
 import Admin from "../../pages/Admin";
+import Home from "../../pages/Home";
 
 export const AuthenticateAuthRoute = ({
   children,
@@ -12,7 +13,7 @@ export const AuthenticateAuthRoute = ({
     return <Admin />;
   }
   if (isUser) {
-    return <div>Home</div>;
+    return <Home />;
   }
   return children;
 };

@@ -4,6 +4,7 @@ import { DEV_ENV } from "../../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { adminLogin } from "../../../api/admin/admin.request";
 import { AdminDataType } from "../../../types/admin";
+import { useCustomToast } from "../../use-custom-toast";
 
 export type AdminLoginRequest = {
   username: string;
@@ -16,6 +17,7 @@ export type AdminLoginResponse = {
 
 export const useAdminLogin = () => {
   const navigate = useNavigate();
+  const { success, fail } = useCustomToast();
   return useMutation({
     mutationFn: async (data: AdminLoginRequest) => {
       const response = await adminLogin(data);
@@ -23,12 +25,12 @@ export const useAdminLogin = () => {
     },
     onSuccess: (data) => {
       DEV_ENV && console.log(data);
-      alert("Login Successful");
+      success("Login Successful");
       navigate("/admin");
     },
     onError: (error) => {
       DEV_ENV && console.log(error);
-      alert("Login failed");
+      fail("Login failed");
       return processReactQueryOutput<any>(error as any, true);
     },
   });
