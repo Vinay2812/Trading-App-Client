@@ -5,7 +5,7 @@ import HeaderCard from "../Cards/HeaderCard";
 import { usePublishedListColumns } from "./use-published-list-columns";
 import { usePublishedList } from "../../hooks/api-hooks/admin";
 import Table from "../Table/Table";
-import { PublishedListResponseType } from "../../hooks/api-hooks/admin/use-get-published-list";
+import { PublishedListType } from "../../hooks/api-hooks/admin/use-get-published-list";
 import TextLoader from "../TextLoader/TextLoader";
 import { useColors } from "../../hooks/use-colors";
 import { BorderColorOutlined } from "@mui/icons-material";
@@ -17,7 +17,7 @@ import { UPDATE_PUBLISHED_LIST } from "../../utils/socket-constants";
 interface PublishedListProps {
   isClientList?: boolean;
 }
-export interface PublishedListRowType extends PublishedListResponseType {
+export interface PublishedListRowType extends PublishedListType {
   sr_no: number;
 }
 
@@ -51,9 +51,9 @@ const PublishedList: FC<PublishedListProps> = (props) => {
   const columns = usePublishedListColumns(
     handleEditPublishedListItem,
     handlePublishedItemStatus,
-    isClientList,
+    isClientList
   );
-  const rows = useMemo<PublishedListRowType[] | []>(() => {
+  const rows = useMemo<PublishedListType[] | []>(() => {
     if (!data?.value) return [];
     let rowArr = data.value;
     if (isClientList) {
@@ -88,13 +88,17 @@ const PublishedList: FC<PublishedListProps> = (props) => {
             isClientList ? "client list" : "published list"
           }`}
           buttonBox={
-            !isClientList ? <Button
-              variant="contained"
-              color="red"
-              endIcon={<BorderColorOutlined />}
-            >
-              Update List
-            </Button> : <></>
+            !isClientList ? (
+              <Button
+                variant="contained"
+                color="red"
+                endIcon={<BorderColorOutlined />}
+              >
+                Update List
+              </Button>
+            ) : (
+              <></>
+            )
           }
         />
         <Table

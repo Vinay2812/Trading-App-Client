@@ -17,6 +17,7 @@ export const userProfileSchema = z
     tan: z.string(),
     constitution_of_firm: z.string(),
     password: z.string(),
+    accoid: z.number().nullish().default(null)
   })
   .required();
 
@@ -38,7 +39,7 @@ export const userContactDetailsSchema = z
     full_name: z.string(),
     designation: z.string(),
     mobile: z.string(),
-    whatsapp: z.string(),
+    whatsapp: z.string().nullish(),
     email: z.string().email(),
   })
   .required();

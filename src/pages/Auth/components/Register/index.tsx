@@ -61,6 +61,7 @@ const Register: FC<RegisterProps> = (props) => {
   const colors = useColors();
   const { success, fail } = useCustomToast();
   const [activeStep, setActiveStep] = React.useState(0);
+
   const [userDetails, setUserDetails] = React.useState<UserDataType>({
     company_name: "",
     email: "",
@@ -76,7 +77,8 @@ const Register: FC<RegisterProps> = (props) => {
     tan: "",
     constitution_of_firm: "",
     password: "",
-    userId: null
+    userId: null,
+    accoid: null,
   });
 
   const [userBankDetails, setUserBankDetails] = React.useState<
@@ -242,9 +244,19 @@ const Register: FC<RegisterProps> = (props) => {
 
   async function handleRegisterUser() {
     const reqObj: RegisterUserRequest = {
-      userData: { ...userDetails, password: userPasswordDetails.password },
+      userData: {
+        ...userDetails,
+        password: userPasswordDetails.password,
+        whatsapp: userDetails.whatsapp?.length ? userDetails.whatsapp : null,
+        gst: userDetails.gst?.length ? userDetails.gst : null,
+      },
       bankData: userBankDetails,
-      contactData: userContactDetails,
+      contactData: [
+        ...userContactDetails.map((item) => ({
+          ...item,
+          whatsapp: item.whatsapp?.length ? item.whatsapp : null,
+        })),
+      ],
     };
     registeUserMutation.mutate(reqObj);
   }

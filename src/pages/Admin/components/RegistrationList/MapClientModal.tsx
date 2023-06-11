@@ -231,7 +231,8 @@ const MapClientModal: FC<MapClientModalProps> = ({
                     </li>
                   );
                 }}
-                renderInput={(params) => <TextField {...params} label="User" />}
+                renderInput={(params) => <TextField {...params} label="Select user" autoFocus />}
+                // autoFocus
               />
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>

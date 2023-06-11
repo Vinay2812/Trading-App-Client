@@ -123,6 +123,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
             value={userBankDetail.account_name}
             label="Full Name"
             required
+            autoFocus
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>

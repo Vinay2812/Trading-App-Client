@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, type ReactNode, useMemo, useState } from "react";
 import {
   Sidebar as ProSidebar,
   MenuItem,
@@ -32,19 +32,22 @@ import { SidebarSelectedType } from "../modules/MenuItems";
 import { useToggleTheme } from "../../../providers/UserThemeProvider";
 import { useLogout } from "../../../hooks/use-logout";
 import { useAppSelector } from "../../../hooks/redux";
+import NoAccess from "../../Errors/NoAccess";
 // import { HomeOutlined, PeopleOutlined} from "@mui/icons-material"
 
 interface SidebarProps {
   active?: SidebarSelectedType;
-  children: any;
+  children: ReactNode;
 }
 
 const UserSidebar: FC<SidebarProps> = ({ active, children }) => {
   const colors = useColors();
   const user = useAppSelector((state) => state.user)!;
 
+  const hasAccess = useAppSelector((state) => state.user.accoid) !== null;
+
   const [selected, setSelected] = useState<SidebarSelectedType>(
-    active || "Home"
+    active ?? "Home"
   );
   const { collapseSidebar, collapsed } = useProSidebar();
   const matches = useMediaQuery("(min-width: 900px)");
@@ -166,7 +169,7 @@ const UserSidebar: FC<SidebarProps> = ({ active, children }) => {
                   <ProSidebarMenuIcon icon={<Logout />} hoverText="Logout" />
                 }
                 selected={selected}
-                setSelected={() => logout({isAdmin: false})}
+                setSelected={() => logout({ isAdmin: false })}
                 to="/auth"
               />
             </ProSidebarHoverMenu>
@@ -215,7 +218,7 @@ const UserSidebar: FC<SidebarProps> = ({ active, children }) => {
             }),
         }}
       >
-        {children}
+        {hasAccess ? children : <NoAccess />}
       </Box>
     </Box>
   );

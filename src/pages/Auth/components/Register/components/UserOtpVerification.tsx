@@ -165,6 +165,7 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
                 }}
                 validateChar={validateChar}
                 TextFieldsProps={{ placeholder: "-" }}
+                autoFocus
               />
               <Button
                 type="submit"

@@ -11,9 +11,12 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ active, children }) => {
   const isAdmin = useAppSelector((state) => state.admin.isAdmin);
+
   if (isAdmin) return <AdminSidebar active={active} children={children} />;
 
-  return <UserSidebar active={active} children={children} />;
+  return (
+    <UserSidebar active={active} children={children} />
+  );
 };
 
 export default Sidebar;

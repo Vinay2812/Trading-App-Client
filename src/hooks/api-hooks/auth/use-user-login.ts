@@ -37,6 +37,7 @@ export const useUserLogin = () => {
           company_name: data.value?.userData.company_name ?? null,
           email: data.value?.userData.email ?? null,
           mobile: data.value?.userData.mobile ?? null,
+          accoid: data.value?.userData.accoid ?? null
         })
       );
       navigate("/home");

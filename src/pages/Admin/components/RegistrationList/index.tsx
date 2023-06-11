@@ -2,9 +2,8 @@ import { FC, lazy, useMemo, useState } from "react";
 import { Sidebar } from "..";
 import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
-import { useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
+import { RegistrationListType, useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
 import { useRegistrationListColumns } from "./use-registration-list-columns";
-import { RegistrationListResponseType } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
 import Table from "../../../../components/Table/Table";
 import { useAddUser } from "../../../../hooks/api-hooks/admin/use-add-user";
 import TextLoader from "../../../../components/TextLoader/TextLoader";
@@ -13,7 +12,7 @@ import { useMapClient } from "../../../../hooks/api-hooks/admin/use-map-client";
 const MapClientModal = lazy(() => import("./MapClientModal"));
 
 interface RegistrationListProps {}
-export interface RegistrationListRowType extends RegistrationListResponseType {
+export interface RegistrationListRowType extends RegistrationListType {
   sr_no: number;
 }
 

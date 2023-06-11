@@ -1,10 +1,9 @@
-import { Card, SxProps } from "@mui/material";
+import { Card } from "@mui/material";
 import { FC } from "react";
 import { useColors } from "../../hooks/use-colors";
-import { Theme } from "@mui/joy";
 
 interface TableCardProps {
-  children: any;
+  children: React.ReactNode;
 }
 
 const TableCard: FC<TableCardProps> = ({ children }) => {

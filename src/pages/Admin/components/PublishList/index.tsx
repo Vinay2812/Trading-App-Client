@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import { usePublishList } from "../../../../hooks/api-hooks/admin";
 import { usePublishListColumns } from "./use-publish-list-columns";
-import { PublishListResponseType } from "../../../../hooks/api-hooks/admin/use-get-publish-list";
+import { PublishListResponseType, PublishListType } from "../../../../hooks/api-hooks/admin/use-get-publish-list";
 import Table from "../../../../components/Table/Table";
 import TextLoader from "../../../../components/TextLoader/TextLoader";
 import PublishListModal from "./PublishListModal";
@@ -12,7 +12,7 @@ import { PostPublishRequest } from "../../../../hooks/api-hooks/admin/use-post-p
 import { Nullable } from "../../../../types/helper";
 
 interface PublishListProps {}
-export interface PublishListRowType extends PublishListResponseType {
+export interface PublishListRowType extends PublishListType {
   sr_no: number;
 }
 

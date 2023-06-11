@@ -13,6 +13,7 @@ interface ProSidebarMenuItemProps {
   selected: string;
   setSelected: Function;
   variant?: Variant;
+  disabled?: boolean;
 }
 
 const ProSidebarMenuItem: FC<ProSidebarMenuItemProps> = ({
@@ -22,6 +23,7 @@ const ProSidebarMenuItem: FC<ProSidebarMenuItemProps> = ({
   selected,
   setSelected,
   variant = "subtitle2",
+  disabled = false,
 }) => {
   const colors = useColors();
   const { collapsed } = useProSidebar();

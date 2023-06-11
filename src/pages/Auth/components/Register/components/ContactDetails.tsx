@@ -84,6 +84,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
             label="Full Name"
             onChange={handleContactDetailChange}
             required
+            autoFocus
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
@@ -100,7 +101,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
           <TextField
             fullWidth
             name="mobile"
-            value={userContactDetail.mobile}
+            value={userContactDetail.mobile ?? ""}
             label="Mobile Number"
             required
             onChange={handleContactDetailChange}

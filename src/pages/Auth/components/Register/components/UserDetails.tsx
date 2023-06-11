@@ -22,7 +22,7 @@ interface UserDetailsProps {
 const UserDetails: FC<UserDetailsProps> = (props) => {
   const { userDetails, setUserDetails } = props;
   const [stateValue, setStateValue] = useState<dropdownType>(
-    states.find((state: dropdownType) => state.label === userDetails.state) || {
+    states.find((state: dropdownType) => state.label === userDetails.state) ?? {
       label: "",
       id: -1,
     }
@@ -33,7 +33,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
     stateValue.id !== -1 ? getDistrictsOfState(stateValue.id) : []
   );
   const [districtValue, setDistrictValue] = useState<dropdownType>(
-    districts.find((district) => district.label === userDetails.district) || {
+    districts.find((district) => district.label === userDetails.district) ?? {
       label: "",
       id: -1,
     }
@@ -46,7 +46,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
     useState<dropdownType>(
       constitutionOfFirm.find(
         (cof) => cof.label === userDetails.constitution_of_firm
-      ) || {
+      ) ?? {
         label: "",
         id: -1,
       }
@@ -221,7 +221,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               label="Whatsapp number"
               fullWidth
               name="whatsapp"
-              value={userDetails.whatsapp || ""}
+              value={userDetails.whatsapp ?? ""}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
@@ -230,7 +230,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               label="GST number"
               fullWidth
               name="gst"
-              value={userDetails.gst || ""}
+              value={userDetails.gst ?? ""}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>

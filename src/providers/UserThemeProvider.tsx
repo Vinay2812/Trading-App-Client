@@ -100,9 +100,10 @@ const UserTheme: FC<ThemeProviderProps> = (props) => {
   );
   const toggleTheme = useMemo(() => {
     return () =>
-      setUserTheme((prev: userThemeType) =>
-        prev === "dark" ? "light" : "dark"
-      );
+      // setUserTheme((prev: userThemeType) =>
+      //   prev === "dark" ? "light" : "dark"
+      // );
+      setUserTheme((prev) => prev);
   }, []);
 
   const value = useMemo(() => ({ toggleTheme }), [toggleTheme]);
