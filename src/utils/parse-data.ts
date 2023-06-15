@@ -6,7 +6,7 @@ export async function parseApiData<T>(
   schema: ZodSchema,
   data: AxiosResponseType<T>
 ) {
-  const processedData = await processReactQueryOutput<T>(data);
+  const processedData = processReactQueryOutput<T>(data);
   if (!processedData.value) return processedData;
   if (processedData.value instanceof Array) {
     processedData.value = processedData.value.map((d) => schema.parse(d)) as T;

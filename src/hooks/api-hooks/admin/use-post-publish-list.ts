@@ -50,7 +50,7 @@ export const usePostPublishList = () => {
     },
     onError: async (error) => {
       DEV_ENV && console.log("error", error);
-      const err = await processReactQueryOutput<any>(error as any, true);
+      const err = processReactQueryOutput<any>(error as any, true);
       fail(err.message);
     },
   });

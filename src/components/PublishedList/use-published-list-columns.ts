@@ -8,13 +8,33 @@ import {
   renderUnit,
 } from "./renderers";
 import { PublishedListRowType } from ".";
+import { useAppSelector } from "../../hooks/redux";
 
 export const usePublishedListColumns = (
   handleEditPublishedListItem: (data: PublishedListRowType) => void,
   handlePublishedItemStatus: (data: PublishedListRowType) => void,
-  isClientList: boolean = false,
+  isClientList: boolean = false
 ) => {
   const colors = useColors();
+  const { userId, accoid } = useAppSelector((state) => state.user);
+  const handleBuyOrder = (data: PublishedListRowType) => {
+    if (!userId || !accoid) {
+      return;
+    }
+    const {
+      tender_id,
+      tender_no,
+      selling_type,
+      sale_rate,
+      mill_rate,
+      purc_rate,
+      auto_confirm,
+    } = data;
+    const order_confirmed = auto_confirm;
+    const order_remark = "";
+    const confirm_remark = "";
+    const qty = 0;
+  };
   return useMemo(() => {
     return !isClientList
       ? ([

@@ -12,15 +12,16 @@ import { UserDetailsInterface, dropdownType } from "../../../types/register";
 import { states, getDistrictsOfState, constitutionOfFirm } from "../data";
 import { LockOutlined } from "@mui/icons-material";
 import { useColors } from "../../../../../hooks/use-colors";
-import { UserDataType } from "../../../../../types/user";
+import { UserDataType } from "../../../../../hooks/api-hooks/user/user";
 
 interface UserDetailsProps {
   userDetails: UserDataType;
   setUserDetails: Function;
+  isEditable?: boolean;
 }
 
 const UserDetails: FC<UserDetailsProps> = (props) => {
-  const { userDetails, setUserDetails } = props;
+  const { userDetails, setUserDetails, isEditable = true } = props;
   const [stateValue, setStateValue] = useState<dropdownType>(
     states.find((state: dropdownType) => state.label === userDetails.state) ?? {
       label: "",
@@ -107,11 +108,13 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
         bgcolor: colors.card,
       }}
     >
-      <Avatar sx={{ bgcolor: "green.main" }}>
-        <LockOutlined />
-      </Avatar>
+      {isEditable && (
+        <Avatar sx={{ bgcolor: "green.main" }}>
+          <LockOutlined />
+        </Avatar>
+      )}
       <Typography component="h1" variant="h5" pb={2}>
-        Please fill the required user details
+        User Details
       </Typography>
       <Box
         sx={{
@@ -123,6 +126,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
         <Grid container spacing={4}>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Company name"
               required
@@ -134,6 +138,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Email"
               required
@@ -145,13 +150,14 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           {/* <Grid item md={0} lg={0}></Grid> */}
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Address"
               required
               fullWidth
               name="address"
               multiline
-              value={userDetails.address || ""}
+              value={userDetails.address ?? ""}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
@@ -159,6 +165,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               disableClearable
               options={states}
               value={stateValue}
+              disabled={!isEditable}
               onChange={(event, newValue) => setStateValue(newValue)}
               inputValue={stateInputValue}
               onInputChange={(event, newValue) => setStateInputValue(newValue)}
@@ -170,7 +177,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           <Grid item xs={12} md={6} lg={4}>
             <Autocomplete
               disableClearable
-              disabled={stateValue.id === -1}
+              disabled={stateValue.id === -1 || !isEditable}
               options={districts}
               value={districtValue}
               onChange={(event, newValue) => setDistrictValue(newValue)}
@@ -185,6 +192,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Pincode"
               required
@@ -205,6 +213,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               </Grid>
               <Grid item xs={9} lg={9.5}>
                 <TextField
+                  disabled={!isEditable}
                   onChange={handleInputChange}
                   label="Mobile Number"
                   required
@@ -217,6 +226,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Whatsapp number"
               fullWidth
@@ -226,6 +236,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="GST number"
               fullWidth
@@ -235,6 +246,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Pan number"
               required
@@ -245,6 +257,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="FSSAI number"
               required
@@ -255,6 +268,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <TextField
+              disabled={!isEditable}
               onChange={handleInputChange}
               label="Tan number"
               required
@@ -275,6 +289,7 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
               onInputChange={(event, newValue) =>
                 setConstitutionOfFirmInputValue(newValue)
               }
+              disabled={!isEditable}
               renderInput={(params) => (
                 <TextField {...params} label="Constitution of firm" required />
               )}

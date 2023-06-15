@@ -36,7 +36,7 @@ import {
   UserContactDetailsType,
   UserDataType,
   UserPasswordDetailsType,
-} from "../../../../types/user";
+} from "../../../../hooks/api-hooks/user/user";
 import { useSendOtp } from "../../../../hooks/api-hooks/auth/use-send-otp";
 import { useCustomToast } from "../../../../hooks/use-custom-toast";
 

@@ -6,7 +6,7 @@ import {
   UserBankDetailsType,
   UserContactDetailsType,
   UserDataType,
-} from "../../../types/user";
+} from "../user/user";
 import { registerUser } from "../../../api/auth/auth.request";
 import { useCustomToast } from "../../use-custom-toast";
 

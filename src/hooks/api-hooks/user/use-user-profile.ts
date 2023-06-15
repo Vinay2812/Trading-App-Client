@@ -3,10 +3,9 @@ import {
   userBankDetailSchema,
   userContactDetailsSchema,
   userProfileSchema,
-} from "../../../types/user";
+} from "./user";
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../../../api/user/user.request";
-import { processReactQueryOutput } from "../../../utils/react-query";
 import { DEV_ENV } from "../../../utils/constants";
 import { parseApiData } from "../../../utils/parse-data";
 

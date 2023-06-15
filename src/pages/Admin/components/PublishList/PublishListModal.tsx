@@ -220,6 +220,18 @@ const PublishListModal: FC<PublishListModalProps> = ({
               <Typography sx={valueStyle}>{publishItemData.season}</Typography>
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>
+              <Typography sx={labelStyle}>Quantity</Typography>
+              <Typography sx={valueStyle}>{publishItemData.quantal}</Typography>
+            </Grid>
+            <Grid item display="flex" xs={12} md={6} gap={2}>
+              <Typography sx={labelStyle}>Lifting Date</Typography>
+              <Typography sx={valueStyle}>
+                {dayjs(publishItemData.lifting_date)
+                  .format("DD/MM/YYYY")
+                  .toString()}
+              </Typography>
+            </Grid>
+            <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Selling Rate</Typography>
               <TextField
                 sx={{ width: 180 }}
@@ -252,14 +264,6 @@ const PublishListModal: FC<PublishListModalProps> = ({
                   <MenuItem value="M">Metric Ton</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item display="flex" xs={12} md={6} gap={2}>
-              <Typography sx={labelStyle}>Lifting Date</Typography>
-              <Typography sx={valueStyle}>
-                {dayjs(publishItemData.lifting_date)
-                  .format("DD/MM/YYYY")
-                  .toString()}
-              </Typography>
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Selling Type</Typography>

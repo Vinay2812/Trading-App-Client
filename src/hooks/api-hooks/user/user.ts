@@ -17,7 +17,7 @@ export const userProfileSchema = z
     tan: z.string(),
     constitution_of_firm: z.string(),
     password: z.string(),
-    accoid: z.number().nullish().default(null)
+    accoid: z.number().nullish().default(null),
   })
   .required();
 
@@ -59,7 +59,12 @@ export const userPasswordDetailsSchema = z
     }
   );
 
+export const userLoginResponseSchema = z.object({
+  userData: userProfileSchema,
+});
+
 export type UserDataType = z.infer<typeof userProfileSchema>;
 export type UserBankDetailsType = z.infer<typeof userBankDetailSchema>;
 export type UserContactDetailsType = z.infer<typeof userContactDetailsSchema>;
 export type UserPasswordDetailsType = z.infer<typeof userPasswordDetailsSchema>;
+export type UserLoginResponseType = z.infer<typeof userLoginResponseSchema>;

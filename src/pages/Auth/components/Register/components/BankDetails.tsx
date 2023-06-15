@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import type {
-  dropdownType,
-} from "../../../types/register";
+import type { dropdownType } from "../../../types/register";
 import {
   Autocomplete,
   Avatar,
@@ -17,19 +15,26 @@ import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { accountTypes } from "../data";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/use-colors";
-import { UserBankDetailsType } from "../../../../../types/user";
+import { UserBankDetailsType } from "../../../../../hooks/api-hooks/user/user";
 
 interface BankDetailsProps {
   userBankDetails: UserBankDetailsType[];
   setUserBankDetails: Function;
+  isEditable?: boolean;
 }
 interface BankDetailsCardProps {
   userBankDetail: UserBankDetailsType;
   setUserBankDetails: Function;
   handleDeleteBankDetail: Function;
+  isEditable: boolean;
 }
 const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
-  const { userBankDetail, setUserBankDetails, handleDeleteBankDetail } = props;
+  const {
+    userBankDetail,
+    setUserBankDetails,
+    handleDeleteBankDetail,
+    isEditable,
+  } = props;
   const [accountTypeValue, setAccountTypeValue] = useState<dropdownType>(
     userBankDetail.account_type.length
       ? (accountTypes.find(
@@ -102,7 +107,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
           }}
         >
           Bank Detail {userBankDetail.id}
-          {
+          {isEditable && (
             <IconButton
               sx={{
                 color: "tomato",
@@ -111,12 +116,13 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
             >
               <DeleteForeverOutlined />
             </IconButton>
-          }
+          )}
         </Typography>
       </Box>
-      <Grid container spacing={2} width={"100%"}>
+      <Grid container spacing={3} width={"100%"}>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             onChange={handleBankCardDetailChange}
             fullWidth
             name="account_name"
@@ -128,6 +134,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             onChange={handleBankCardDetailChange}
             fullWidth
             name="account_number"
@@ -138,6 +145,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             onChange={handleBankCardDetailChange}
             fullWidth
             name="bank_name"
@@ -156,6 +164,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
             onInputChange={(event, newValue) =>
               setAccountTypeInputValue(newValue)
             }
+            disabled={!isEditable}
             renderInput={(params) => (
               <TextField {...params} label="Acoount type" required />
             )}
@@ -163,6 +172,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             onChange={handleBankCardDetailChange}
             fullWidth
             name="branch"
@@ -173,6 +183,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             onChange={handleBankCardDetailChange}
             fullWidth
             name="ifsc"
@@ -186,7 +197,7 @@ const BankDetailsCard: FC<BankDetailsCardProps> = (props) => {
   );
 };
 const BankDetails: FC<BankDetailsProps> = (props) => {
-  const { userBankDetails, setUserBankDetails } = props;
+  const { userBankDetails, setUserBankDetails, isEditable = true } = props;
   const handleDeleteBankDetail = (bankDetailId: number) => {
     deleteSingleDetail(
       bankDetailId,
@@ -232,36 +243,45 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ my: 1, mt: 0, bgcolor: "green.main" }}>
-          <LockOutlined />
-        </Avatar>
+        {isEditable && (
+          <Avatar sx={{ my: 1, mt: 0, bgcolor: "green.main" }}>
+            <LockOutlined />
+          </Avatar>
+        )}
         <Typography component="h1" variant="h5">
-          Please fill atleast one bank detail
+          Bank Details
         </Typography>
       </Box>
       <Stack gap={3} width="100%">
-        {userBankDetails.map((userBankDetail) => (
+        {userBankDetails.map((userBankDetail, idx) => (
           <BankDetailsCard
             key={userBankDetail.id}
-            userBankDetail={userBankDetail}
+            userBankDetail={{ ...userBankDetail, id: String(idx + 1) }}
             setUserBankDetails={props.setUserBankDetails}
             handleDeleteBankDetail={handleDeleteBankDetail}
+            isEditable={isEditable}
           />
         ))}
       </Stack>
-      <Box
-        width="100%"
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          px: 6,
-          pt: 3,
-        }}
-      >
-        <Button variant="contained" color="blue" onClick={handleAddBankDetail}>
-          <Add /> Bank Detail
-        </Button>
-      </Box>
+      {isEditable && (
+        <Box
+          width="100%"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            px: 6,
+            pt: 3,
+          }}
+        >
+          <Button
+            variant="contained"
+            color="blue"
+            onClick={handleAddBankDetail}
+          >
+            <Add /> Bank Detail
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -17,6 +17,7 @@ interface UserOtpVerificationProps {
   isSendingOtp: boolean;
   userOtpSent: boolean;
   email: string;
+  onSuccess?: Function;
 }
 
 const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
@@ -25,11 +26,10 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
     setUserOtpVerified,
     isSendingOtp,
     email,
-    userOtpSent,
   } = props;
   const [otp, setOtp] = useState<string>("");
   const [timer, setTimer] = useState<number>(userOtpVerified ? 0 : 29);
-  const [startTimer, setStartTimer] = useState(userOtpSent === true);
+  const [startTimer, setStartTimer] = useState(true);
   const colors = useColors();
 
   // ********** Api Calls **********

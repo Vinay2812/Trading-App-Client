@@ -1,7 +1,7 @@
 import { isAxiosError } from "axios";
 import { AxiosResponseType } from "../types/ApiResponse";
 
-export const processReactQueryOutput = async <T>(
+export const processReactQueryOutput = <T> (
   response: AxiosResponseType<T>,
   isError: boolean = false
 ) => {

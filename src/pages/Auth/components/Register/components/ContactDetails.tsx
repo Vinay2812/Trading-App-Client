@@ -12,17 +12,19 @@ import {
 import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/use-colors";
-import { UserContactDetailsType } from "../../../../../types/user";
+import { UserContactDetailsType } from "../../../../../hooks/api-hooks/user/user";
 
 interface ContactDetailsProps {
   userContactDetails: UserContactDetailsType[];
   setUserContactDetails: Function;
+  isEditable?: boolean;
 }
 
 interface ContactDetailsCardProps {
   userContactDetail: UserContactDetailsType;
   setUserContactDetails: Function;
   handleDeleteContactDetail: Function;
+  isEditable: boolean;
 }
 
 const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
@@ -30,6 +32,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
     userContactDetail,
     setUserContactDetails,
     handleDeleteContactDetail,
+    isEditable,
   } = props;
 
   const handleContactDetailChange = (e: any) => {
@@ -58,13 +61,13 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
         component="h6"
         sx={{
           pl: 1,
-          mb: 1,
+          mb: !isEditable ? 2 : 1,
           display: "flex",
           alignItems: "center",
         }}
       >
         Contact Detail {userContactDetail.id}
-        {
+        {isEditable && (
           <IconButton
             sx={{
               color: "tomato",
@@ -73,11 +76,12 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
           >
             <DeleteForeverOutlined />
           </IconButton>
-        }
+        )}
       </Typography>
       <Grid container spacing={3} width={"100%"}>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             fullWidth
             name="full_name"
             value={userContactDetail.full_name}
@@ -89,6 +93,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             fullWidth
             name="designation"
             value={userContactDetail.designation}
@@ -99,6 +104,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             fullWidth
             name="mobile"
             value={userContactDetail.mobile ?? ""}
@@ -109,6 +115,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             fullWidth
             name="email"
             value={userContactDetail.email}
@@ -119,6 +126,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TextField
+            disabled={!isEditable}
             fullWidth
             name="whatsapp"
             value={userContactDetail.whatsapp}
@@ -132,6 +140,7 @@ const ContactDetailsCard: FC<ContactDetailsCardProps> = (props) => {
 };
 
 const ContactDetails: FC<ContactDetailsProps> = (props) => {
+  const { isEditable = true } = props;
   const handleDeleteContactDetail = (contactDetailId: number) => {
     deleteSingleDetail(
       contactDetailId,
@@ -172,40 +181,45 @@ const ContactDetails: FC<ContactDetailsProps> = (props) => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, mt: 0, bgcolor: "green.main" }}>
-          <LockOutlined />
-        </Avatar>
+        {props.isEditable && (
+          <Avatar sx={{ m: 1, mt: 0, bgcolor: "green.main" }}>
+            <LockOutlined />
+          </Avatar>
+        )}
         <Typography component="h1" variant="h5">
-          Please fill atleast one contact detail
+          Contact Details
         </Typography>
       </Box>
       <Stack gap={3} width="100%">
-        {props.userContactDetails.map((userContactDetail) => (
+        {props.userContactDetails.map((userContactDetail, idx) => (
           <ContactDetailsCard
             key={userContactDetail.id}
-            userContactDetail={userContactDetail}
+            userContactDetail={{ ...userContactDetail, id: String(idx + 1) }}
             setUserContactDetails={props.setUserContactDetails}
             handleDeleteContactDetail={handleDeleteContactDetail}
+            isEditable={isEditable}
           />
         ))}
       </Stack>
-      <Box
-        width="100%"
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          px: 6,
-          pt: 2,
-        }}
-      >
-        <Button
-          variant="contained"
-          color="blue"
-          onClick={handleAddContactDetail}
+      {isEditable && (
+        <Box
+          width="100%"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            px: 6,
+            pt: 2,
+          }}
         >
-          <Add /> Contact Detail
-        </Button>
-      </Box>
+          <Button
+            variant="contained"
+            color="blue"
+            onClick={handleAddContactDetail}
+          >
+            <Add /> Contact Detail
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
