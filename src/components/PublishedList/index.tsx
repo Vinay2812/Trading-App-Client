@@ -1,22 +1,16 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Sidebar } from "../../pages/Admin/components";
 import { Box, Button } from "@mui/material";
 import HeaderCard from "../Cards/HeaderCard";
 import { usePublishedListColumns } from "./use-published-list-columns";
 import { usePublishedList } from "../../hooks/api-hooks/admin";
 import Table from "../Table/Table";
-import { PublishedListType } from "../../hooks/api-hooks/admin/use-get-published-list";
+import { PublishedListType } from "../../hooks/api-hooks/admin/use-published-list";
 import TextLoader from "../TextLoader/TextLoader";
-import { useColors } from "../../hooks/use-colors";
 import { BorderColorOutlined } from "@mui/icons-material";
 import ModifyItem from "./Modals/ModifyItem";
 import { useUpdatePublishedListItem } from "../../hooks/api-hooks/admin/use-update-published-list-item";
-import { useSocket } from "../../providers/SocketProvider";
-import { UPDATE_PUBLISHED_LIST } from "../../utils/socket-constants";
-import {
-  BuyOrderRequestType,
-  useBuyOrder,
-} from "../../hooks/api-hooks/user/use-buy-order";
+import PlaceOrder from "./Modals/PlaceOrder";
 
 interface PublishedListProps {
   isClientList?: boolean;
@@ -27,9 +21,10 @@ export interface PublishedListRowType extends PublishedListType {
 
 const PublishedList: FC<PublishedListProps> = (props) => {
   const { isClientList = false } = props;
-  const { data, isLoading: publishedListLoading } = usePublishedList();
+  const { data, isLoading: publishedListLoading } = usePublishedList(isClientList);
   const [openModifyModal, setOpenModifyModal] = useState(false);
   const [openModifyListModal, setOpenModifyListModal] = useState(false);
+  const [openPlaceOrderModal, setOpenPlaceOrderModal] = useState(false);
   const [updateStatusText, setUpdateStatusText] = useState("loading");
 
   const [selectedPublishedListItem, setSelectedPublishedListItem] =
@@ -37,6 +32,11 @@ const PublishedList: FC<PublishedListProps> = (props) => {
 
   const handleEditPublishedListItem = (item: PublishedListRowType) => {
     setOpenModifyModal(true);
+    setSelectedPublishedListItem(item);
+  };
+
+  const handlePlaceOrder = (item: PublishedListRowType) => {
+    setOpenPlaceOrderModal(true);
     setSelectedPublishedListItem(item);
   };
 
@@ -56,6 +56,7 @@ const PublishedList: FC<PublishedListProps> = (props) => {
   const columns = usePublishedListColumns(
     handleEditPublishedListItem,
     handlePublishedItemStatus,
+    handlePlaceOrder,
     isClientList
   );
   const rows = useMemo<PublishedListType[] | []>(() => {
@@ -92,19 +93,19 @@ const PublishedList: FC<PublishedListProps> = (props) => {
           subtitle={`Welcome to ${
             isClientList ? "client list" : "published list"
           }`}
-          buttonBox={
-            !isClientList ? (
-              <Button
-                variant="contained"
-                color="red"
-                endIcon={<BorderColorOutlined />}
-              >
-                Update List
-              </Button>
-            ) : (
-              <></>
-            )
-          }
+          // buttonBox={
+          //   !isClientList ? (
+          //     <Button
+          //       variant="contained"
+          //       color="red"
+          //       endIcon={<BorderColorOutlined />}
+          //     >
+          //       Update List
+          //     </Button>
+          //   ) : (
+          //     <></>
+          //   )
+          // }
         />
         <Table
           rows={rows}
@@ -115,6 +116,11 @@ const PublishedList: FC<PublishedListProps> = (props) => {
         <ModifyItem
           open={openModifyModal}
           setOpen={setOpenModifyModal}
+          publishedListItem={selectedPublishedListItem}
+        />
+        <PlaceOrder
+          open={openPlaceOrderModal}
+          setOpen={setOpenPlaceOrderModal}
           publishedListItem={selectedPublishedListItem}
         />
       </Box>

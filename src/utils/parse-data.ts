@@ -10,6 +10,7 @@ export async function parseApiData<T>(
   if (!processedData.value) return processedData;
   if (processedData.value instanceof Array) {
     processedData.value = processedData.value.map((d) => schema.parse(d)) as T;
+    console.log(processedData.value)
   } else {
     processedData.value = schema.parse(processedData.value);
   }

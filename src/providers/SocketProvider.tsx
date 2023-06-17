@@ -11,7 +11,9 @@ import { Socket, io } from "socket.io-client";
 import { SERVER_URL } from "../utils/constants";
 import {
   UPDATE_AUTHORIZATION,
+  UPDATE_ORDER_LIST,
   UPDATE_PUBLISHED_LIST,
+  UPDATE_PUBLISH_LIST,
 } from "../utils/socket-constants";
 import { useQueryClient } from "@tanstack/react-query";
 import MaintainencePage from "../components/Errors/MaintainancePage";
@@ -48,9 +50,19 @@ const SocketProvider: FC<SocketProviderProps> = (props) => {
       await queryClient.invalidateQueries(["published-list"]);
     });
 
-    socket.on(UPDATE_AUTHORIZATION, (accoid) => {
+    socket.on(UPDATE_PUBLISH_LIST,async () => {
+      await queryClient.invalidateQueries(["publish-list"])
+    })
+
+    socket.on(UPDATE_AUTHORIZATION, async (accoid) => {
       dispatch(updateUserAuthorizationAction(accoid));
+      await queryClient.invalidateQueries(["registration-list"])
+      await queryClient.invalidateQueries(["user"])
     });
+
+    socket.on(UPDATE_ORDER_LIST, () => {
+      queryClient.invalidateQueries(["order-list"])
+    })
 
     socket.on("connect", () => {
       setServerActive(true);

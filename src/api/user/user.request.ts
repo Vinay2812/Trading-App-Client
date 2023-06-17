@@ -1,4 +1,4 @@
-import { BuyOrderRequestType } from "../../hooks/api-hooks/user/use-buy-order";
+import { PlaceOrderRequestType } from "../../hooks/api-hooks/user/use-place-order";
 import api from "../../utils/api-instance";
 
 export const getCompaniesByMobile = (mobile: string) =>
@@ -23,5 +23,5 @@ export const getAccountMasterByAccoid = async (accoid: number) =>
 export const getUserProfile = async (userId: string) =>
   api.get(`/user/profile/${userId}`);
 
-export const buyOrder = async (data: BuyOrderRequestType) =>
-  api.post("/user/buy-order", data);
+export const placeOrder = async (data: PlaceOrderRequestType) =>
+  api.post("/user/place-order", data);

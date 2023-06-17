@@ -9,11 +9,12 @@ import TextLoader from "../../../../components/TextLoader/TextLoader";
 import { Divider } from "@mui/material";
 import ContactDetails from "../../../Auth/components/Register/components/ContactDetails";
 import UserDetails from "../../../Auth/components/Register/components/UserDetails";
+import { useParams } from "react-router-dom";
 
 interface UserProfileProps {}
 
 const UserProfile: FC<UserProfileProps> = (props) => {
-  const userId = useAppSelector((state) => state.user.userId);
+  const userId = useParams().userId;
   const userProfile = useUserProfile(userId!);
 
   const { loading, loadingText } = useMemo(() => {
@@ -25,12 +26,13 @@ const UserProfile: FC<UserProfileProps> = (props) => {
   }, [userProfile.isLoading]);
 
   if (!userProfile.data?.value) {
-    return <div>NA</div>;
+    return <TextLoader loading={loading} loadingText={loadingText} />;
   }
 
   return (
     <Sidebar active="Profile">
       <HeaderCard title="Profile" subtitle="Welcome to your profile section." />
+      <TextLoader loading={loading} loadingText={loadingText} />
       <Card
         sx={{
           height: "calc(100% - 90px)",
@@ -38,32 +40,23 @@ const UserProfile: FC<UserProfileProps> = (props) => {
           overflowY: "scroll",
         }}
       >
-        <TextLoader loading={loading} loadingText={loadingText} />
         <UserDetails
           userDetails={userProfile.data.value.userInfo}
           setUserDetails={() => {}}
           isEditable={false}
         />
-        <Divider sx={{mt: 2}}/>
+        <Divider sx={{ mt: 2 }} />
         <BankDetails
           userBankDetails={userProfile.data.value.bankInfo}
           setUserBankDetails={() => {}}
           isEditable={false}
         />
-        <Divider sx={{mt: 2}}/>
+        <Divider sx={{ mt: 2 }} />
         <ContactDetails
           userContactDetails={userProfile.data.value.contactInfo}
           setUserContactDetails={() => {}}
           isEditable={false}
         />
-        {/* <Divider />
-        <Box
-          sx={{
-            p: 2,
-          }}
-        >
-          <Button variant="contained">Update</Button>
-        </Box> */}
       </Card>
     </Sidebar>
   );

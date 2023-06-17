@@ -24,6 +24,7 @@ import {
   Logout,
   MenuRounded,
   NightsStaySharp,
+  PendingActions,
   PublishOutlined,
   PublishedWithChangesOutlined,
   RecentActorsOutlined,
@@ -173,7 +174,7 @@ const AdminSidebar: FC<SidebarProps> = ({ active, children }) => {
                 setSelected={setSelected}
                 to="/admin/published-list"
               />
-              <ProSidebarMenuItem
+              {/* <ProSidebarMenuItem
                 title="Client List"
                 icon={
                   <ProSidebarMenuIcon
@@ -184,8 +185,20 @@ const AdminSidebar: FC<SidebarProps> = ({ active, children }) => {
                 selected={selected}
                 setSelected={setSelected}
                 to="/admin/client-list"
-              />
+              /> */}
               <ProSidebarMenuItem
+                title="Pending List"
+                icon={
+                  <ProSidebarMenuIcon
+                    icon={<PendingActions />}
+                    hoverText="Pending List"
+                  />
+                }
+                selected={selected}
+                setSelected={setSelected}
+                to="/admin/pending-list"
+              />
+              {/* <ProSidebarMenuItem
                 title="Todo List"
                 icon={
                   <ProSidebarMenuIcon
@@ -196,7 +209,7 @@ const AdminSidebar: FC<SidebarProps> = ({ active, children }) => {
                 selected={selected}
                 setSelected={setSelected}
                 to="/todos/admin"
-              />
+              /> */}
             </ProSidebarHoverMenu>
             <Divider />
             {/* Others */}
@@ -271,6 +284,7 @@ const AdminSidebar: FC<SidebarProps> = ({ active, children }) => {
               left: "75px",
               zIndex: 0,
             }),
+            overflowY: "auto"
         }}
       >
         {children}

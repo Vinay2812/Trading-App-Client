@@ -2,7 +2,10 @@ import { FC, lazy, useMemo, useState } from "react";
 import { Sidebar } from "..";
 import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
-import { RegistrationListType, useRegistrationList } from "../../../../hooks/api-hooks/admin/use-get-registration-list";
+import {
+  RegistrationListType,
+  useRegistrationList,
+} from "../../../../hooks/api-hooks/admin/use-registration-list";
 import { useRegistrationListColumns } from "./use-registration-list-columns";
 import Table from "../../../../components/Table/Table";
 import { useAddUser } from "../../../../hooks/api-hooks/admin/use-add-user";

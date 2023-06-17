@@ -50,12 +50,13 @@ export function renderPublishedListActions({
   );
 }
 
-export function renderClientListActions({ row, colors }: any) {
+export function renderClientListActions({ row, colors, handlePlaceOrder }: any) {
   return (
     <CustomIconButton
       color={colors.blue[500]}
       hoverBackgroundColor={colors.blue[600]}
       description={`Buy tender id ${row.tender_id}`}
+      onClick={() => handlePlaceOrder(row)}
     >
       <AddShoppingCartOutlined />
     </CustomIconButton>
@@ -66,11 +67,11 @@ export function renderUnit({ row, colors }: any) {
   const unitMap: any = {
     M: "M. Ton",
     Q: "Quintal",
-    L: "Litre",
+    L: "Litres",
   };
 
   const colorMap: any = {
-    M: colors.violet[500],
+    M: colors.red[500],
     Q: colors.blue[600],
     L: colors.green[700],
   };
@@ -78,20 +79,16 @@ export function renderUnit({ row, colors }: any) {
   return (
     <Chip
       sx={{
-        bgcolor: colorMap[row.unit],
-        color: colors.textColor[100],
+        color: colorMap[row.unit],
+        fontWeight: 700,
+        fontSize: "12px",
+        textTransform: "uppercase",
+        backgroundColor: "transparent",
+        border: `2px solid ${colorMap[row.unit]}`,
+        borderRadius: "4px",
+        width: "80px",
       }}
-      label={
-        <Typography
-          sx={{
-            fontSize: "14px !important",
-            width: "60px",
-            textAlign: "center",
-          }}
-        >
-          {unitMap[row.unit]}
-        </Typography>
-      }
+      label={unitMap[row.unit]}
     />
   );
 }

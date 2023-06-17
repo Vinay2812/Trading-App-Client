@@ -142,7 +142,7 @@ const UserSidebar: FC<SidebarProps> = ({ active, children }) => {
                 }
                 selected={selected}
                 setSelected={setSelected}
-                to="/profile"
+                to={`/user/${user.userId}`}
               />
             </ProSidebarHoverMenu>
             <Divider />

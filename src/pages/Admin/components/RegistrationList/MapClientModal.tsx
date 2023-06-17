@@ -17,7 +17,7 @@ import { useColors } from "../../../../hooks/use-colors";
 import CustomIconButton from "../../../../components/Buttons/CustomIconButton";
 import { CancelOutlined } from "@mui/icons-material";
 import { RegistrationListRowType } from ".";
-import { useGetAccountMasterCompanies } from "../../../../hooks/api-hooks/user/use-get-account-master-companies";
+import { useGetAccountMasterCompanies } from "../../../../hooks/api-hooks/user/use-account-master-companies";
 import {
   AccountMasterData,
   useGetAccountMasterByAccoid,
@@ -238,19 +238,19 @@ const MapClientModal: FC<MapClientModalProps> = ({
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Account Code</Typography>
               <Typography sx={valueStyle}>
-                {mapWithUserData.ac_code || "NA"}
+                {mapWithUserData.ac_code ?? "NA"}
               </Typography>
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>User Address</Typography>
               <Typography sx={valueStyle}>
-                {mapWithUserData.address_e || "NA"}
+                {mapWithUserData.address_e ?? "NA"}
               </Typography>
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Gst Number</Typography>
               <Typography sx={valueStyle}>
-                {mapWithUserData.gst_no || "NA"}
+                {mapWithUserData.gst_no ?? "NA"}
               </Typography>
             </Grid>
           </Grid>

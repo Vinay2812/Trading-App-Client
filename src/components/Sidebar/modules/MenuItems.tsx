@@ -13,7 +13,8 @@ export type SidebarSelectedType =
   | "Dark"
   | "Light"
   | "Profile"
-  | "Orders";
+  | "Orders"
+  | "Pending List";
 
 type MenuItemType = {
   title: SidebarSelectedType;

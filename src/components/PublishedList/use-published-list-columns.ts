@@ -8,33 +8,14 @@ import {
   renderUnit,
 } from "./renderers";
 import { PublishedListRowType } from ".";
-import { useAppSelector } from "../../hooks/redux";
 
 export const usePublishedListColumns = (
   handleEditPublishedListItem: (data: PublishedListRowType) => void,
   handlePublishedItemStatus: (data: PublishedListRowType) => void,
+  handlePlaceOrder: (data: PublishedListRowType) => void,
   isClientList: boolean = false
 ) => {
   const colors = useColors();
-  const { userId, accoid } = useAppSelector((state) => state.user);
-  const handleBuyOrder = (data: PublishedListRowType) => {
-    if (!userId || !accoid) {
-      return;
-    }
-    const {
-      tender_id,
-      tender_no,
-      selling_type,
-      sale_rate,
-      mill_rate,
-      purc_rate,
-      auto_confirm,
-    } = data;
-    const order_confirmed = auto_confirm;
-    const order_remark = "";
-    const confirm_remark = "";
-    const qty = 0;
-  };
   return useMemo(() => {
     return !isClientList
       ? ([
@@ -165,7 +146,7 @@ export const usePublishedListColumns = (
             field: "sr_no",
             headerName: "Sr. No.",
             minWidth: 100,
-            flex: 0.5,
+            flex: 1,
             disableColumnMenu: true,
             disableReorder: true,
             sortable: false,
@@ -174,66 +155,69 @@ export const usePublishedListColumns = (
             field: "tender_id",
             headerName: "Tender No",
             minWidth: 100,
-            flex: 0.75,
-          },
-          {
-            field: "mill_short_name",
-            headerName: "Mill Name",
-            minWidth: 250,
             flex: 1,
           },
           {
+            field: "mill_short_name",
+            headerName: "Seller",
+            minWidth: 300,
+            flex: 3,
+          },
+          {
             field: "item_name",
-            headerName: "Item Name",
+            headerName: "Product",
             minWidth: 150,
             flex: 1,
           },
           {
             field: "grade",
             headerName: "Grade",
-            minWidth: 130,
+            minWidth: 150,
             flex: 1,
           },
           {
             field: "unit",
             headerName: "Unit",
             renderCell: ({ row }) => renderUnit({ row, colors }),
-            minWidth: 130,
-            flex: 0.75,
-          },
-          {
-            field: "qty",
-            headerName: "Quantity",
             minWidth: 100,
+            flex: 1,
           },
+          // {
+          //   field: "qty",
+          //   headerName: "Quantity",
+          //   minWidth: 100,
+          // },
           {
             field: "lifting_date",
             headerName: "Lifting Date",
             renderCell: ({ row }: any) =>
               moment(row.lifting_date).format("DD/MM/yyyy"),
             minWidth: 130,
+            flex: 1
           },
           {
             field: "sale_rate",
-            headerName: "Sale Rate",
+            headerName: "Selling Rate",
             minWidth: 100,
+            flex: 1
           },
           {
             field: "balance",
-            headerName: "Balance",
-            minWidth: 100,
+            headerName: "Available Quantity",
+            minWidth: 150,
+            flex: 1
           },
           {
             field: "actions",
             headerName: "Actions",
-            renderCell: ({ row }) => renderClientListActions({ colors, row }),
+            renderCell: ({ row }) => renderClientListActions({ colors, row, handlePlaceOrder }),
             minWidth: 100,
             headerAlign: "center",
             align: "center",
             disableColumnMenu: true,
             disableReorder: true,
             sortable: false,
-            // flex: 1,
+            flex: 1,
           },
         ] as GridColDef[]);
   }, [isClientList]);

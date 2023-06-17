@@ -13,8 +13,8 @@ export const getRegistrationListUsers = async () =>
 
 export const getPublishList = async () => await api.get("/admin/publish-list");
 
-export const getPublishedList = async () =>
-  await api.get("/admin/published-list");
+export const getPublishedList = async (query: string) =>
+  await api.get("/admin/published-list" + query);
 
 export const addUser = async (data: AddUserRequestType) =>
   await api.post("/admin/registration-list/add-user", data);
@@ -25,5 +25,9 @@ export const mapClient = async (data: MapClientRequest) =>
 export const postPublishList = async (data: PostPublishRequest) =>
   await api.post("/admin/publish-list", data);
 
-export const updatePublishedListItem = async (data: UpdatePublishedListItemRequest) =>
-  await api.patch("/admin/published-list/item", data);
+export const updatePublishedListItem = async (
+  data: UpdatePublishedListItemRequest
+) => await api.patch("/admin/published-list/item", data);
+
+export const getOrderList = async (query: string) =>
+  await api.get("/admin/order-list" + query);

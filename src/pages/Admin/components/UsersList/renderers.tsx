@@ -4,7 +4,7 @@ import { Chip, IconButton, Link, Tooltip } from "@mui/material";
 export const renderMoreDetails = ({ row, colors }: any) => {
   return (
     <Tooltip title="More details">
-      <Link href={`/admin/users/${row.userId}`}>
+      <Link href={`/user/${row.userId}`}>
         <IconButton
           sx={{
             color: colors.blue[400],
@@ -24,7 +24,7 @@ export const renderMoreDetails = ({ row, colors }: any) => {
 export const renderStatus = ({ row, colors }: any) => {
   const statusColors = {
     pending: colors.red[500],
-    mapped: colors.indigo[600],
+    mapped: colors.green[600],
     added: colors.blue[600],
   };
 
@@ -38,11 +38,14 @@ export const renderStatus = ({ row, colors }: any) => {
   return (
     <Chip
       sx={{
-        color: colors.white,
-        bgcolor: statusColors[status],
+        color: statusColors[status],
         fontWeight: 700,
         fontSize: "12px",
         textTransform: "uppercase",
+        backgroundColor: "transparent",
+        border: `2px solid ${statusColors[status]}`,
+        borderRadius: "4px",
+        width: "80px"
       }}
       label={statusText[status]}
     />

@@ -2,6 +2,7 @@ import { FC, ReactElement, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticateAdminRoute } from "./AuthenticateRoutes";
 import Admin from "../pages/Admin";
+import PendingList from "../pages/Admin/components/PendingList";
 
 const RegistrationList = lazy(
   () => import("../pages/Admin/components/RegistrationList")
@@ -61,6 +62,14 @@ export const AdminRoutes: FC<AdminRoutesProps> = (props): ReactElement => {
           element={
             <AuthenticateAdminRoute>
               <PublishedList isClientList={true} />
+            </AuthenticateAdminRoute>
+          }
+        />
+        <Route
+          path="pending-list"
+          element={
+            <AuthenticateAdminRoute>
+              <PendingList />
             </AuthenticateAdminRoute>
           }
         />

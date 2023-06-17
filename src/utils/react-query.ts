@@ -1,7 +1,8 @@
 import { isAxiosError } from "axios";
 import { AxiosResponseType } from "../types/ApiResponse";
+import { DEV_ENV } from "./constants";
 
-export const processReactQueryOutput = <T> (
+export const processReactQueryOutput = <T>(
   response: AxiosResponseType<T>,
   isError: boolean = false
 ) => {
@@ -14,4 +15,11 @@ export const processReactQueryOutput = <T> (
     return { value, error, message };
   }
   return { value: response.data.data, message: response.data.message };
+};
+
+export const onComplete = (data: any, cb?: any) => {
+  return (...args: any[]) => {
+    DEV_ENV && console.log(data);
+    if (cb) cb(...args);
+  };
 };

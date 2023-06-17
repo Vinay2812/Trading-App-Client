@@ -4,7 +4,10 @@ import { Box } from "@mui/material";
 import HeaderCard from "../../../../components/Cards/HeaderCard";
 import { usePublishList } from "../../../../hooks/api-hooks/admin";
 import { usePublishListColumns } from "./use-publish-list-columns";
-import { PublishListResponseType, PublishListType } from "../../../../hooks/api-hooks/admin/use-get-publish-list";
+import {
+  PublishListResponseType,
+  PublishListType,
+} from "../../../../hooks/api-hooks/admin/use-publish-list";
 import Table from "../../../../components/Table/Table";
 import TextLoader from "../../../../components/TextLoader/TextLoader";
 import PublishListModal from "./PublishListModal";
@@ -73,7 +76,7 @@ const PublishList: FC<PublishListProps> = (props) => {
 
   return (
     <Sidebar active="Publish List">
-      { <TextLoader loading={loading} loadingText={loadingText} />}
+      {<TextLoader loading={loading} loadingText={loadingText} />}
       <Box width="100%" height="100%" position="relative">
         <HeaderCard title="Publish List" subtitle="Welcome to publish list" />
         <Table

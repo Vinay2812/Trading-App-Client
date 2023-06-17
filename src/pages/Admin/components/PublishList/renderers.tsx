@@ -63,13 +63,13 @@ export function renderActions({
     payment_to,
     mill_short_name,
     item_name
-  } as PostPublishRequest;
+  };
   return (
     <CustomIconButton
       description={`Publish Item ${row.tender_id}`}
       color={colors.blue[500]}
       hoverBackgroundColor={colors.blue[600]}
-      onClick={() => handlePublishActionClick(data)}
+      onClick={() => handlePublishActionClick(data as PostPublishRequest)}
     >
       <PublishOutlined />
     </CustomIconButton>

@@ -39,25 +39,26 @@ export const publishedListSchema = z.object({
   pt: z.number().optional(),
   do_ac: z.number().optional(),
   do_id: z.number().optional(),
-  selling_type: z.string().optional(),
-  multiple_of: z.number().optional(),
-  auto_confirm: z.string().optional(),
+  selling_type: z.enum(["F", "P"]),
+  multiple_of: z.number(),
+  auto_confirm: z.enum(["Y", "N"]),
 });
 
 export type PublishedListType = z.infer<typeof publishedListSchema>;
 
-export const usePublishedList = () => {
+export const usePublishedList = (isClientList?: boolean) => {
   return useQuery({
     queryKey: ["published-list"],
     queryFn: async () => {
-      const response = await getPublishedList();
+      const query = `?client=${!!isClientList}`
+      const response = await getPublishedList(query);
       return parseApiData<PublishedListType[]>(publishedListSchema, response);
     },
     onSuccess: (response) => {
       DEV_ENV && console.log(response);
     },
     onError: (error) => {
-      DEV_ENV && console.log("error", error);
+      DEV_ENV && console.log(error);
       const err = processReactQueryOutput<any>(error as any, true);
     },
   });

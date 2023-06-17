@@ -26,11 +26,11 @@ export const UserRoutes = () => {
         }
       />
       <Route
-        path="/profile"
+        path="/user/:userId"
         element={
-          <AuthenticateUserRoute>
+          // <AuthenticateUserRoute>
             <UserProfile />
-          </AuthenticateUserRoute>
+          // </AuthenticateUserRoute>
         }
         />
     </Routes>
