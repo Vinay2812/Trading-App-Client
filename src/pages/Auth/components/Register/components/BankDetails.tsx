@@ -16,6 +16,7 @@ import { accountTypes } from "../data";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/use-colors";
 import { UserBankDetailsType } from "../../../../../hooks/api-hooks/user/user";
+import HeaderCard from "../../../../../components/Cards/HeaderCard";
 
 interface BankDetailsProps {
   userBankDetails: UserBankDetailsType[];
@@ -236,22 +237,11 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
         bgcolor: colors.card,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {isEditable && (
-          <Avatar sx={{ my: 1, mt: 0, bgcolor: "green.main" }}>
-            <LockOutlined />
-          </Avatar>
-        )}
-        <Typography component="h1" variant="h5">
-          Bank Details
-        </Typography>
-      </Box>
+      <HeaderCard
+        title="Bank Details"
+        subtitle= {isEditable ? "Please fill atleast 1 bank detail" : ""}
+        sx={{pl: 4, mb: 2, height: "max-content", p: 0}}
+      />
       <Stack gap={3} width="100%">
         {userBankDetails.map((userBankDetail, idx) => (
           <BankDetailsCard

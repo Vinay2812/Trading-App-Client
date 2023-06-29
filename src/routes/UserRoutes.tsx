@@ -18,7 +18,7 @@ export const UserRoutes = () => {
         />
       </Route>
       <Route
-        path="/client-list"
+        path="/product-list"
         element={
           <AuthenticateUserRoute>
             <PublishedList isClientList />

@@ -4,7 +4,7 @@ import Sidebar from "../Sidebar";
 
 function MaintainencePage() {
   return (
-    <Sidebar active="Home">
+    <Box sx={{ width: "100%", height: "100%" }}>
       <img
         src={`${serverDownImg}`}
         style={{
@@ -43,7 +43,7 @@ function MaintainencePage() {
           Be back soon
         </Typography>
       </Box>
-    </Sidebar>
+    </Box>
   );
 }
 

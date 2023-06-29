@@ -1,4 +1,12 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useColors } from "../../hooks/use-colors";
@@ -12,8 +20,28 @@ import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { loginAdminAction } from "../../redux/reducers/admin.reducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import Card from "../../components/Cards/Card";
 
 interface authProps {}
+
+const OrDivider = () => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        gap: 1,
+        p: 0,
+        m: 1,
+      }}
+    >
+      <Divider sx={{ display: "flex", flex: 1, m: 0, p: 0 }} />
+      <Typography p={0}>OR</Typography>
+      <Divider sx={{ display: "flex", flex: 1, m: 0, p: 0 }} />
+    </Box>
+  );
+};
 
 const Auth: FC<authProps> = (props) => {
   const navigate = useNavigate();
@@ -53,97 +81,79 @@ const Auth: FC<authProps> = (props) => {
   });
 
   return (
-    <Container
-      maxWidth="md"
+    <Card
       sx={{
-        backgroundColor: colors.card,
-        p: "0 !important",
-        borderRadius: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: `min(500px, 100vw)`,
+        height: "100vh",
+        px: 4,
+        borderRadius: 0,
       }}
     >
-      <Grid
-        container
+      <Typography
+        variant="h3"
         sx={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          fontWeight: 500,
+          letterSpacing: 2,
+          p: 1,
+          fontSize: 40,
+          color: colors.textColor[100],
+          mt: 2,
+          // fontStyle: "oblique"
         }}
       >
-        <Grid
-          item
-          sx={{
-            width: "50%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            p: 4,
-          }}
-          height="500px"
+        CommodityXChange
+      </Typography>
+      <Typography
+        variant="h4"
+        sx={{
+          fontStyle: "oblique",
+          textAlign: "center",
+          fontWeight: 300,
+          color: colors.textColor[400],
+        }}
+      >
+        Your's <br /> Commodity Trading Platflorm
+      </Typography>
+      <Stack sx={{ width: "100%", gap: 3, mb: 2 }}>
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ borderRadius: "24px", m: 0 }}
+          startIcon={<AppRegistrationRounded />}
+          onClick={() => navigate("/auth/register")}
+          endIcon={<ArrowRightAlt />}
+          color="red"
         >
-          <Typography
-            component="h4"
-            variant="h4"
-            textAlign="center"
-            sx={{
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontStyle: "italic",
-            }}
-          >
-            Welcome to Online Commodity Trading App
-          </Typography>
-        </Grid>
-        <Grid item sx={{ height: "100%", p: 4, width: "50%" }}>
-          <Box
-            gap={3}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              width: "100%",
-            }}
-          >
-            <Button
-              variant="contained"
-              fullWidth
-              color="red"
-              sx={{ fontSize: "16px" }}
-              startIcon={<AppRegistrationRounded />}
-              onClick={() => navigate("/auth/register")}
-              endIcon={<ArrowRightAlt />}
-            >
-              Sign up
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              color="green"
-              sx={{ fontSize: "16px", display: "flex", alignItems: "center" }}
-              onClick={() => navigate("/auth/login")}
-              startIcon={<VerifiedUser />}
-              endIcon={<ArrowRightAlt />}
-            >
-              Sign in
-            </Button>
-
-            <Button
-              variant="contained"
-              fullWidth
-              color="violet"
-              sx={{ fontSize: "16px", bgcolor: colors.violet[600] }}
-              // onClick={() => navigate("/auth/admin/login")}
-              onClick={() => adminLogin()}
-              startIcon={<AdminPanelSettingsOutlined />}
-              endIcon={<ArrowRightAlt />}
-            >
-              Admin Login
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </Container>
+          Sign up as User
+        </Button>
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ borderRadius: "24px", m: 0 }}
+          onClick={() => navigate("/auth/login")}
+          startIcon={<VerifiedUser />}
+          endIcon={<ArrowRightAlt />}
+          color="blue"
+        >
+          Sign in as User
+        </Button>
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ borderRadius: "24px", m: 0 }}
+          onClick={() => adminLogin()}
+          startIcon={<AdminPanelSettingsOutlined />}
+          endIcon={<ArrowRightAlt />}
+          color="green"
+        >
+          Sign in as Admin
+        </Button>
+      </Stack>
+    </Card>
   );
 };
 

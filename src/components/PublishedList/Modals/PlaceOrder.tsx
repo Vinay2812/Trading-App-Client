@@ -108,7 +108,7 @@ const PlaceOrder: FC<PlaceOrderProps> = ({
     setOpen(false);
   };
 
-  const { loading, loadingText } = useMemo(() => {
+  const loadingProps = useMemo(() => {
     let loadingText = "loading";
     if (placeOrderMutation.isLoading) {
       loadingText = "placing";
@@ -122,7 +122,7 @@ const PlaceOrder: FC<PlaceOrderProps> = ({
   return (
     <Modal open={open}>
       <div>
-        <TextLoader loading={loading} loadingText={loadingText} />
+        <TextLoader {...loadingProps} />
         <Card
           sx={{
             width: 800,

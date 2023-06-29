@@ -13,6 +13,7 @@ import { Add, DeleteForeverOutlined, LockOutlined } from "@mui/icons-material";
 import { addSingleDetail, deleteSingleDetail } from "../helpers";
 import { useColors } from "../../../../../hooks/use-colors";
 import { UserContactDetailsType } from "../../../../../hooks/api-hooks/user/user";
+import HeaderCard from "../../../../../components/Cards/HeaderCard";
 
 interface ContactDetailsProps {
   userContactDetails: UserContactDetailsType[];
@@ -174,22 +175,13 @@ const ContactDetails: FC<ContactDetailsProps> = (props) => {
         bgcolor: colors.card,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {props.isEditable && (
-          <Avatar sx={{ m: 1, mt: 0, bgcolor: "green.main" }}>
-            <LockOutlined />
-          </Avatar>
-        )}
-        <Typography component="h1" variant="h5">
-          Contact Details
-        </Typography>
-      </Box>
+      <HeaderCard
+        title="Contact Details"
+        subtitle={
+          props.isEditable ? "Please fill atleast 1 contact detail" : ""
+        }
+        sx={{ pl: 4, mb: 2, height: "max-content", p: 0 }}
+      />
       <Stack gap={3} width="100%">
         {props.userContactDetails.map((userContactDetail, idx) => (
           <ContactDetailsCard

@@ -1,9 +1,18 @@
 import {
+  Cancel,
+  CancelOutlined,
   CheckCircleOutlineRounded,
   LockOutlined,
   Send,
 } from "@mui/icons-material";
-import { Container, Box, Typography, Avatar, Button } from "@mui/material";
+import {
+  Container,
+  Box,
+  Typography,
+  Avatar,
+  Button,
+  IconButton,
+} from "@mui/material";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { FC, useEffect, useState } from "react";
 import { useColors } from "../../../../../hooks/use-colors";
@@ -18,6 +27,7 @@ interface UserOtpVerificationProps {
   userOtpSent: boolean;
   email: string;
   onSuccess?: Function;
+  handleCancel?: Function | null;
 }
 
 const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
@@ -26,6 +36,7 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
     setUserOtpVerified,
     isSendingOtp,
     email,
+    handleCancel = null,
   } = props;
   const [otp, setOtp] = useState<string>("");
   const [timer, setTimer] = useState<number>(userOtpVerified ? 0 : 29);
@@ -121,8 +132,18 @@ const UserOtpVerification: FC<UserOtpVerificationProps> = (props) => {
             py: 2,
             borderRadius: 4,
             bgcolor: colors.card,
+            position: "relative",
           }}
         >
+          {handleCancel && (
+            <IconButton
+              color="red"
+              sx={{ position: "absolute", top: 4, right: 4 }}
+              onClick={() => handleCancel()}
+            >
+              <CancelOutlined />
+            </IconButton>
+          )}
           <Avatar
             sx={{
               m: 1,

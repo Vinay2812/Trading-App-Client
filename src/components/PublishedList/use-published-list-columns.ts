@@ -93,6 +93,13 @@ export const usePublishedListColumns = (
             minWidth: 130,
           },
           {
+            field: "publish_date",
+            headerName: "Publish Date",
+            renderCell: ({ row }) =>
+              moment(row.publish_date).format("DD/MM/yyyy"),
+            minWidth: 120,
+          },
+          {
             field: "purc_rate",
             headerName: "Purchase Rate",
             minWidth: 130,
@@ -104,7 +111,7 @@ export const usePublishedListColumns = (
           },
           {
             field: "sale_rate",
-            headerName: "Sale Rate",
+            headerName: "Selling Rate",
             minWidth: 100,
           },
           {
@@ -193,24 +200,25 @@ export const usePublishedListColumns = (
             renderCell: ({ row }: any) =>
               moment(row.lifting_date).format("DD/MM/yyyy"),
             minWidth: 130,
-            flex: 1
+            flex: 1,
           },
           {
             field: "sale_rate",
             headerName: "Selling Rate",
             minWidth: 100,
-            flex: 1
+            flex: 1,
           },
           {
             field: "balance",
             headerName: "Available Quantity",
             minWidth: 150,
-            flex: 1
+            flex: 1,
           },
           {
             field: "actions",
             headerName: "Actions",
-            renderCell: ({ row }) => renderClientListActions({ colors, row, handlePlaceOrder }),
+            renderCell: ({ row }) =>
+              renderClientListActions({ colors, row, handlePlaceOrder }),
             minWidth: 100,
             headerAlign: "center",
             align: "center",

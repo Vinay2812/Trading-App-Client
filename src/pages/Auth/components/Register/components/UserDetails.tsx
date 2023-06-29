@@ -13,6 +13,7 @@ import { states, getDistrictsOfState, constitutionOfFirm } from "../data";
 import { LockOutlined } from "@mui/icons-material";
 import { useColors } from "../../../../../hooks/use-colors";
 import { UserDataType } from "../../../../../hooks/api-hooks/user/user";
+import HeaderCard from "../../../../../components/Cards/HeaderCard";
 
 interface UserDetailsProps {
   userDetails: UserDataType;
@@ -108,14 +109,11 @@ const UserDetails: FC<UserDetailsProps> = (props) => {
         bgcolor: colors.card,
       }}
     >
-      {isEditable && (
-        <Avatar sx={{ bgcolor: "green.main" }}>
-          <LockOutlined />
-        </Avatar>
-      )}
-      <Typography component="h1" variant="h5" pb={2}>
-        User Details
-      </Typography>
+      <HeaderCard
+        title="User Details"
+        subtitle= {isEditable ? "Please fill the user details" : ""}
+        sx={{pl: 4, mb: 2, height: "max-content", p: 0}}
+      />
       <Box
         sx={{
           px: 4,

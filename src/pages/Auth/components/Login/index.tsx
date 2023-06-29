@@ -5,6 +5,7 @@ import {
   Button,
   Container,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,6 +22,7 @@ import UserOtpVerification from "../Register/components/UserOtpVerification";
 import UserPassword from "../Register/components/UserPassword";
 import { UserLoginResponseType } from "../../../../hooks/api-hooks/user/user";
 import { useGetUserByQuery } from "../../../../hooks/api-hooks/user/use-get-user";
+import HeaderCard from "../../../../components/Cards/HeaderCard";
 
 interface LoginProps {}
 
@@ -91,7 +93,7 @@ const Login: FC<LoginProps> = (props) => {
   async function handleSubmit() {
     loginUserMutation.mutate(loginForm);
   }
-  
+
   function handleMobileNumberChange(e: any) {
     if (e.target.value === "" || /\d/.test(e.target.value)) {
       setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -113,6 +115,9 @@ const Login: FC<LoginProps> = (props) => {
         setUserOtpVerified={setEmailVerified}
         userOtpSent={sendOtpMutation.isSuccess}
         userOtpVerified={emailVerified}
+        handleCancel={() => {
+          setActivePage("login");
+        }}
       />
     );
   }
@@ -129,117 +134,125 @@ const Login: FC<LoginProps> = (props) => {
   }
 
   return (
-    <Container
-      component="main"
-      maxWidth="sm"
+    <Card
       sx={{
-        bgcolor: colors.card,
-        pb: 1,
-        borderRadius: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        justifyContent: "space-around",
+        width: "min(500px, 100vw)",
+        borderRadius: 0,
+        height: "100vh",
+        px: 4,
+        gap: 0,
       }}
     >
       <TextLoader
         loading={loginUserMutation.isLoading}
         loadingText="Logging in"
       />
-      <Card
+      <HeaderCard
+        title="SIGN IN"
+        subtitle="Explore the commodities on our platform"
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
+          p: 0,
+          height: "max-content"
         }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign In
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2.5}>
-            <Grid item xs={2.2}>
-              <TextField fullWidth value="+91" disabled />
-            </Grid>
-            <Grid item xs={9.8}>
-              <TextField
-                required
-                fullWidth
-                label="Mobile Number"
-                name="mobile"
-                autoFocus
-                onChange={handleMobileNumberChange}
-                value={loginForm.mobile}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Autocomplete
-                options={companies}
-                disabled={companies.length === 0}
-                value={
-                  companies.find(
-                    (company) => company.label === loginForm.company_name
-                  ) ?? null
-                }
-                onChange={(e, value) =>
-                  setLoginForm({
-                    ...loginForm,
-                    company_name: value?.label || "",
-                  })
-                }
-                renderInput={(params) => (
-                  <TextField {...params} label="Company" required />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                onChange={(e) =>
-                  setLoginForm({
-                    ...loginForm,
-                    [e.target.name]: e.target.value,
-                  })
-                }
-              />
-            </Grid>
+      />
+      <Box component="form" noValidate onSubmit={handleSubmit}>
+        <Grid container spacing={4}>
+          <Grid item xs={3}>
+            <TextField fullWidth value="+91" disabled />
           </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            color="green"
-            sx={{ mt: 3, mb: 2, p: 1 }}
-            onClick={handleSubmit}
-            disabled={loginUserMutation.isLoading}
-          >
-            Sign in
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            color="red"
-            sx={{ mt: 1, mb: 2, p: 1 }}
-            startIcon={<ArrowBack />}
-            onClick={() => navigate("/auth")}
-            disabled={loginUserMutation.isLoading}
-          >
-            Go to Home
-          </Button>
-          <Typography color={colors.textColor[400]}>
-            Don't remember you password ?
-            <Button size="small" onClick={handleResetPassword}>
-              Reset Password
-            </Button>
-          </Typography>
-        </Box>
-      </Card>
-    </Container>
+          <Grid item xs={9}>
+            <TextField
+              required
+              fullWidth
+              label="Mobile Number"
+              name="mobile"
+              autoFocus
+              onChange={handleMobileNumberChange}
+              value={loginForm.mobile}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Autocomplete
+              options={companies}
+              disabled={companies.length === 0}
+              value={
+                companies.find(
+                  (company) => company.label === loginForm.company_name
+                ) ?? null
+              }
+              onChange={(e, value) =>
+                setLoginForm({
+                  ...loginForm,
+                  company_name: value?.label ?? "",
+                })
+              }
+              renderInput={(params) => (
+                <TextField {...params} label="Company" required />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              onChange={(e) =>
+                setLoginForm({
+                  ...loginForm,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+          </Grid>
+        </Grid>
+      </Box>
+      <Stack width="100%">
+        <Button
+          fullWidth
+          variant="contained"
+          color="green"
+          sx={{ mb: 2, p: 1, borderRadius: "24px" }}
+          onClick={handleSubmit}
+          disabled={loginUserMutation.isLoading}
+        >
+          Sign in
+        </Button>
+
+        <Button
+          size="small"
+          onClick={handleResetPassword}
+          sx={{
+            width: "max-content",
+            ":hover": {
+              backgroundColor: "transparent",
+              color: colors.blue[500],
+            },
+            borderRadius: "24px",
+          }}
+        >
+          Forgot Password?
+        </Button>
+        <Button
+          fullWidth
+          variant="outlined"
+          color="red"
+          sx={{ mt: 1, mb: 2, p: 1, borderRadius: "24px" }}
+          startIcon={<ArrowBack />}
+          onClick={() => navigate("/auth")}
+          disabled={loginUserMutation.isLoading}
+        >
+          Go to Home
+        </Button>
+      </Stack>
+    </Card>
   );
 };
 

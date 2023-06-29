@@ -175,11 +175,11 @@ const AdminSidebar: FC<SidebarProps> = ({ active, children }) => {
                 to="/admin/published-list"
               />
               {/* <ProSidebarMenuItem
-                title="Client List"
+                title="Product List"
                 icon={
                   <ProSidebarMenuIcon
                     icon={<RecentActorsOutlined />}
-                    hoverText="Client List"
+                    hoverText="Product List"
                   />
                 }
                 selected={selected}

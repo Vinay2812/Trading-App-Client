@@ -7,7 +7,7 @@ export type SidebarSelectedType =
   | "Registration List"
   | "Published List"
   | "Publish List"
-  | "Client List"
+  | "Product List"
   | "Todo List"
   | "Logout"
   | "Dark"

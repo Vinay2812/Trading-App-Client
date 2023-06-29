@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Sidebar } from "./components";
 import { useColors } from "../../hooks/use-colors";
 import {
@@ -20,6 +20,12 @@ import {
 import HeaderCard from "../../components/Cards/HeaderCard";
 import { TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import {
+  UpdateTradeTimeReq,
+  useUpdateTradeTime,
+} from "../../hooks/api-hooks/admin/use-update-trade-time";
+import TextLoader from "../../components/TextLoader/TextLoader";
+import { useTradeTime } from "../../hooks/api-hooks/admin/use-trade-timings";
 
 interface AdminProps {}
 
@@ -208,7 +214,7 @@ const Admin: FC<AdminProps> = (props) => {
     isEnabled: false,
   });
   const now = useMemo(() => new Date(), []);
-  const [tradeTimingData, setTradeTimingData] = useState({
+  const [tradeTimingData, setTradeTimingData] = useState<UpdateTradeTimeReq>({
     startTime: new Date(
       now.getFullYear(),
       now.getMonth(),
@@ -217,7 +223,7 @@ const Admin: FC<AdminProps> = (props) => {
       0,
       0,
       0
-    ),
+    ).toISOString(),
     endTime: new Date(
       now.getFullYear(),
       now.getMonth(),
@@ -226,12 +232,34 @@ const Admin: FC<AdminProps> = (props) => {
       0,
       0,
       0
-    ),
+    ).toISOString(),
     offDays: ["Saturday", "Sunday"],
   });
 
+  // react queries
+  const updateTradeTimeMutation = useUpdateTradeTime();
+  const tradeTimeQuery = useTradeTime();
+
+  useEffect(() => {
+    if (tradeTimeQuery.data?.value) {
+      setTradeTimingData(tradeTimeQuery.data.value);
+    }
+  }, [tradeTimeQuery.data]);
+
+  const loadingProps = useMemo(() => {
+    let loadingText = "loading";
+    if (updateTradeTimeMutation.isLoading) {
+      loadingText = "Saving";
+    }
+    return {
+      loading: updateTradeTimeMutation.isLoading,
+      loadingText,
+    };
+  }, [updateTradeTimeMutation.isLoading]);
+
   return (
     <Sidebar active="Home">
+      <TextLoader {...loadingProps} />
       <HeaderCard title="Home" subtitle="Welcome to admin home page" />
       <Card sx={{ mt: 2 }}>
         <Box width="100%">
@@ -261,9 +289,12 @@ const Admin: FC<AdminProps> = (props) => {
               onChange={(value) =>
                 setTradeTimingData((prev) => ({
                   ...prev,
-                  startTime: value!.toDate(),
+                  startTime: value!.toDate().toISOString(),
                 }))
               }
+              timeSteps={{
+                minutes: 1,
+              }}
               disabled={!editTime}
             />
             <TimePicker
@@ -271,15 +302,18 @@ const Admin: FC<AdminProps> = (props) => {
               onChange={(value) =>
                 setTradeTimingData((prev) => ({
                   ...prev,
-                  endTime: value!.toDate(),
+                  endTime: value!.toDate().toISOString(),
                 }))
               }
+              timeSteps={{
+                minutes: 1,
+              }}
               value={dayjs(tradeTimingData.endTime)}
               disabled={!editTime}
             />
             <WeekdayAutocomplete
               value={tradeTimingData.offDays}
-              onChange={(value: string[]) =>
+              onChange={(value: any) =>
                 setTradeTimingData((prev) => ({ ...prev, offDays: value }))
               }
               disabled={!editTime}
@@ -291,7 +325,12 @@ const Admin: FC<AdminProps> = (props) => {
                 width: 100,
                 height: 40,
               }}
-              onClick={() => setEditTime((prev) => !prev)}
+              onClick={() => {
+                if (editTime) {
+                  updateTradeTimeMutation.mutate(tradeTimingData);
+                }
+                setEditTime((prev) => !prev);
+              }}
             >
               {editTime ? "Save" : "Edit"}
             </Button>

@@ -1,12 +1,13 @@
-import { Card } from "@mui/material";
+import { Card, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import { useColors } from "../../hooks/use-colors";
 
 interface TableCardProps {
+  sx?: SxProps<Theme>
   children: React.ReactNode;
 }
 
-const TableCard: FC<TableCardProps> = ({ children }) => {
+const TableCard: FC<TableCardProps> = ({ sx, children }) => {
   const colors = useColors();
   return (
     <Card
@@ -15,6 +16,7 @@ const TableCard: FC<TableCardProps> = ({ children }) => {
         width: "100%",
         height: "calc(100% - 90px)",
         bgcolor: `${colors.card}`,
+        ...sx,
         "& .MuiDataGrid-columnHeaders": {
           mt: 2,
           fontWeight: 700,

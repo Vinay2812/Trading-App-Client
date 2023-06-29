@@ -2,7 +2,9 @@ import { FC } from "react";
 import * as React from "react";
 import {
   ArrowBack,
+  ArrowBackOutlined,
   ArrowForward,
+  CancelOutlined,
   Done,
   Home,
   LockOutlined,
@@ -39,6 +41,7 @@ import {
 } from "../../../../hooks/api-hooks/user/user";
 import { useSendOtp } from "../../../../hooks/api-hooks/auth/use-send-otp";
 import { useCustomToast } from "../../../../hooks/use-custom-toast";
+import HeaderCard from "../../../../components/Cards/HeaderCard";
 
 const BankDetails = React.lazy(() => import("./components/BankDetails"));
 const ContactDetails = React.lazy(() => import("./components/ContactDetails"));
@@ -154,6 +157,7 @@ const Register: FC<RegisterProps> = (props) => {
           <UserDetails
             userDetails={userDetails}
             setUserDetails={setUserDetails}
+            isEditable
           />
         );
       case 1:
@@ -161,6 +165,7 @@ const Register: FC<RegisterProps> = (props) => {
           <BankDetails
             userBankDetails={userBankDetails}
             setUserBankDetails={setUserBankDetails}
+            isEditable
           />
         );
       case 2:
@@ -168,6 +173,7 @@ const Register: FC<RegisterProps> = (props) => {
           <ContactDetails
             userContactDetails={userContactDetails}
             setUserContactDetails={setUserContactDetails}
+            isEditable
           />
         );
       case 3:
@@ -234,7 +240,7 @@ const Register: FC<RegisterProps> = (props) => {
   };
 
   const handleNext = () => {
-    const { value, error } = validateForm(activeStep);
+    const { error } = validateForm(activeStep);
     if (error) {
       error.length && fail(error[0]);
       return;
@@ -273,47 +279,16 @@ const Register: FC<RegisterProps> = (props) => {
         overflowY: "scroll",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          bgcolor: colors.card,
-        }}
-      >
-        <Tooltip title="Go to home">
-          <IconButton
-            size="large"
-            sx={{ position: "absolute", left: 2, fontSize: 20 }}
-            onClick={() => navigate("/auth")}
-            content="home"
-            color="red"
-          >
-            <Avatar sx={{ bgcolor: colors.red[500] }}>
-              <Home
-                sx={{
-                  fontSize: "28px",
-                }}
-              />
-            </Avatar>
+      <HeaderCard
+        title="Sign up"
+        subtitle="Please register yourself to access the platform"
+        buttonBox={
+          <IconButton color="red" onClick={() => navigate("/auth")}>
+            <CancelOutlined />
           </IconButton>
-        </Tooltip>
-
-        <Typography
-          variant="h4"
-          sx={{
-            color: "white",
-            textAlign: "center",
-            fontWeight: "700",
-            py: 3,
-            px: 2,
-            mb: 1,
-          }}
-        >
-          <LockOutlined /> Registration form
-        </Typography>
-      </Box>
+        }
+        sx={{ borderRadius: 0 }}
+      />
       <Stepper activeStep={activeStep} sx={{ py: 3 }}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};

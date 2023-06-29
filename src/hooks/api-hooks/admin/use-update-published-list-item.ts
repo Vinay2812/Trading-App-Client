@@ -9,6 +9,7 @@ export type UpdatePublishedListItemRequest = {
   sale_rate: number;
   published_qty: number;
   status: "Y" | "N";
+  publish_date?: string | Date;
 };
 
 export const useUpdatePublishedListItem = () => {

@@ -24,6 +24,8 @@ import Card from "../../Cards/Card";
 import HeaderCard from "../../Cards/HeaderCard";
 import CustomIconButton from "../../Buttons/CustomIconButton";
 import { CancelOutlined } from "@mui/icons-material";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 interface ModifyItemProps {
   open: boolean;
@@ -47,6 +49,7 @@ const ModifyItem: FC<ModifyItemProps> = ({
       sale_rate: publishedListItem.sale_rate,
       published_qty: publishedListItem.published_qty,
       status: publishedListItem.status || "N",
+      publish_date: publishedListItem.publish_date!,
     });
   }, [publishedListItem]);
 
@@ -165,9 +168,7 @@ const ModifyItem: FC<ModifyItemProps> = ({
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Quantity </Typography>
-              <Typography sx={valueStyle}>
-                {publishedListItem.qty}
-              </Typography>
+              <Typography sx={valueStyle}>{publishedListItem.qty}</Typography>
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>
               <Typography sx={labelStyle}>Mill Rate </Typography>
@@ -210,6 +211,24 @@ const ModifyItem: FC<ModifyItemProps> = ({
                   <MenuItem value="N">Stop</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item display="flex" xs={12} md={6} gap={2}>
+              <Typography sx={labelStyle}>Publish Date</Typography>
+              {/* <DatePicker
+                value={dayjs(modifyData.publish_date)}
+                sx={{width: 200}}
+                slotProps={{ textField: { size: 'small' } }}
+                format="DD/MM/YYYY"
+                onChange={(value) => {
+                  setModifyData((prev) => ({
+                    ...prev,
+                    publish_date: value?.toDate() ?? modifyData.publish_date,
+                  }));
+                }}
+              /> */}
+              <Typography sx={valueStyle}>
+                {dayjs(publishedListItem.publish_date).format("DD/MM/YYYY").toString()}
+              </Typography>
             </Grid>
           </Grid>
           <Button

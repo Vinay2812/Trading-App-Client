@@ -7,9 +7,11 @@ import { CancelOutlined, CheckCircleOutline } from "@mui/icons-material";
 export const renderActions = ({
   row,
   colors,
+  handleUpdatePendingOrder,
 }: {
   row: OrderListType;
   colors: ColorsType;
+  handleUpdatePendingOrder: (data: OrderListType, order_confirmed: "Y" | "R") => void;
 }) => {
   return (
     <Box
@@ -19,7 +21,7 @@ export const renderActions = ({
       gap={1}
     >
       <CustomIconButton
-        //   onClick={() => onAddClick(row.userId)}
+        onClick={() => handleUpdatePendingOrder(row, "Y")}
         color={colors.green[500]}
         hoverBackgroundColor={colors.green[500]}
         description="Approve"
@@ -27,7 +29,7 @@ export const renderActions = ({
         <CheckCircleOutline />
       </CustomIconButton>
       <CustomIconButton
-        // onClick={() => onMapClick(row)}
+        onClick={() => handleUpdatePendingOrder(row, "R")}
         color={colors.red[500]}
         hoverBackgroundColor={colors.red[600]}
         description="Reject"

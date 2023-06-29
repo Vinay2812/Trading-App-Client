@@ -50,7 +50,7 @@ const PublishListModal: FC<PublishListModalProps> = ({
   );
 
   const [multipleOf, setMultipleOf] = useState(
-    publishItemData.multiple_of || 160
+    publishItemData.multiple_of
   );
 
   const postPublishListItemMutation = usePostPublishList();
@@ -130,7 +130,8 @@ const PublishListModal: FC<PublishListModalProps> = ({
       auto_confirm: autoConfirm,
       sale_rate: sellingRate,
       publish_quantal: publishQuantity,
-      multiple_of: multipleOf,
+      multiple_of:
+        typeof multipleOf === "string" ? parseFloat(multipleOf) : multipleOf,
     };
     confirm("Are you sure you want to publish this item?") &&
       postPublishListItemMutation.mutate(reqObj);
@@ -284,8 +285,11 @@ const PublishListModal: FC<PublishListModalProps> = ({
                 sx={{ width: 180 }}
                 size="small"
                 placeholder="Enter multiple of"
-                value={multipleOf ? multipleOf : ""}
+                value={
+                  sellingType === "F" ? publishQuantity ?? 0 : multipleOf ?? ""
+                }
                 onChange={handleMultipleOfChange}
+                disabled={sellingType === "F"}
               />
             </Grid>
             <Grid item display="flex" xs={12} md={6} gap={2}>

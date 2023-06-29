@@ -1,16 +1,32 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Sidebar } from "../../pages/Admin/components";
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import HeaderCard from "../Cards/HeaderCard";
 import { usePublishedListColumns } from "./use-published-list-columns";
 import { usePublishedList } from "../../hooks/api-hooks/admin";
 import Table from "../Table/Table";
 import { PublishedListType } from "../../hooks/api-hooks/admin/use-published-list";
 import TextLoader from "../TextLoader/TextLoader";
-import { BorderColorOutlined } from "@mui/icons-material";
+import {
+  BorderColorOutlined,
+  DoneOutline,
+  DoneOutlined,
+  Edit,
+  EditOutlined,
+  PauseCircleOutline,
+  PlayCircleOutlined,
+  StartOutlined,
+} from "@mui/icons-material";
 import ModifyItem from "./Modals/ModifyItem";
 import { useUpdatePublishedListItem } from "../../hooks/api-hooks/admin/use-update-published-list-item";
 import PlaceOrder from "./Modals/PlaceOrder";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import {
+  useGetAllTradeStatus,
+  useUpdateAllTradeStatus,
+} from "../../hooks/api-hooks/admin/use-trades-status";
+import { useUpdatePublishDates } from "../../hooks/api-hooks/admin/use-update-publish-dates";
 
 interface PublishedListProps {
   isClientList?: boolean;
@@ -21,11 +37,13 @@ export interface PublishedListRowType extends PublishedListType {
 
 const PublishedList: FC<PublishedListProps> = (props) => {
   const { isClientList = false } = props;
-  const { data, isLoading: publishedListLoading } = usePublishedList(isClientList);
+  const { data, isLoading: publishedListLoading } =
+    usePublishedList(isClientList);
   const [openModifyModal, setOpenModifyModal] = useState(false);
   const [openModifyListModal, setOpenModifyListModal] = useState(false);
   const [openPlaceOrderModal, setOpenPlaceOrderModal] = useState(false);
   const [updateStatusText, setUpdateStatusText] = useState("loading");
+  const [publishDate, setPublishDate] = useState(new Date());
 
   const [selectedPublishedListItem, setSelectedPublishedListItem] =
     useState<PublishedListRowType>({} as PublishedListRowType);
@@ -42,6 +60,9 @@ const PublishedList: FC<PublishedListProps> = (props) => {
 
   // React queries
   const updatePublishedListItemMutation = useUpdatePublishedListItem();
+  const tradeStatusQuery = useGetAllTradeStatus();
+  const updateStatusMutation = useUpdateAllTradeStatus();
+  const updatePublishDatesMutation = useUpdatePublishDates();
 
   const handlePublishedItemStatus = (item: PublishedListRowType) => {
     setUpdateStatusText(item.status === "Y" ? "stopping" : "starting");
@@ -65,47 +86,102 @@ const PublishedList: FC<PublishedListProps> = (props) => {
     if (isClientList) {
       rowArr = data.value.filter((item) => item.status === "Y");
     }
+    if (rowArr.length)
+      setPublishDate(new Date(rowArr[0].publish_date ?? new Date()));
     return rowArr.map((item, index) => ({ ...item, sr_no: index + 1 }));
   }, [data, isClientList]);
+
+  const [isStopButton, setIsStopButton] = useState(true);
+  const [isDateEditable, setIsDateEditable] = useState(false);
+
+  useEffect(() => {
+    if (!tradeStatusQuery.data?.value) return;
+    setIsStopButton(tradeStatusQuery.data.value.stopButtonEnabled);
+  }, [tradeStatusQuery.data]);
 
   const { loading, loadingText } = useMemo(() => {
     let loadingText = "loading";
     if (updatePublishedListItemMutation.isLoading) {
       loadingText = updateStatusText;
     }
+    if(updatePublishDatesMutation.isLoading) {
+      loadingText = "updating"
+    }
     return {
       loading:
-        publishedListLoading || updatePublishedListItemMutation.isLoading,
+        publishedListLoading ||
+        updatePublishedListItemMutation.isLoading ||
+        updateStatusMutation.isLoading ||
+        updatePublishDatesMutation.isLoading,
       loadingText,
     };
   }, [
     publishedListLoading,
     updatePublishedListItemMutation.isLoading,
     updateStatusText,
+    updateStatusMutation,
   ]);
 
   return (
-    <Sidebar active={isClientList ? "Client List" : "Published List"}>
+    <Sidebar active={isClientList ? "Product List" : "Published List"}>
       <TextLoader loading={loading} loadingText={loadingText} />
       <Box width="100%" height="100%" position="relative">
         <HeaderCard
-          title={isClientList ? "Client List" : "Published List"}
+          title={isClientList ? "Product List" : "Published List"}
           subtitle={`Welcome to ${
-            isClientList ? "client list" : "published list"
+            isClientList ? "Product List" : "published list"
           }`}
-          // buttonBox={
-          //   !isClientList ? (
-          //     <Button
-          //       variant="contained"
-          //       color="red"
-          //       endIcon={<BorderColorOutlined />}
-          //     >
-          //       Update List
-          //     </Button>
-          //   ) : (
-          //     <></>
-          //   )
-          // }
+          buttonBox={
+            !isClientList ? (
+              <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                <DatePicker
+                  sx={{ width: 200 }}
+                  format="DD/MM/YYYY"
+                  value={dayjs(publishDate)}
+                  onChange={(value) =>
+                    value && setPublishDate(new Date(value.toDate()))
+                  }
+                  disabled={!isDateEditable}
+                />
+                <Tooltip
+                  title={`${isDateEditable ? "Edit" : "Update"} publish date`}
+                >
+                  <IconButton
+                    color={isDateEditable ? "green" : "blue"}
+                    onClick={() => {
+                      if (isDateEditable) {
+                        updatePublishDatesMutation.mutate(publishDate);
+                      }
+                      setIsDateEditable((prev) => !prev);
+                    }}
+                  >
+                    {!isDateEditable ? <EditOutlined /> : <DoneOutlined />}
+                  </IconButton>
+                </Tooltip>
+                <Tooltip
+                  title={`${isStopButton ? "Pause" : "Start"} all the trades`}
+                >
+                  <IconButton
+                    color={isStopButton ? "red" : "green"}
+                    onClick={() => {
+                      updateStatusMutation.mutate(isStopButton ? "N" : "Y");
+                      setUpdateStatusText(
+                        isStopButton ? "Stopping" : "Starting"
+                      );
+                    }}
+                  >
+                    {!isStopButton ? (
+                      <PlayCircleOutlined />
+                    ) : (
+                      <PauseCircleOutline />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            ) : (
+              <></>
+            )
+          }
         />
         <Table
           rows={rows}

@@ -100,7 +100,7 @@ const UserSidebar: FC<SidebarProps> = ({ active, children }) => {
                 </IconButton>
               }
             >
-              {!collapsed && <Typography variant="h6">Trading App</Typography>}
+              {!collapsed && <Typography variant="h6">CommodityXchange</Typography>}
             </MenuItem>
             {/* Menu items */}
             <Divider />
@@ -120,16 +120,16 @@ const UserSidebar: FC<SidebarProps> = ({ active, children }) => {
                 to="/home"
               />
               <ProSidebarMenuItem
-                title="Client List"
+                title="Product List"
                 icon={
                   <ProSidebarMenuIcon
                     icon={<LocalMallOutlined />}
-                    hoverText="Client List"
+                    hoverText="Product List"
                   />
                 }
                 selected={selected}
                 setSelected={setSelected}
-                to="/client-list"
+                to="/product-list"
               />
 
               <ProSidebarMenuItem
